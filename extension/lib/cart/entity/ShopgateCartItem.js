@@ -7,14 +7,13 @@ class ShopgateCartItem {
    * @param {ShopgateCartProduct} product
    * @param {ShopgateMessage[]} messages
    */
-  constructor({ id, quantity, type, coupon, product, messages }) {
-      this.id = id
-      this.quantity = quantity
-      this.type = type
-      this.coupon = coupon
-      this.product = product
-      this.messages = messages
-
+  constructor ({ id, quantity, type, coupon, product, messages }) {
+    this.id = id
+    this.quantity = quantity
+    this.type = type
+    this.coupon = coupon
+    this.product = product
+    this.messages = messages
   }
 }
 

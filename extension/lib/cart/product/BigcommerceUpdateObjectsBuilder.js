@@ -4,7 +4,7 @@ class BigcommerceUpdateObjectsBuilder {
    * @param {ShopgateCart} cart
    * @param {object[]} smallCartItems
    */
-  constructor(cart, smallCartItems) {
+  constructor (cart, smallCartItems) {
     this._cart = cart
     this._smallCartItems = smallCartItems
   }
@@ -17,7 +17,7 @@ class BigcommerceUpdateObjectsBuilder {
     for (const smallCartItem of this._smallCartItems) {
       let cartItem = this._getCartProductByCartItemId(smallCartItem.CartItemId)
       if (cartItem.product && cartItem.product.id) {
-        bigcommerceProductUpdates.push({cartItemId: smallCartItem.CartItemId, lineItem : this._getBigCommerceUpdateLineItem(cartItem, smallCartItem)})
+        bigcommerceProductUpdates.push({cartItemId: smallCartItem.CartItemId, lineItem: this._getBigCommerceUpdateLineItem(cartItem, smallCartItem)})
       }
     }
     return bigcommerceProductUpdates
@@ -28,7 +28,7 @@ class BigcommerceUpdateObjectsBuilder {
    * @return {ShopgateCartProduct|object}
    * @private
    */
-  _getCartProductByCartItemId(cartItemId) {
+  _getCartProductByCartItemId (cartItemId) {
     for (const cartItem of this._cart.cartItems) {
       if (cartItem.id === cartItemId) {
         return cartItem

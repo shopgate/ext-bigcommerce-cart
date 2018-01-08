@@ -5,9 +5,9 @@ class ShopgateFlags {
    * @param {boolean} coupons
    */
   constructor ({taxIncluded, orderable, coupons}) {
-      this.taxIncluded = taxIncluded,
-      this.orderable = orderable,
-      this.coupons = coupons
+    this.taxIncluded = taxIncluded
+    this.orderable = orderable
+    this.coupons = coupons
   }
 }
 

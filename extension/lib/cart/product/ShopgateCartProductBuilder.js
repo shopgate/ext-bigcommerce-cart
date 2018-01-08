@@ -20,7 +20,7 @@ class ShopgateCartProductBuilder {
       featuredImageUrl: this._getFeaturedImageUrl(),
       properties: this._getProperties(),
       price: this._getPrice(),
-      appliedDiscounts: this._getAppliedDiscounts(),
+      appliedDiscounts: this._getAppliedDiscounts()
     })
   }
 
@@ -82,7 +82,7 @@ class ShopgateCartProductBuilder {
    * @return {Array}
    * @private
    */
-  _getAppliedDiscounts() {
+  _getAppliedDiscounts () {
     return []
   }
 }

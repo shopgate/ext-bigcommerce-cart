@@ -14,7 +14,6 @@ class ShopgateCartItemsBuilder {
     shopgateCartItems = shopgateCartItems.concat(this._getPhysicalItems())
 
     return shopgateCartItems
-
   }
 
   /**
@@ -24,8 +23,8 @@ class ShopgateCartItemsBuilder {
   _getPhysicalItems () {
     const physicalItems = []
     this._bigcommerceCartResponse.data.line_items.physical_items.forEach(
-      function(physicalItem) {
-        const shopgateItemBuilder = new ShopgateCartProductBuilder(physicalItem);
+      function (physicalItem) {
+        const shopgateItemBuilder = new ShopgateCartProductBuilder(physicalItem)
         physicalItems.push(new ShopgateCartItem({
           id: physicalItem.id,
           quantity: physicalItem.quantity,
@@ -33,12 +32,11 @@ class ShopgateCartItemsBuilder {
           coupon: {},
           product: shopgateItemBuilder.build(),
           messages: []
-      }))
+        }))
       }
     )
     return physicalItems
   }
-
 }
 
 module.exports = ShopgateCartItemsBuilder
