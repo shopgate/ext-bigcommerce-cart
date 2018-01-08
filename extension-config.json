@@ -1,0 +1,62 @@
+{
+  "version": "0.1.0",
+  "id": "@shopgate/bigcommerce-cart",
+  "directories": {
+    "steps": "./extension/",
+    "pipelines": "./pipelines/"
+  },
+  "steps": [],
+  "configuration": {
+    "storeHash" : {
+      "type" : "bigApi",
+      "destination" : "backend",
+      "default": null,
+      "params": {
+        "method":  "GET",
+        "service": "config",
+        "path": "/v1/shop/%(shopId)s/cloud_bigcommerce_cart?parsed=true",
+        "key": "value.backend.storeHash"
+      }
+    },
+    "accessToken" : {
+      "type" : "bigApi",
+      "destination" : "backend",
+      "default": null,
+      "params": {
+        "method":  "GET",
+        "service": "config",
+        "path": "/v1/shop/%(shopId)s/cloud_bigcommerce_cart?parsed=true",
+        "key": "value.backend.accessToken"
+      }
+    },
+    "clientId": {
+      "type" : "bigApi",
+      "destination" : "backend",
+      "default": null,
+      "params": {
+        "method":  "GET",
+        "service": "config",
+        "path": "/v1/shop/%(shopId)s/cloud_bigcommerce_cart?parsed=true",
+        "key": "value.backend.clientId"
+      }
+    },
+    "clientSecret": {
+      "type" : "bigApi",
+      "destination" : "backend",
+      "default": null,
+      "params": {
+        "method":  "GET",
+        "service": "config",
+        "path": "/v1/shop/%(shopId)s/cloud_bigcommerce_cart?parsed=true",
+        "key": "value.backend.clientSecret"
+      }
+    },
+    "requestTimeout": {
+      "type": "static",
+      "destination": "backend",
+      "params": {
+        "value": "15000"
+      }
+    }
+  }
+}

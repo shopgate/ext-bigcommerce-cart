@@ -1,0 +1,12 @@
+.DS_Store
+build
+coverage
+extension/coverage
+extension/node_modules
+.idea/
+npm-debug.log
+.vscode
+extension/test
+extension/config.json
+/extension/.nyc_output
+.nyc_output
