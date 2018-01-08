@@ -14,11 +14,11 @@ class ShopgateCartProductActionsRepository {
    * @param {ShopgateProduct[]} products
    * @return {Promise.<object>}
    */
-  async addToCart(cartId, products) {
+  async addToCart (cartId, products) {
     const bigCommerceLineItemsBuilder = new BigCommerceLineItemsBuilder(products)
-    return await this._apiVersion3Client.post('/carts/' + cartId + '/items', {
-      "cartId": cartId,
-      "line_items": bigCommerceLineItemsBuilder.build()
+    return this._apiVersion3Client.post('/carts/' + cartId + '/items', {
+      'cartId': cartId,
+      'line_items': bigCommerceLineItemsBuilder.build()
     })
   }
 
@@ -28,7 +28,7 @@ class ShopgateCartProductActionsRepository {
    */
   async createCartAndAddProducts (products) {
     const bigCommerceLineItemsBuilder = new BigCommerceLineItemsBuilder(products)
-    const bigcommerceCartAddProductResponse = await this._apiVersion3Client.post('/carts/', {"line_items": bigCommerceLineItemsBuilder.build()})
+    const bigcommerceCartAddProductResponse = await this._apiVersion3Client.post('/carts/', {'line_items': bigCommerceLineItemsBuilder.build()})
 
     return {cartId: bigcommerceCartAddProductResponse.data.id, 'response': bigcommerceCartAddProductResponse}
   }
@@ -41,10 +41,10 @@ class ShopgateCartProductActionsRepository {
   async removeProductsFromCart (cartItemIds, cartId) {
     const productRemovalPromises = []
     for (const cartItemId of cartItemIds) {
-      productRemovalPromises.push(this._apiVersion3Client.delete('/carts/'+ cartId + '/items/' + cartItemId))
+      productRemovalPromises.push(this._apiVersion3Client.delete('/carts/' + cartId + '/items/' + cartItemId))
     }
 
-    return await Promise.all(productRemovalPromises)
+    return Promise.all(productRemovalPromises)
   }
 
   /**
@@ -55,14 +55,13 @@ class ShopgateCartProductActionsRepository {
    * @return {Promise.<*>}
    */
   async updateProductInCart (cartId, currentCart, smallCartItems) {
-    const bigcommerceProductUpdatesBuilder = new BigcommerceUpdateObjectsBuilder(currentCart, smallCartItems);
+    const bigcommerceProductUpdatesBuilder = new BigcommerceUpdateObjectsBuilder(currentCart, smallCartItems)
     const productUpdatePromises = []
     for (const bigCommerceUpdate of bigcommerceProductUpdatesBuilder.build()) {
-      productUpdatePromises.push(this._apiVersion3Client.put('/carts/'+ cartId + '/items/' + bigCommerceUpdate.cartItemId, {"cart_id": cartId, "item_id": bigCommerceUpdate.cartItemId, "line_item": bigCommerceUpdate.lineItem}))
+      productUpdatePromises.push(this._apiVersion3Client.put('/carts/' + cartId + '/items/' + bigCommerceUpdate.cartItemId, {'cart_id': cartId, 'item_id': bigCommerceUpdate.cartItemId, 'line_item': bigCommerceUpdate.lineItem}))
     }
-    return await Promise.all(productUpdatePromises)
+    return Promise.all(productUpdatePromises)
   }
-
 }
 
 module.exports = ShopgateCartProductActionsRepository

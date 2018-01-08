@@ -24,7 +24,7 @@ class ShopgateCartRepository {
    * @return {Promise<{string,ShopgateCart}>}
    */
   async createAndGet () {
-    const bigCommerceCartResponse = await this._apiVersion3Client.post('/carts', {"cartData": true, "line_items": []})
+    const bigCommerceCartResponse = await this._apiVersion3Client.post('/carts', {'cartData': true, 'line_items': []})
     const shopgateCartBuilder = new ShopgateCartBuilder(bigCommerceCartResponse)
     return {id: bigCommerceCartResponse.data.id, cart: shopgateCartBuilder.build()}
   }
