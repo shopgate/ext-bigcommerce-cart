@@ -1,0 +1,28 @@
+{
+  "version": "1",
+  "pipeline": {
+    "id": "addProductsToCart_v1",
+    "public": true,
+    "input": [
+      {"key": "sgxsMeta", "id": "1010", "optional": true},
+      {"key": "products", "id": "1020"}
+    ],
+    "output": [
+      {"key": "messages", "id": "1030", "optional": true}
+    ],
+    "steps": [
+      {
+        "type": "extension",
+        "id": "@shopgate/bigcommerce-cart",
+        "path": "@shopgate/bigcommerce-cart/lib/steps/addProductsToCart_v1.js",
+        "input": [
+          {"key": "sgxsMeta", "id": "1010", "optional": true},
+          {"key": "products", "id": "1020", "optional": true}
+        ],
+        "output": [
+          {"key": "messages", "id": "1030", "optional": true}
+        ]
+      }
+    ]
+  }
+}
