@@ -1,0 +1,40 @@
+{
+  "version": "1",
+  "pipeline": {
+    "id": "getCart_v1",
+    "public": true,
+    "input": [
+      {"key": "sgxsMeta", "id": "1010", "optional": true}
+    ],
+    "output": [
+      {"key": "isOrderable", "id": "1010"},
+      {"key": "isTaxIncluded", "id": "1020"},
+      {"key": "currency", "id": "1030"},
+      {"key": "messages", "id": "1040"},
+      {"key": "text", "id": "1050"},
+      {"key": "cartItems", "id": "1060"},
+      {"key": "totals", "id": "1070"},
+      {"key": "flags", "id": "1080"}
+    ],
+    "steps": [
+      {
+        "type": "extension",
+        "id": "@shopgate/bigcommerce-cart",
+        "path": "@shopgate/bigcommerce-cart/lib/steps/getCart_v1.js",
+        "input": [
+          {"key": "sgxsMeta", "id": "1010", "optional": true}
+        ],
+        "output": [
+          {"key": "isOrderable", "id": "1010"},
+          {"key": "isTaxIncluded", "id": "1020"},
+          {"key": "currency", "id": "1030"},
+          {"key": "messages", "id": "1040"},
+          {"key": "text", "id": "1050"},
+          {"key": "cartItems", "id": "1060"},
+          {"key": "totals", "id": "1070"},
+          {"key": "flags", "id": "1080"}
+        ]
+      }
+    ]
+  }
+}
