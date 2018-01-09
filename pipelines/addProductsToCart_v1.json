@@ -14,7 +14,7 @@
       {
         "type": "extension",
         "id": "@shopgate/bigcommerce-cart",
-        "path": "@shopgate/bigcommerce-cart/lib/steps/addProductsToCart_v1.js",
+        "path": "@shopgate/bigcommerce-cart/lib/steps/addProductsToCart.js",
         "input": [
           {"key": "sgxsMeta", "id": "1010", "optional": true},
           {"key": "products", "id": "1020", "optional": true}

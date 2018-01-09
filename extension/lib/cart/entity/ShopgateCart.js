@@ -1,5 +1,7 @@
 class ShopgateCart {
   /**
+   * @param {boolean} isOrderable
+   * @param {boolean} isTaxIncluded
    * @param {string} currency
    * @param {ShopgateMessage[]} messages
    * @param {object} text
@@ -8,6 +10,8 @@ class ShopgateCart {
    * @param {ShopgateFlags} flags
    */
   constructor ({isOrderable, isTaxIncluded, currency, messages, text, cartItems, totals, flags}) {
+    this.isOrderable = isOrderable
+    this.isTaxIncluded = isTaxIncluded
     this.currency = currency
     this.messages = messages
     this.text = text
