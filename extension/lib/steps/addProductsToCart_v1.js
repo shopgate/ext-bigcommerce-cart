@@ -26,45 +26,4 @@ module.exports = async (context, input, cb) => {
       cb(error)
     }
   }
-/*
-  context.storage.device.get('cartId', function(err, cartId) {
-    if (err || !cartId) {
-      createCartAndAddProductsToIt(products, shopgateCartProductActionsRepository, context, cb)
-    } else {
-      addProductsToCart(cartId, input.products, shopgateCartProductActionsRepository, context, cb)
-    }
-  })
-  */
 }
-
-/*
-const addProductsToCart = async(cartId, products, shopgateCartProductActionsRepository, context, cb) =>{
-  try {
-    const addItemResponse = await shopgateCartProductActionsRepository.addToCart(cartId, products)
-    context.log.debug('add item response: ' + JSON.stringify(addItemResponse))
-    cb(null, {})
-  } catch (error) {
-    context.log.error('Unable to add products to the cart: ' + JSON.stringify(products))
-    cb(error)
-  }
-}
-
-const createCartAndAddProductsToIt = async(products, shopgateCartProductActionsRepository, context, cb) =>{
-  try {
-    const addItemResponse = await shopgateCartProductActionsRepository.createCartAndAddProducts(products)
-    context.log.debug('add item response: '+ JSON.stringify(addItemResponse))
-    context.storage.device.set('cartId', addItemResponse.cartId, function(err){
-      if (err) {
-        context.log.error('Could not set cart Id in device storage while creating a cart and adding product(s) to it')
-      } else {
-        context.log.debug('Successfully created cart ' + cartId + 'added products to it and stored the cart id')
-        cb(null, {})
-      }
-    })
-
-  } catch (error) {
-    context.log.error('Unable to create a cart and add product to it: ' + JSON.stringify(products))
-    cb(error)
-  }
-}
-*/
