@@ -16,8 +16,6 @@ class ShopgateCartBuilder {
    */
   build () {
     return new ShopgateCart({
-      isOrderable: this.getIsOrderable(),
-      isTaxIncluded: this.getIsTaxIncluded(),
       currency: this._getCurrency(),
       messages: this._getMessages(),
       text: this._getText(),
@@ -25,14 +23,6 @@ class ShopgateCartBuilder {
       totals: this._getTotals(),
       flags: this._getFlags()
     })
-  }
-
-  getIsOrderable () {
-    return true
-  }
-
-  getIsTaxIncluded () {
-    return this._bigcommerceCartResponse.data.tax_included
   }
 
   _getMessages () {
