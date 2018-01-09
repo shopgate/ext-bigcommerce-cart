@@ -32,6 +32,9 @@ class ShopgateCartBuilder {
   }
 
   getIsTaxIncluded () {
+    if (!this._bigcommerceCartResponse.data) {
+      return false
+    }
     return this._bigcommerceCartResponse.data.tax_included
   }
 
@@ -53,6 +56,9 @@ class ShopgateCartBuilder {
    * @private
    */
   _getCurrency () {
+    if (!this._bigcommerceCartResponse.data) {
+      return ''
+    }
     return this._bigcommerceCartResponse.data.currency.code
   }
 
@@ -63,6 +69,9 @@ class ShopgateCartBuilder {
    */
   _getTotals () {
     let totals = []
+    if (!this._bigcommerceCartResponse.data) {
+      return totals
+    }
     let baseAmount = this._bigcommerceCartResponse.data.base_amount
     let discountAmount = this._bigcommerceCartResponse.data.discount_amount
     let cartAmount = this._bigcommerceCartResponse.data.cart_amount
@@ -103,7 +112,7 @@ class ShopgateCartBuilder {
    */
   _getFlags () {
     return new ShopgateFlags({
-      taxIncluded: this._bigcommerceCartResponse.data.tax_included,
+      taxIncluded: (this._bigcommerceCartResponse.data) ? this._bigcommerceCartResponse.data.tax_included : false,
       orderable: true,
       coupons: true
     })

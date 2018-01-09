@@ -11,8 +11,9 @@ class ShopgateCartItemsBuilder {
 
   build () {
     let shopgateCartItems = []
-    shopgateCartItems = shopgateCartItems.concat(this._getPhysicalItems())
-
+    if (this._bigcommerceCartResponse.data) {
+      shopgateCartItems = shopgateCartItems.concat(this._getPhysicalItems())
+    }
     return shopgateCartItems
   }
 

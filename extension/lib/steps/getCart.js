@@ -1,6 +1,6 @@
 const ShopgateCartRepository = require('../cart/repository/ShopgateCartRepository')
 const BigCommerceFactory = require('./BigCommerceFactory.js')
-const ShopgateCartIdRepository = require('../cart/repository/ShopgateCartIdRepository')
+const ShopgateStorage = require('./ShopgateStorage')
 
 /**
  * @param {Object} context
@@ -12,22 +12,13 @@ module.exports = async (context, input, cb) => {
     context.config.clientId,
     context.config.accessToken,
     context.config.storeHash)
-  const shopgateCartRepository = new ShopgateCartRepository(bigCommerceFactory.createV3())
-  const shopgateCartIdRepository = new ShopgateCartIdRepository(context)
+  const shopgateStorage = new ShopgateStorage(context)
+  const shopgateCartRepository = new ShopgateCartRepository(bigCommerceFactory.createV3(), shopgateStorage, context)
+  context.log.debug('STARTING GET CART')
   try {
-    const cartId = await shopgateCartIdRepository.get()
-    context.log.debug('Found this cartId: ' + cartId)
-    const cart = await shopgateCartRepository.get(cartId)
+    const cart = await shopgateCartRepository.get()
     cb(null, cart)
   } catch (error) {
-    try {
-      context.log.debug('An error occurred while trying to get the cart. Will try createAndGet')
-      const cartResponse = await shopgateCartRepository.createAndGet()
-      const cartId = await shopgateCartIdRepository.set(cartResponse.id)
-      context.log.debug('a cart was created as part of a getCart. It has the id of: ' + cartId)
-      cb(null, cartResponse.cart)
-    } catch (error) {
-      cb(error)
-    }
+    cb(error)
   }
 }

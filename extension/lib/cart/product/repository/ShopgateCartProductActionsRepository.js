@@ -27,7 +27,7 @@ class ShopgateCartProductActionsRepository {
    */
   async createCartAndAddProducts (products) {
     const bigCommerceLineItemsBuilder = new BigCommerceLineItemsBuilder(products)
-    const bigcommerceCartAddProductResponse = await this._apiVersion3Client.post('/carts/', {'line_items': bigCommerceLineItemsBuilder.build()})
+    const bigcommerceCartAddProductResponse = await this._apiVersion3Client.post('/carts', {'line_items': bigCommerceLineItemsBuilder.build()})
 
     return {cartId: bigcommerceCartAddProductResponse.data.id, 'response': bigcommerceCartAddProductResponse}
   }
