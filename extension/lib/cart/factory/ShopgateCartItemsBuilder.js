@@ -1,5 +1,5 @@
-const ShopgateCartItem = require('./entity/ShopgateCartItem')
-const ShopgateCartProductBuilder = require('./product/ShopgateCartProductBuilder')
+const ShopgateCartItem = require('../entity/ShopgateCartItem')
+const ShopgateCartProductBuilder = require('../product/factory/ShopgateCartProductBuilder')
 
 class ShopgateCartItemsBuilder {
   /**

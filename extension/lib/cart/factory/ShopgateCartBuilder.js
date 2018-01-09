@@ -1,7 +1,7 @@
-const ShopgateCart = require('./entity/ShopgateCart')
+const ShopgateCart = require('../entity/ShopgateCart')
 const ShopgateCartItemsBuilder = require('./ShopgateCartItemsBuilder')
-const ShopgateFlags = require('./entity/ShopgateFlags')
-const ShopgateTotal = require('./entity/ShopgateTotal')
+const ShopgateFlags = require('../entity/ShopgateFlags')
+const ShopgateTotal = require('../entity/ShopgateTotal')
 
 class ShopgateCartBuilder {
   /**

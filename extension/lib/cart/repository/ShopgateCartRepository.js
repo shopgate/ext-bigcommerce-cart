@@ -1,4 +1,4 @@
-const ShopgateCartBuilder = require('./ShopgateCartBuilder')
+const ShopgateCartBuilder = require('../factory/ShopgateCartBuilder')
 
 class ShopgateCartRepository {
   /**

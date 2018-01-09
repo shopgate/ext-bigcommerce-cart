@@ -1,4 +1,4 @@
-const BigCommerceLineItemsBuilder = require('./BigCommerceLineItemsBuilder')
+const BigCommerceLineItemsBuilder = require('../factory/BigCommerceLineItemsBuilder')
 
 class ShopgateCartProductActionsRepository {
   /**

@@ -1,6 +1,6 @@
-const ShopgateCartRepository = require('../cart/ShopgateCartRepository')
+const ShopgateCartRepository = require('../cart/repository/ShopgateCartRepository')
 const BigCommerceFactory = require('./BigCommerceFactory.js')
-const ShopgateCartIdRepository = require('../cart/ShopgateCartIdRepository')
+const ShopgateCartIdRepository = require('../cart/repository/ShopgateCartIdRepository')
 
 /**
  * @param {Object} context

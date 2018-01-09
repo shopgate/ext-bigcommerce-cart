@@ -1,6 +1,6 @@
 const BigCommerceFactory = require('./BigCommerceFactory.js')
-const ShopgateCartProductActionsRepository = require('../cart/product/ShopgateCartProductActionsRepository')
-const ShopgateCartIdRepository = require('../cart/ShopgateCartIdRepository')
+const ShopgateCartProductActionsRepository = require('../cart/product/repository/ShopgateCartProductActionsRepository')
+const ShopgateCartIdRepository = require('../cart/repository/ShopgateCartIdRepository')
 
 module.exports = async (context, input, cb) => {
   const bigCommerceFactory = new BigCommerceFactory(
