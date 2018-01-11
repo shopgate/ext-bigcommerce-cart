@@ -45,8 +45,8 @@ class ShopgateCartExtensionPipeline {
         messages: shopgateCart.messages,
         text: shopgateCart.text,
         cartItems: pipelineCartItems,
-        totals: shopgateCart.totals, //TODO take care of the creation process
-        flags: shopgateCart.flags //TODO take care of the creation process
+        totals: shopgateCart.totals, // TODO take care of the creation process
+        flags: shopgateCart.flags // TODO take care of the creation process
       }
     }
   }

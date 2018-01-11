@@ -10,7 +10,7 @@ class ShopgateCart {
    * @returns {ShopgateCartItem[]}
    */
   get items () {}
-  get messages() {}
+  get messages () {}
 }
 
 module.exports = ShopgateCart

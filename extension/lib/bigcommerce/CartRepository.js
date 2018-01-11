@@ -3,7 +3,10 @@ class BigCommerceCartRepository {
    * @param {BigCommerce} client Api V3 client
    * @param {BigCommerceStorage} storage
    */
-  constructor (client, storage) {}
+  constructor (client, storage) {
+    this._client = client
+    this._storage = storage
+  }
 
   /**
    * @return {Promise<BigCommerceCart>}
