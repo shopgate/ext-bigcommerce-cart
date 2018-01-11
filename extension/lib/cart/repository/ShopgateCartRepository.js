@@ -19,27 +19,44 @@ class ShopgateCartRepository {
    */
   async get () {
     const cartId = await this._shopgateStorage.get(CART_ID)
-    if (!cartId) {
-      this._context.log.debug('No cart ID found')
-      let shopgateCartBuilder = new ShopgateCartBuilder({})
-      return shopgateCartBuilder.build()
+    let cartData = {}
+
+    if (cartId) {
+      cartData = await this.loadCart(cartId)
     }
+    return this.createCart(cartData)
+  }
+
+  createCart (cartData) {
+    let shopgateCartBuilder = new ShopgateCartBuilder(cartData)
+
+    return shopgateCartBuilder.build()
+  }
+
+  /**
+   * @param {string} cartId
+   * @return {Promise.<Object>}
+   */
+  async loadCart (cartId) {
     try {
-      const bigCommerceCartResponse = await this._apiVersion3Client.get(
-        '/carts/' + cartId)
-      let shopgateCartBuilder = new ShopgateCartBuilder(bigCommerceCartResponse)
-      return shopgateCartBuilder.build()
+      this._context.log.debug('Try to get cart data for cartId: ' + cartId)
+
+      return this.createCart(await this._apiVersion3Client.get('/carts/' + cartId))
     } catch (error) {
-      if (error.code === 404) {
-        this._context.log.debug('There was a 404 error when getting cart ||' + JSON.stringify(error))
-        await this._shopgateStorage.delete(CART_ID)
-        let shopgateCartBuilder = new ShopgateCartBuilder({})
-        return shopgateCartBuilder.build()
+      if (error.code !== 404) {
+        throw new Error(error.message, error.code)
       }
-      throw new Error(error.message, error.code)
+      this._context.log.debug('There was a 404 error when getting cart ||' + JSON.stringify(error))
+      await this._shopgateStorage.delete(CART_ID)
+
+      return {}
     }
   }
 
+  /**
+   * @param {ShopgateProducts[]}products
+   * @return {Promise.<void>}
+   */
   async addProducts (products) {
     this._context.log.debug('Doing add products from cart repository')
     const cartId = await this._shopgateStorage.get(CART_ID)
@@ -48,6 +65,7 @@ class ShopgateCartRepository {
       this._context.log.debug('There no cartId going to do createCartAndAddProducts')
       let addItemResponse = await shopgateCartProductActionsRepository.createCartAndAddProducts(products)
       await this._shopgateStorage.set(CART_ID, addItemResponse.cartId)
+
       return
     }
     try {
@@ -58,16 +76,6 @@ class ShopgateCartRepository {
       let addItemResponse = await shopgateCartProductActionsRepository.createCartAndAddProducts(products)
       await this._shopgateStorage.set(CART_ID, addItemResponse.cartId)
     }
-  }
-
-  /**
-   * @param {string} cartId
-   * @return {Promise<{string,ShopgateCart}>}
-   */
-  async createAndGet () {
-    const bigCommerceCartResponse = await this._apiVersion3Client.post('/carts', {'cartData': true, 'line_items': []})
-    const shopgateCartBuilder = new ShopgateCartBuilder(bigCommerceCartResponse)
-    return {id: bigCommerceCartResponse.data.id, cart: shopgateCartBuilder.build()}
   }
 }
 
