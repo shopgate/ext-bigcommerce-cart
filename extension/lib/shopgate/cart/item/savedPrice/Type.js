@@ -1,4 +1,4 @@
-const PERCENTAGE = 'percentage';
+const PERCENTAGE = 'percentage'
 const FIXED = 'fixed'
 class ShopgateCartItemSavedPriceType {
   constructor () {

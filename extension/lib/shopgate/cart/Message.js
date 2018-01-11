@@ -30,7 +30,6 @@ class ShopgateCartMessage {
   get code () {
     return this._code
   }
-
 }
 
 module.exports = ShopgateCartMessage
