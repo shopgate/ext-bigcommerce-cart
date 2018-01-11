@@ -22,7 +22,7 @@ class BigCommerceCart {
    *
    * @param {number} quantity
    * @param {number} productId
-   * @returns BigCommerceCartLineItemRequest
+   * @returns {BigCommerceCartLineItemRequest}
    */
   createLineItem (quantity, productId) {}
 
