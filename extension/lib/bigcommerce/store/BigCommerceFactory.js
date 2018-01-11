@@ -5,7 +5,7 @@ const BigCommerce = require('node-bigcommerce')
  * @property {string} _accessToken
  * @property {string} _storeHash
  */
-class BigCommerceFactory {
+class BigCommerceStoreFactory {
   /**
    * @param {string} clientId
    * @param {string} accessToken
@@ -46,4 +46,4 @@ class BigCommerceFactory {
   }
 }
 
-module.exports = BigCommerceFactory
+module.exports = BigCommerceStoreFactory

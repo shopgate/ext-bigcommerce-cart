@@ -1,6 +1,6 @@
 const CURRENCY = 'currency'
 
-class BigCommerceRepository {
+class BigCommerceStoreConfiguration {
   /**
    * @param {BigCommerce} apiVersion2Client - V2 client
    */
@@ -22,4 +22,4 @@ class BigCommerceRepository {
   }
 }
 
-module.exports = BigCommerceRepository
+module.exports = BigCommerceStoreConfiguration

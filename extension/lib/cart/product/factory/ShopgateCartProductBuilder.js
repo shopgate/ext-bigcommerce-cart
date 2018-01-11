@@ -1,5 +1,5 @@
 const ShopgateCartProduct = require('../entity/ShopgateCartProduct')
-const ShopgateCartProductPrice = require('../entity/ShopgateCartProductPrice')
+const ShopgateCartProductPrice = require('../../../shopgate/cart/item/ProductPrice')
 
 class ShopgateCartProductBuilder {
   /**

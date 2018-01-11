@@ -1,5 +1,5 @@
 const ShopgateCartRepository = require('../cart/repository/ShopgateCartRepository')
-const BigCommerceFactory = require('./BigCommerceFactory.js')
+const BigCommerceFactory = require('../bigcommerce/store/BigCommerceFactory.js')
 const ShopgateStorage = require('./ShopgateStorage')
 
 /**
