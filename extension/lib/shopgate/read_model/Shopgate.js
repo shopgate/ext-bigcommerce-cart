@@ -40,7 +40,7 @@
 
 /**
  * @callback GetCartCallback
- * @para {Error} [error]
+ * @param {Error} [error]
  * @param {ShopgateAddProductResponse} [ShopgateCart]
  */
 

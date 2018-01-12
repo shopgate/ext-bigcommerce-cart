@@ -1,5 +1,6 @@
-// aggregate root, not an entity as it has no identity
-// we still might go with value object and make this class immutable - this would require us to expose ShopgateCartTotal as a type
+const ShopgateCartTotal = require('./cart/Total')
+const ShopgateCartItemBuilder = require('./cart/ItemBuilder')
+
 class ShopgateCart {
   /**
    * @param {boolean} isOrderable
@@ -7,29 +8,56 @@ class ShopgateCart {
    * @param {string} currency
    * @param {ShopgateCartMessage[]} messages
    * @param {object} text
-   * @param {ShopgateCartItem[]} cartItems
-   * @param {ShopgateTotal[]} totals
    * @param {ShopgateCartFlags} flags
    */
-  constructor ({isOrderable, isTaxIncluded, currency, messages, text, cartItems, totals, flags}) {
+  constructor ({isOrderable, isTaxIncluded, currency, messages, text, flags}) {
     this._isOrderable = isOrderable
     this._isTaxIncluded = isTaxIncluded
     this._currency = currency
     this._messages = messages
     this._text = text
-    this._cartItems = cartItems
-    this._totals = totals
+    this._cartItems = []
+    this._totals = []
     this._flags = flags
   }
-  addTotal (type, label, amount) {}
+
+  /**
+   * @param {string} type
+   * @param {string} label
+   * @param {number} amount
+   */
+  addTotal (type, label, amount) {
+    this._totals.push(new ShopgateCartTotal(type, label, amount, []))
+  }
+
+  /**
+   * @param {ShopgateCartItem} item
+   */
+  addItem (item) {
+    this._cartItems.add(item)
+  }
+
+  /**
+   *
+   * @param id
+   * @param quantity
+   * @returns {ShopgateCartItemBuilder}
+   */
+  createItembuilder (id, quantity) {
+    return new ShopgateCartItemBuilder(id, quantity)
+  }
+
   get flags () {}
   get totals () {}
   get currency () {}
 
   /**
-   * @returns {ShopgateCartItem[]}
+   * @returns {ShopgateCartItems}
    */
-  get items () {}
+  get items () {
+    return this._cartItems
+  }
+
   get messages () {}
 }
 

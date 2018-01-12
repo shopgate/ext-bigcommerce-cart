@@ -1,11 +1,19 @@
 class BigCommerceCart {
   /**
-   * @param {string} id
-   * @param {Object} bigCommerceCartData
+   * @param {number} id
+   * @param {string} currency
+   * @param {string} isTaxIncluded
+   * @param {number} baseAmount
+   * @param {number} discountAmount
+   * @param {number} cartAmount
    */
-  constructor (id, bigCommerceCartData) {
+  constructor ({id, currency, isTaxIncluded, baseAmount, discountAmount, cartAmount}) {
     this._id = id
-    this._bigCommerceCartData = bigCommerceCartData
+    this._currency = currency
+    this._isTaxIncluded = isTaxIncluded
+    this._baseAmount = baseAmount
+    this._discountAmount = discountAmount
+    this._cartAmount = cartAmount
   }
 
   /**
@@ -18,28 +26,37 @@ class BigCommerceCart {
   }
 
   /**
-   * Creates new line item.
    *
-   * @param {number} quantity
-   * @param {number} productId
-   * @returns {BigCommerceCartLineItemRequest}
+   * @param {BigCommerceCartLineItemPhysical} item
    */
-  createLineItem (quantity, productId) {}
+  addPhysicalItem (item) {
+    this.lineItems.physical.push(item)
+  }
 
   /**
    * @returns {BigCommerceCartLineItems}
    */
   get lineItems () {}
 
-  get currency () {}
+  get currency () {
+    return this._currency
+  }
 
-  get baseAmount () {}
+  get baseAmount () {
+    return this._baseAmount
+  }
 
-  get discountAmount () {}
+  get discountAmount () {
+    return this._discountAmount
+  }
 
-  get cartAmount () {}
+  get cartAmount () {
+    return this._cartAmount
+  }
 
-  get taxIncluded () {}
+  get taxIncluded () {
+    return this._isTaxIncluded
+  }
 }
 
 module.exports = BigCommerceCart

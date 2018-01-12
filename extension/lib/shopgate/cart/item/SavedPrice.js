@@ -1,9 +1,12 @@
+/**
+ * This is actually discount with unfortunate name
+ */
 class ShopgateCartItemSavedPrice {
   /**
    * @param {number} value
    * @param {ShopgateCartItemSavedPriceType.PERCENTAGE|ShopgateCartItemSavedPriceType.FIXED} type
    */
-  constructor ({value, type}) {
+  constructor (value, type) {
     this._value = value
     this._type = type
   }

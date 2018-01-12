@@ -5,7 +5,7 @@ class ShopgateCartTotal {
    * @param {number} amount
    * @param {ShopgateCartTotal[]} subTotals
    */
-  constructor ({type, label, amount, subTotals}) {
+  constructor (type, label, amount, subTotals) {
     this._type = type
     this._label = label
     this._amount = amount

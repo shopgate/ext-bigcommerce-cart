@@ -9,6 +9,7 @@ class BigCommerceCartLineItemRequest {
     this._varriant_id = varriantId
     this._quantity = quantity
   }
+
   get quantity () {}
   get productId () {}
   get variantId () {}

@@ -6,15 +6,14 @@ class ShopgateCartItem {
    * @param {ShopgateCartItemType.PRODUCT|ShopgateCartItemType.COUPON} type
    * @param {ShopgateCartItemCoupon} coupon
    * @param {ShopgateCartItemProduct} product
-   * @param {ShopgateCartMessage[]} messages
    */
-  constructor ({ id, quantity, type, coupon, product, messages }) {
+  constructor ({id, quantity, type, coupon, product}) {
     this._id = id
     this._quantity = quantity
     this._type = type
     this._coupon = coupon
     this._product = product
-    this._messages = messages
+    this._messages = []
   }
 
   /**
@@ -57,6 +56,13 @@ class ShopgateCartItem {
    */
   get messages () {
     return this._messages
+  }
+
+  /**
+   * @param {ShopgateCartMessage} message
+   */
+  addMessage (message) {
+    this.messages.push(message)
   }
 }
 

@@ -1,3 +1,5 @@
+const ShopgateCartProductPrice = require('./ProductPrice')
+
 class ShopgateCartItemProduct {
   /**
    * @param {string} id
@@ -16,6 +18,14 @@ class ShopgateCartItemProduct {
     this._properties = properties
     this._price = price
     this._appliedDiscounts = appliedDiscounts
+  }
+
+  static createPrice (listPrice, defaultPrice, special) {
+    return new ShopgateCartProductPrice({
+      unit: listPrice,
+      defaultPrice: defaultPrice,
+      special: special
+    })
   }
 
   /**
@@ -64,7 +74,7 @@ class ShopgateCartItemProduct {
    * @return {ShopgateCartItemProductAppliedDiscount[]}
    */
   get appliedDiscounts () {
-    return this.appliedDiscounts
+    return this._appliedDiscounts
   }
 }
 

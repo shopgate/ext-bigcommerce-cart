@@ -22,6 +22,9 @@ class ShopgateCartExtensionPipeline {
     await this._bigCommerceCartRepository.addItems(bigCommerceCart, bigCommerceLineItems)
   }
 
+  /**
+   * @returns {Promise<ShopgateAddProductResponse>}
+   */
   async get () {
     const bigCommerceCart = await this._bigCommerceCartRepository.load()
     const shopgateCart = this._shopgateCartFactory.createFromBigCommerce(bigCommerceCart)
@@ -33,7 +36,12 @@ class ShopgateCartExtensionPipeline {
         coupon: {},
         product: {
           id: shopgateCartItem.product.id,
-          name: shopgateCartItem.product.name // TODO add rest of the properties
+          name: shopgateCartItem.product.name,
+          addtionalInfo: shopgateCartItem.product.addtionalInfo,
+          featuredImageUrl: shopgateCartItem.product.featuredImageUrl,
+          properties: shopgateCartItem.product.properties,
+          price: shopgateCartItem.product.price,
+          appliedDiscounts: shopgateCartItem.product.appliedDiscounts
         },
         messages: []
       }
