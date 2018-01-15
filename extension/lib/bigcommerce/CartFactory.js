@@ -8,7 +8,7 @@ class BigCommerceCartFactory {
     this._lineItemFactory = lineItemFactory
   }
   /**
-   * @param bigCommerceResponse
+   * @param {BigCommerceCartResponse} bigCommerceResponse
    * @returns {BigCommerceCart}
    */
   fromApiResponse (bigCommerceResponse) {

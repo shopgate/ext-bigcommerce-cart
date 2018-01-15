@@ -65,6 +65,7 @@ class BigCommerceCartRepository {
       if (error.code !== 404) {
         throw error
       }
+      await this._storage.delete(CART_ID)
     }
 
     return cartResponse

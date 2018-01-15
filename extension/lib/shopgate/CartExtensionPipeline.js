@@ -37,11 +37,11 @@ class ShopgateCartExtensionPipeline {
         product: {
           id: shopgateCartItem.product.id,
           name: shopgateCartItem.product.name,
-          addtionalInfo: shopgateCartItem.product.addtionalInfo,
+          addtionalInfo: [],
           featuredImageUrl: shopgateCartItem.product.featuredImageUrl,
-          properties: shopgateCartItem.product.properties,
-          price: shopgateCartItem.product.price,
-          appliedDiscounts: shopgateCartItem.product.appliedDiscounts
+          properties: [],
+          price: shopgateCartItem.product.price, // TODO take care of creation process
+          appliedDiscounts: []
         },
         messages: []
       }

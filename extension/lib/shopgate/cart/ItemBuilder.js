@@ -54,11 +54,19 @@ class ShopgateCartItemBuilder {
   }
 
   /**
-   * @param info
+   * @param {string} featureImageUrl
    * @return {ShopgateCartItemBuilder}
    */
-  withAdditionalInfo (info) {
-    this._productAdditionalInfo = info
+  withFeatureImageUrl (featureImageUrl) {
+    this._featureImageUrl = featureImageUrl
+    return this
+  }
+
+  /**
+   *
+   */
+  withProperties () {
+    this._productProperties = []
     return this
   }
 
@@ -70,7 +78,12 @@ class ShopgateCartItemBuilder {
     if (this._productId) {
       product = new ShopgateCartItemProduct({
         id: this._productId,
-        name: this._productName // TODO add the rest...
+        name: this._productName,
+        addtionalInfo: [],
+        featuredImageUrl: this._featureImageUrl,
+        properties: [],
+        price: this._productPrice,
+        appliedDiscounts: []
       })
     }
 
