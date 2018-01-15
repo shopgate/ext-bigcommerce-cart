@@ -2,15 +2,17 @@ const BigCommerceFactory = require('../bigcommerce/Factory')
 const BigCommerceCartRepository = require('../bigcommerce/CartRepository')
 const ShopgateExtensionStorage = require('./ExtensionStorage')
 const ShopgateCartFactory = require('./CartFactory')
+const StoreLogger = require('./logger/StoreLogger')
 
 class ShopgateCartExtensionPipeline {
   /**
    * @param {BigCommerceCartRepository} bigCommerceCartRepository
    * @param {ShopgateCartFactory} shopgateCartFactory
    */
-  constructor (bigCommerceCartRepository, shopgateCartFactory) {
+  constructor (bigCommerceCartRepository, shopgateCartFactory, storeLogger) {
     this._bigCommerceCartRepository = bigCommerceCartRepository
     this._shopgateCartFactory = shopgateCartFactory
+    this._storeLogger = storeLogger
   }
 
   async addProducts (products) {
@@ -37,24 +39,26 @@ class ShopgateCartExtensionPipeline {
         product: {
           id: shopgateCartItem.product.id,
           name: shopgateCartItem.product.name,
-          addtionalInfo: [],
+          addtionalInfo: shopgateCartItem.product.addtionalInfo,
           featuredImageUrl: shopgateCartItem.product.featuredImageUrl,
-          properties: [],
-          price: shopgateCartItem.product.price, // TODO take care of creation process
+          properties: shopgateCartItem.product.properties,
+          price: shopgateCartItem.product.price,
           appliedDiscounts: []
         },
         messages: []
       }
     })
-
+    this._storeLogger.logDebug('this is what the shopgateCart looks like: ' + JSON.stringify(shopgateCart))
     return {
       output: {
+        isOrderable: shopgateCart.isOrderable,
+        isTaxIncluded: shopgateCart.isTaxIncluded,
         currency: shopgateCart.currency,
         messages: shopgateCart.messages,
         text: shopgateCart.text,
         cartItems: pipelineCartItems,
-        totals: shopgateCart.totals, // TODO take care of the creation process
-        flags: shopgateCart.flags // TODO take care of the creation process
+        totals: shopgateCart.totals,
+        flags: shopgateCart.flags
       }
     }
   }
@@ -74,7 +78,7 @@ class ShopgateCartExtensionPipeline {
       /** @type BigCommerceStorage */
       new ShopgateExtensionStorage(context.storage.device))
 
-    return new ShopgateCartExtensionPipeline(bigCommerceCartRepository, new ShopgateCartFactory())
+    return new ShopgateCartExtensionPipeline(bigCommerceCartRepository, new ShopgateCartFactory(), new StoreLogger(context.log))
   }
 }
 

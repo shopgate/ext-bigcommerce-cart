@@ -38,7 +38,9 @@ class ShopgateCartFactory {
         .withProductId(lineItem.productId)
         .withProductName(lineItem.name)
         .withProductPrice(listPrice, listPrice * lineItem.quantity, salePrice)
-        // TODO add everything else
+        .withAddtionalInfo()
+        .withProperties()
+        .withAppliedDiscounts()
         .build()
 
       cart.addItem(cartItem)
