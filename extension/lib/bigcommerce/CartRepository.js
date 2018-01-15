@@ -69,6 +69,25 @@ class BigCommerceCartRepository {
 
     return cartResponse
   }
+
+  /**
+   * @param {string} cartId
+   * @returns {Promise<string>}
+   */
+  async getCheckoutUrl (cartId) {
+    /** @type BigCommerceRedirectUrlsResponse */
+    const response = await this._client.get('/carts/' + cartId + '/redirect_urls')
+
+    if (!response.data.hasOwnProperty('redirect_urls')) {
+      throw new Error('could not create webcheckout url')
+    }
+
+    return response.data.redirect_urls
+  }
+
+  async deleteItems () {
+
+  }
 }
 
 module.exports = BigCommerceCartRepository
