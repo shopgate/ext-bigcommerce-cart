@@ -25,7 +25,6 @@ class BigCommerceCartFactory {
     }
 
     // later on add coupons, discounts, etc
-
     return bigCommerceCart
   }
 }

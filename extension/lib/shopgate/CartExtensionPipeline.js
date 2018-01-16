@@ -16,25 +16,28 @@ class ShopgateCartExtensionPipeline {
   }
 
   async addProducts (products) {
-    const bigCommerceCart = await this._bigCommerceCartRepository.load()
     const bigCommerceLineItems = []
     products.forEach((product) => {
-      bigCommerceLineItems.push(bigCommerceCart.createLineItem(product.quantity, product.productId))
+      bigCommerceLineItems.push(BigCommerceCartRepository.createLineItem(product.quantity, product.productId))
     })
-    await this._bigCommerceCartRepository.addItems(bigCommerceCart, bigCommerceLineItems)
+    this._storeLogger.logDebug('This is what the bigCommerce lines look like: ' + JSON.stringify(bigCommerceLineItems))
+    await this._bigCommerceCartRepository.addItems(bigCommerceLineItems)
+    this._storeLogger.logDebug('Looks like items were added successfully')
   }
 
   /**
    * @returns {Promise<ShopgateAddProductResponse>}
    */
   async get () {
+    this._storeLogger.logDebug('starting to get the cart')
     const bigCommerceCart = await this._bigCommerceCartRepository.load()
+    // this._storeLogger.logDebug('This is what the bigCommerceCart looks like: ' + JSON.stringify(bigCommerceCart))
     const shopgateCart = this._shopgateCartFactory.createFromBigCommerce(bigCommerceCart)
     const pipelineCartItems = shopgateCart.items.map((shopgateCartItem) => {
       return {
         id: shopgateCartItem.id,
         quantity: shopgateCartItem.quantity,
-        type: 'product',
+        type: shopgateCartItem.type,
         coupon: {},
         product: {
           id: shopgateCartItem.product.id,
@@ -42,13 +45,30 @@ class ShopgateCartExtensionPipeline {
           addtionalInfo: shopgateCartItem.product.addtionalInfo,
           featuredImageUrl: shopgateCartItem.product.featuredImageUrl,
           properties: shopgateCartItem.product.properties,
-          price: shopgateCartItem.product.price,
+          price: {
+            unit: shopgateCartItem.product.price.unit,
+            default: shopgateCartItem.product.price.default,
+            special: shopgateCartItem.product.price.special
+          },
           appliedDiscounts: []
         },
         messages: []
       }
     })
-    this._storeLogger.logDebug('this is what the shopgateCart looks like: ' + JSON.stringify(shopgateCart))
+    const pipelineCartTotals = shopgateCart.totals.map((shopgateCartTotal) => {
+      return {
+        type: shopgateCartTotal.type,
+        label: shopgateCartTotal.label,
+        amount: shopgateCartTotal.amount,
+        subTotals: []
+      }
+    })
+    const pipelineCartFlags = {
+      taxIncluded: shopgateCart.flags.taxIncluded,
+      orderable: shopgateCart.flags.orderable,
+      coupons: shopgateCart.flags.coupons
+    }
+
     return {
       output: {
         isOrderable: shopgateCart.isOrderable,
@@ -57,8 +77,8 @@ class ShopgateCartExtensionPipeline {
         messages: shopgateCart.messages,
         text: shopgateCart.text,
         cartItems: pipelineCartItems,
-        totals: shopgateCart.totals,
-        flags: shopgateCart.flags
+        totals: pipelineCartTotals,
+        flags: pipelineCartFlags
       }
     }
   }

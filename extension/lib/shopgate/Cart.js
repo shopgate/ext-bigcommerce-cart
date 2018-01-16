@@ -34,7 +34,7 @@ class ShopgateCart {
    * @param {ShopgateCartItem} item
    */
   addItem (item) {
-    this._cartItems.add(item)
+    this._cartItems.push(item)
   }
 
   /**
@@ -68,11 +68,11 @@ class ShopgateCart {
   }
 
   /**
-   * @return {ShopgateCartFlags[]}
+   * @return {ShopgateCartFlags}
    */
   get flags () {
     if (!this._flags) {
-      return []
+      return {}
     }
     return this._flags
   }
@@ -95,7 +95,7 @@ class ShopgateCart {
   }
 
   /**
-   * @returns {ShopgateCartItems}
+   * @returns {ShopgateCartItem[]}
    */
   get items () {
     return this._cartItems

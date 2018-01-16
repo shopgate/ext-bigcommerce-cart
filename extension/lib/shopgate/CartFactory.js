@@ -14,14 +14,14 @@ class ShopgateCartFactory {
 
     const cart = new ShopgateCart({
       isOrderable: true,
-      isTaxIncluded: bigCommerceCart.tax_included,
-      currency: bigCommerceCart.currency.code,
+      isTaxIncluded: (bigCommerceCart.taxIncluded) ? bigCommerceCart.taxIncluded : false,
+      currency: bigCommerceCart.currency,
       messages: [],
       cartItems: [],
       flags: new ShopgateCartFlags({
-        taxIncluded: bigCommerceCart.taxIncluded,
+        taxIncluded: (bigCommerceCart.taxIncluded) ? bigCommerceCart.taxIncluded : false,
         orderable: true,
-        coupons: true
+        coupons: false
       })
     })
 
@@ -34,10 +34,11 @@ class ShopgateCartFactory {
       const listPrice = lineItem.listPrice
       const salePrice = (lineItem.salePrice < listPrice) ? lineItem.salePrice : null
 
-      const cartItem = cart.items.builder(lineItem.id, lineItem.quantity)
+      const cartItem = cart.createItembuilder(lineItem.id, lineItem.quantity)
         .withProductId(lineItem.productId)
         .withProductName(lineItem.name)
         .withProductPrice(listPrice, listPrice * lineItem.quantity, salePrice)
+        .withFeaturedImageUrl(lineItem.imageUrl)
         .withAddtionalInfo()
         .withProperties()
         .withAppliedDiscounts()
@@ -45,7 +46,6 @@ class ShopgateCartFactory {
 
       cart.addItem(cartItem)
     }
-
     return cart
   }
 }

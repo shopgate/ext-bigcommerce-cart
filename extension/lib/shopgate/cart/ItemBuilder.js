@@ -78,6 +78,15 @@ class ShopgateCartItemBuilder {
   }
 
   /**
+   * @param {string} featuredImageUrl
+   * @return {ShopgateCartItemBuilder}
+   */
+  withFeaturedImageUrl (featuredImageUrl) {
+    this._featuredImageUrl = featuredImageUrl
+    return this
+  }
+
+  /**
    * @return {ShopgateCartItem}
    */
   build () {
@@ -87,7 +96,7 @@ class ShopgateCartItemBuilder {
         id: this._productId,
         name: this._productName,
         addtionalInfo: this._addtionalInfo,
-        featuredImageUrl: '',
+        featuredImageUrl: this._featuredImageUrl,
         properties: this._productProperties,
         price: this._productPrice,
         appliedDiscounts: this._appliedDiscounts

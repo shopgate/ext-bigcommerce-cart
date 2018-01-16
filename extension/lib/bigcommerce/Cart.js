@@ -14,6 +14,8 @@ class BigCommerceCart {
     this._baseAmount = baseAmount
     this._discountAmount = discountAmount
     this._cartAmount = cartAmount
+    this._lineItems = {}
+    this._lineItems.physical = []
   }
 
   /**
@@ -30,13 +32,15 @@ class BigCommerceCart {
    * @param {BigCommerceCartLineItemPhysical} item
    */
   addPhysicalItem (item) {
-    this.lineItems.physical.push(item)
+    this._lineItems.physical.push(item)
   }
 
   /**
-   * @returns {BigCommerceCartLineItems}
+   * @returns {BigCommerceCartLineItems[]}
    */
-  get lineItems () {}
+  get lineItems () {
+    return this._lineItems
+  }
 
   get currency () {
     return this._currency
