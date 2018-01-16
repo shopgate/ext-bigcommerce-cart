@@ -18,6 +18,7 @@ class ShopgateCartFactory {
       currency: bigCommerceCart.currency,
       messages: [],
       cartItems: [],
+      text: [],
       flags: new ShopgateCartFlags({
         taxIncluded: (bigCommerceCart.taxIncluded) ? bigCommerceCart.taxIncluded : false,
         orderable: true,

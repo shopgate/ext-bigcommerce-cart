@@ -108,7 +108,7 @@ class ShopgateCartItemBuilder {
       quantity: this._quantity,
       type: this._type,
       product: product,
-      coupon: this._coupon
+      coupon: (this._coupon) ? this._coupon : {}
     })
   }
 }
