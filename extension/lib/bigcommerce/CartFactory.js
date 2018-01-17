@@ -20,12 +20,26 @@ class BigCommerceCartFactory {
       bigCommerceResponse.discount_amount,
       bigCommerceResponse.cart_amount
     )
-    for (const physicalItem of bigCommerceResponse.line_items.physical_items) {
+
+    for (const physicalItem of this._getPhysicalItems(bigCommerceResponse.line_items)) {
       bigCommerceCart.addPhysicalItem(this._lineItemFactory.createPhysicalItem(physicalItem))
     }
 
     // later on add coupons, discounts, etc
     return bigCommerceCart
+  }
+
+  /**
+   * @param {Object} lineItems
+   * @return {Array}
+   * @private
+   */
+  _getPhysicalItems (lineItems) {
+    if (!lineItems || !lineItems.physical_items) {
+      return []
+    }
+
+    return lineItems.physical_items
   }
 }
 

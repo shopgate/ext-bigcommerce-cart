@@ -1,4 +1,4 @@
-class BigCommerceCartLineItem {
+class BigCommerceCartLineItemRequest {
   /**
    * @param {number} productId
    * @param {number} quantity
@@ -48,4 +48,4 @@ class BigCommerceCartLineItem {
   }
 }
 
-module.exports = BigCommerceCartLineItem
+module.exports = BigCommerceCartLineItemRequest

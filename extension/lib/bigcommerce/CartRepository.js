@@ -43,9 +43,7 @@ class BigCommerceCartRepository {
    * @returns {BigCommerceCartLineItemRequest}
    */
   static createLineItem (quantity, productId) {
-    const bigCommerceCartLineItemRequest = new BigCommerceCartLineItemRequest(productId, quantity)
-
-    return bigCommerceCartLineItemRequest.toReadModel()
+    return new BigCommerceCartLineItemRequest(productId, quantity)
   }
 
   /**
@@ -55,31 +53,39 @@ class BigCommerceCartRepository {
   async addItems (items) {
     const cartId = await this._storage.get(CART_ID)
     if (!cartId) {
-      return this._createCartAndAddProducts(items)
+      const bigCommerceResponse = await this._client.post('/carts', {'line_items': items.map(BigCommerceCartRepository._toApiLineItem)})
+      await this._storage.set(CART_ID, bigCommerceResponse.data.id)
+
+      return
     }
-    try {
-      return await this._client.post('/carts/' + cartId + '/items', {
-        'cartId': cartId,
-        'line_items': items
-      })
-    } catch (error) {
-      if (error.code !== 500) {
-        throw new Error(error.message)
-      }
-      return this._createCartAndAddProducts(items)
-    }
+
+    await this._client.post('/carts/' + cartId + '/items', {
+      'cartId': cartId,
+      'line_items': items.map(BigCommerceCartRepository._toApiLineItem)
+    })
   }
 
   /**
-   *@param {BigCommerceCartLineItemRequest[]} items
-   * @return {Promise.<void>}
+   * @param lineItemRequest
    * @private
    */
-  async _createCartAndAddProducts (items) {
-    const bigCommerceResponse = await this._client.post('/carts', {'line_items': items})
-    await this._storage.set(CART_ID, bigCommerceResponse.data.id)
+  static _toApiLineItem (lineItemRequest) {
+    const lineItem = {
+      product_id: lineItemRequest.productId,
+      quantity: lineItemRequest.quantity
+    }
+
+    if (lineItemRequest.variantId) {
+      lineItem.variant_id = lineItemRequest.variantId
+    }
+
+    return lineItem
   }
 
+  /**
+   * @return {Promise<?Object>}
+   * @private
+   */
   async _acquireCart () {
     const cartId = await this._storage.get(CART_ID)
 
