@@ -32,8 +32,8 @@ class ShopgateCartFactory {
     cart.addTotal('subTotal', 'SubTotal', bigCommerceCart.cartAmount)
 
     for (const lineItem of bigCommerceCart.lineItems.physical) {
-      const listPrice = lineItem.listPrice
-      const salePrice = (lineItem.salePrice < listPrice) ? lineItem.salePrice : null
+      const listPrice = lineItem.listPrice !== 0 ? lineItem.listPrice : lineItem.salePrice
+      const salePrice = (lineItem.listPrice !== 0 && lineItem.listPrice !== lineItem.salePrice) ? lineItem.salePrice : null
 
       const cartItem = cart.createItembuilder(lineItem.id, lineItem.quantity)
         .withProductId(lineItem.productId)
