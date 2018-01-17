@@ -5,6 +5,10 @@ const ShopgateCartItemCoupon = require('./item/Coupon')
 const ShopgateCartItemSavedPrice = require('./item/SavedPrice')
 
 class ShopgateCartItemBuilder {
+  /**
+   * @param {string} itemId
+   * @param {number} quantity
+   */
   constructor (itemId, quantity) {
     this._itemId = itemId
     this._quantity = quantity

@@ -9,22 +9,21 @@ class ShopgateCartFactory {
    */
   createFromBigCommerce (bigCommerceCart) {
     if (bigCommerceCart === null) {
-      return new ShopgateCart({})
+      return new ShopgateCart()
     }
 
-    const cart = new ShopgateCart({
-      isOrderable: true,
-      isTaxIncluded: (bigCommerceCart.taxIncluded) ? bigCommerceCart.taxIncluded : false,
-      currency: bigCommerceCart.currency,
-      messages: [],
-      cartItems: [],
-      text: [],
-      flags: new ShopgateCartFlags({
-        taxIncluded: (bigCommerceCart.taxIncluded) ? bigCommerceCart.taxIncluded : false,
-        orderable: true,
-        coupons: false
-      })
-    })
+    const cart = new ShopgateCart(
+      new ShopgateCartFlags(
+        (bigCommerceCart.taxIncluded) ? bigCommerceCart.taxIncluded : false,
+        true,
+        false
+      ),
+      bigCommerceCart.currency,
+      true,
+       (bigCommerceCart.taxIncluded) ? bigCommerceCart.taxIncluded : false,
+      [],
+      []
+    )
 
     cart.addTotal('subTotal', 'SubTotal', bigCommerceCart.baseAmount)
     cart.addTotal('discount', 'Discount', bigCommerceCart.discountAmount)

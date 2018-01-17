@@ -5,7 +5,7 @@ class BigCommerceCartLineItemFactory {
    * @return {BigCommerceCartLineItemPhysical}
    */
   createPhysicalItem (bigCommerceItem) {
-    const item = new BigCommerceCartLineItemPhysical({
+    return new BigCommerceCartLineItemPhysical({
       id: bigCommerceItem.id,
       productId: bigCommerceItem.product_id,
       variantId: bigCommerceItem.variant_id,
@@ -19,11 +19,6 @@ class BigCommerceCartLineItemFactory {
       isRequireShipping: bigCommerceItem.is_require_shipping,
       giftWrapping: bigCommerceItem.gift_wrapping
     })
-
-    // item.addCoupon()
-    // item.addDiscount()
-
-    return item
   }
 }
 

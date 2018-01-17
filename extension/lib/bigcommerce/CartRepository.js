@@ -43,14 +43,9 @@ class BigCommerceCartRepository {
    * @returns {BigCommerceCartLineItemRequest}
    */
   static createLineItem (quantity, productId) {
-    let bigCommerceCartLineItemRequest = new BigCommerceCartLineItemRequest({
-      productId: productId,
-      quantity: quantity
-    })
-    return {
-      quantity: bigCommerceCartLineItemRequest.quantity,
-      product_id: bigCommerceCartLineItemRequest.productId
-    }
+    const bigCommerceCartLineItemRequest = new BigCommerceCartLineItemRequest(productId, quantity)
+
+    return bigCommerceCartLineItemRequest.toReadModel()
   }
 
   /**
@@ -65,10 +60,11 @@ class BigCommerceCartRepository {
     try {
       return await this._client.post('/carts/' + cartId + '/items', {
         'cartId': cartId,
-        'line_items': items})
+        'line_items': items
+      })
     } catch (error) {
       if (error.code !== 500) {
-        throw new Error(error.message, error.code)
+        throw new Error(error.message)
       }
       return this._createCartAndAddProducts(items)
     }
