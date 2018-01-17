@@ -54,11 +54,35 @@ class ShopgateCartItemBuilder {
   }
 
   /**
-   * @param info
    * @return {ShopgateCartItemBuilder}
    */
-  withAdditionalInfo (info) {
-    this._productAdditionalInfo = info
+  withAddtionalInfo () {
+    this._addtionalInfo = []
+    return this
+  }
+
+  /**
+   * @return {ShopgateCartItemBuilder}
+   */
+  withProperties () {
+    this._productProperties = []
+    return this
+  }
+
+  /**
+   * @return {ShopgateCartItemBuilder}
+   */
+  withAppliedDiscounts () {
+    this._appliedDiscounts = []
+    return this
+  }
+
+  /**
+   * @param {string} featuredImageUrl
+   * @return {ShopgateCartItemBuilder}
+   */
+  withFeaturedImageUrl (featuredImageUrl) {
+    this._featuredImageUrl = featuredImageUrl
     return this
   }
 
@@ -70,7 +94,12 @@ class ShopgateCartItemBuilder {
     if (this._productId) {
       product = new ShopgateCartItemProduct({
         id: this._productId,
-        name: this._productName // TODO add the rest...
+        name: this._productName,
+        addtionalInfo: this._addtionalInfo,
+        featuredImageUrl: this._featuredImageUrl,
+        properties: this._productProperties,
+        price: this._productPrice,
+        appliedDiscounts: this._appliedDiscounts
       })
     }
 
@@ -79,7 +108,7 @@ class ShopgateCartItemBuilder {
       quantity: this._quantity,
       type: this._type,
       product: product,
-      coupon: this._coupon
+      coupon: (this._coupon) ? this._coupon : {}
     })
   }
 }

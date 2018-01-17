@@ -20,7 +20,7 @@
       {
         "type": "extension",
         "id": "@shopgate/bigcommerce-cart",
-        "path": "@shopgate/bigcommerce-cart/lib/steps/getCart.js",
+        "path": "@shopgate/bigcommerce-cart/lib/getCart.js",
         "input": [
           {"key": "sgxsMeta", "id": "1010", "optional": true}
         ],

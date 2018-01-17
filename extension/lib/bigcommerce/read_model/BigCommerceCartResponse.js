@@ -1,5 +1,10 @@
 /**
- * @typedef {Object} BigcommerceCartResponse
+ * @typedef {Object} BigCommerceCartResponse
+ * @property {BigCommerceCartData} data
+ * /
+
+ /**
+ * @typedef {Object} BigCommerceCartData
  * @property {string} id
  * @property {BigcommerceCurrency} currency
  * @property {boolean} is_tax_included

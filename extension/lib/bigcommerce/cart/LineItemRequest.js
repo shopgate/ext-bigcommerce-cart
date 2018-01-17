@@ -10,9 +10,15 @@ class BigCommerceCartLineItemRequest {
     this._quantity = quantity
   }
 
-  get quantity () {}
-  get productId () {}
-  get variantId () {}
+  get quantity () {
+    return this._quantity
+  }
+  get productId () {
+    return this._product_id
+  }
+  get variantId () {
+    return this._varriant_id
+  }
 }
 
 module.exports = BigCommerceCartLineItemRequest

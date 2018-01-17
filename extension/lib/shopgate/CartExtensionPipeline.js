@@ -2,37 +2,42 @@ const BigCommerceFactory = require('../bigcommerce/Factory')
 const BigCommerceCartRepository = require('../bigcommerce/CartRepository')
 const ShopgateExtensionStorage = require('./ExtensionStorage')
 const ShopgateCartFactory = require('./CartFactory')
+const StoreLogger = require('./logger/StoreLogger')
 
 class ShopgateCartExtensionPipeline {
   /**
    * @param {BigCommerceCartRepository} bigCommerceCartRepository
    * @param {ShopgateCartFactory} shopgateCartFactory
    */
-  constructor (bigCommerceCartRepository, shopgateCartFactory) {
+  constructor (bigCommerceCartRepository, shopgateCartFactory, storeLogger) {
     this._bigCommerceCartRepository = bigCommerceCartRepository
     this._shopgateCartFactory = shopgateCartFactory
+    this._storeLogger = storeLogger
   }
 
   async addProducts (products) {
-    const bigCommerceCart = await this._bigCommerceCartRepository.load()
     const bigCommerceLineItems = []
     products.forEach((product) => {
-      bigCommerceLineItems.push(bigCommerceCart.createLineItem(product.quantity, product.productId))
+      bigCommerceLineItems.push(BigCommerceCartRepository.createLineItem(product.quantity, product.productId))
     })
-    await this._bigCommerceCartRepository.addItems(bigCommerceCart, bigCommerceLineItems)
+    this._storeLogger.logDebug('This is what the bigCommerce lines look like: ' + JSON.stringify(bigCommerceLineItems))
+    await this._bigCommerceCartRepository.addItems(bigCommerceLineItems)
+    this._storeLogger.logDebug('Looks like items were added successfully')
   }
 
   /**
    * @returns {Promise<ShopgateAddProductResponse>}
    */
   async get () {
+    this._storeLogger.logDebug('starting to get the cart')
     const bigCommerceCart = await this._bigCommerceCartRepository.load()
+    // this._storeLogger.logDebug('This is what the bigCommerceCart looks like: ' + JSON.stringify(bigCommerceCart))
     const shopgateCart = this._shopgateCartFactory.createFromBigCommerce(bigCommerceCart)
     const pipelineCartItems = shopgateCart.items.map((shopgateCartItem) => {
       return {
         id: shopgateCartItem.id,
         quantity: shopgateCartItem.quantity,
-        type: 'product',
+        type: shopgateCartItem.type,
         coupon: {},
         product: {
           id: shopgateCartItem.product.id,
@@ -40,21 +45,40 @@ class ShopgateCartExtensionPipeline {
           addtionalInfo: shopgateCartItem.product.addtionalInfo,
           featuredImageUrl: shopgateCartItem.product.featuredImageUrl,
           properties: shopgateCartItem.product.properties,
-          price: shopgateCartItem.product.price,
-          appliedDiscounts: shopgateCartItem.product.appliedDiscounts
+          price: {
+            unit: shopgateCartItem.product.price.unit,
+            default: shopgateCartItem.product.price.default,
+            special: shopgateCartItem.product.price.special
+          },
+          appliedDiscounts: []
         },
         messages: []
       }
     })
+    const pipelineCartTotals = shopgateCart.totals.map((shopgateCartTotal) => {
+      return {
+        type: shopgateCartTotal.type,
+        label: shopgateCartTotal.label,
+        amount: shopgateCartTotal.amount,
+        subTotals: []
+      }
+    })
+    const pipelineCartFlags = {
+      taxIncluded: shopgateCart.flags.taxIncluded,
+      orderable: shopgateCart.flags.orderable,
+      coupons: shopgateCart.flags.coupons
+    }
 
     return {
       output: {
+        isOrderable: shopgateCart.isOrderable,
+        isTaxIncluded: shopgateCart.isTaxIncluded,
         currency: shopgateCart.currency,
         messages: shopgateCart.messages,
         text: shopgateCart.text,
         cartItems: pipelineCartItems,
-        totals: shopgateCart.totals, // TODO take care of the creation process
-        flags: shopgateCart.flags // TODO take care of the creation process
+        totals: pipelineCartTotals,
+        flags: pipelineCartFlags
       }
     }
   }
@@ -87,7 +111,7 @@ class ShopgateCartExtensionPipeline {
       /** @type BigCommerceStorage */
       new ShopgateExtensionStorage(context.storage.device))
 
-    return new ShopgateCartExtensionPipeline(bigCommerceCartRepository, new ShopgateCartFactory())
+    return new ShopgateCartExtensionPipeline(bigCommerceCartRepository, new ShopgateCartFactory(), new StoreLogger(context.log))
   }
 }
 

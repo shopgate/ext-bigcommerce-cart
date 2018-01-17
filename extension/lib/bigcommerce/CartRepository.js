@@ -1,5 +1,6 @@
 const BigCommerceCartFactory = require('./CartFactory')
 const BigCommerceCartLineItemFactory = require('./cart/LineItemFactory')
+const BigCommerceCartLineItemRequest = require('./cart/LineItemRequest')
 
 const CART_ID = 'cartId'
 
@@ -18,6 +19,7 @@ class BigCommerceCartRepository {
    */
   async load () {
     const cartResponse = await this._acquireCart()
+
     if (!cartResponse) {
       return null
     }
@@ -40,34 +42,66 @@ class BigCommerceCartRepository {
    * @param {number} productId
    * @returns {BigCommerceCartLineItemRequest}
    */
-  static createLineItem (quantity, productId) {}
+  static createLineItem (quantity, productId) {
+    let bigCommerceCartLineItemRequest = new BigCommerceCartLineItemRequest({
+      productId: productId,
+      quantity: quantity
+    })
+    return {
+      quantity: bigCommerceCartLineItemRequest.quantity,
+      product_id: bigCommerceCartLineItemRequest.productId
+    }
+  }
 
   /**
-   * @param {BigCommerceCart} cart
    * @param {BigCommerceCartLineItemRequest[]} items
    * @returns {Promise<void>}
    */
-  async addItems (cart, items) {
-    // add items to the cart, persist them via client
+  async addItems (items) {
+    const cartId = await this._storage.get(CART_ID)
+    if (!cartId) {
+      return this._createCartAndAddProducts(items)
+    }
+    try {
+      return await this._client.post('/carts/' + cartId + '/items', {
+        'cartId': cartId,
+        'line_items': items})
+    } catch (error) {
+      if (error.code !== 500) {
+        throw new Error(error.message, error.code)
+      }
+      return this._createCartAndAddProducts(items)
+    }
+  }
+
+  /**
+   *@param {BigCommerceCartLineItemRequest[]} items
+   * @return {Promise.<void>}
+   * @private
+   */
+  async _createCartAndAddProducts (items) {
+    const bigCommerceResponse = await this._client.post('/carts', {'line_items': items})
+    await this._storage.set(CART_ID, bigCommerceResponse.data.id)
   }
 
   async _acquireCart () {
     const cartId = await this._storage.get(CART_ID)
+
     if (!cartId) {
       return null
     }
 
-    let cartResponse = null
     try {
       const response = await this._client.get('/carts/' + cartId)
-      cartResponse = response.data
+
+      return response.data
     } catch (error) {
       if (error.code !== 404) {
         throw error
       }
+      await this._storage.delete(CART_ID)
+      return null
     }
-
-    return cartResponse
   }
 
   /**

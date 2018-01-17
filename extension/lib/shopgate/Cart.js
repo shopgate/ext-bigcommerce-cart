@@ -34,7 +34,7 @@ class ShopgateCart {
    * @param {ShopgateCartItem} item
    */
   addItem (item) {
-    this._cartItems.add(item)
+    this._cartItems.push(item)
   }
 
   /**
@@ -47,18 +47,80 @@ class ShopgateCart {
     return new ShopgateCartItemBuilder(id, quantity)
   }
 
-  get flags () {}
-  get totals () {}
-  get currency () {}
+  /**
+   * @return {boolean}
+   */
+  get isOrderable () {
+    if (!this._isOrderable) {
+      return false
+    }
+    return this._isOrderable
+  }
 
   /**
-   * @returns {ShopgateCartItems}
+   * @return {boolean}
+   */
+  get isTaxIncluded () {
+    if (!this._isTaxIncluded) {
+      return false
+    }
+    return this._isTaxIncluded
+  }
+
+  /**
+   * @return {ShopgateCartFlags}
+   */
+  get flags () {
+    if (!this._flags) {
+      return {}
+    }
+    return this._flags
+  }
+
+  /**
+   * @return {ShopgateCartTotal[]}
+   */
+  get totals () {
+    return this._totals
+  }
+
+  /**
+   * @return {string}
+   */
+  get currency () {
+    if (!this._currency) {
+      return ''
+    }
+    return this._currency
+  }
+
+  /**
+   * @returns {ShopgateCartItem[]}
    */
   get items () {
     return this._cartItems
   }
 
-  get messages () {}
+  /**
+   * @return {ShopgateCartMessage[]}
+   */
+  get messages () {
+    if (!this._messages) {
+      return []
+    }
+    return this._messages
+  }
+
+  /**
+   *
+   * @return {ShopgateCartText[]}
+   */
+  get text () {
+    if (!this._text) {
+      return []
+    }
+    return this._text
+  }
 }
 
 module.exports = ShopgateCart

@@ -9,7 +9,8 @@ const ShopgateCartPipeline = require('./shopgate/CartExtensionPipeline')
 module.exports = async (context, input, cb) => {
   const cartPipeline = ShopgateCartPipeline.create(context)
   try {
-    cb(null, await cartPipeline.get())
+    const cartPipelineResponse = await cartPipeline.get()
+    cb(null, cartPipelineResponse.output)
   } catch (error) {
     context.log.error(error)
     cb(error)
