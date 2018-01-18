@@ -4,7 +4,7 @@ const ShopgateCartFlags = require('./cart/Flags')
 // factory, maybe builder name would still apply
 class ShopgateCartFactory {
   /**
-   * @param {?BigCommerceCart} bigCommerceCart
+   * @param {BigCommerceCart|null} bigCommerceCart
    * @return {ShopgateCart}
    */
   createFromBigCommerce (bigCommerceCart) {

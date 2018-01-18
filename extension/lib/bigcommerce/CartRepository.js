@@ -15,7 +15,7 @@ class BigCommerceCartRepository {
   }
 
   /**
-   * @return {Promise<?BigCommerceCart>}
+   * @return {Promise<BigCommerceCart|null>}
    */
   async load () {
     const cartResponse = await this._acquireCart()
@@ -66,7 +66,7 @@ class BigCommerceCartRepository {
   }
 
   /**
-   * @param lineItemRequest
+   * @param {BigCommerceCartLineItemRequest} lineItemRequest
    * @private
    */
   static _toApiLineItem (lineItemRequest) {
@@ -83,7 +83,7 @@ class BigCommerceCartRepository {
   }
 
   /**
-   * @return {Promise<?Object>}
+   * @return {Promise<BigCommerceApiCartResponse|null>}
    * @private
    */
   async _acquireCart () {

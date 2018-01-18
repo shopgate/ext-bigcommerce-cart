@@ -5,7 +5,7 @@ class ShopgateCartItemProductAppliedDiscount {
    * @param {string} label
    * @param {ShopgateCartItemSavedPrice} savedPrice
    */
-  constructor ({code, description, label, savedPrice}) {
+  constructor (code, description, label, savedPrice) {
     this._code = code
     this._description = description
     this._label = label

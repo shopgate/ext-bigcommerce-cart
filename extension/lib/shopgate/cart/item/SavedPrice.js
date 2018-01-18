@@ -4,7 +4,7 @@
 class ShopgateCartItemSavedPrice {
   /**
    * @param {number} value
-   * @param {string} type - enum (ShopgateCartItemSavedPriceType.PERCENTAGE|ShopgateCartItemSavedPriceType.FIXED)
+   * @param {string} type enum ShopgateCartItemSavedPriceType
    */
   constructor (value, type) {
     this._value = value
