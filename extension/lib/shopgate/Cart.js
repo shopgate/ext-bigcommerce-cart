@@ -39,8 +39,8 @@ class ShopgateCart {
   }
 
   /**
-   * @param id
-   * @param quantity
+   * @param {string} id
+   * @param {number} quantity
    * @returns {ShopgateCartItemBuilder}
    */
   createItembuilder (id, quantity) {

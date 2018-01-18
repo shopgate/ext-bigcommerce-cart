@@ -1,6 +1,6 @@
 class ShopgateCartMessage {
   /**
-   * @param {ShopgateCartItemMessageType.ERROR|ShopgateCartItemMessageType.WARNING|ShopgateCartItemMessageType.INFO} type
+   * @param {string} type - enum ShopgateCartItemMessageType
    * @param {string} message
    * @param {number} code
    */
@@ -11,7 +11,7 @@ class ShopgateCartMessage {
   }
 
   /**
-   *@return {ShopgateCartItemMessageType.ERROR|ShopgateCartItemMessageType.WARNING|ShopgateCartItemMessageType.INFO}
+   *@return {string} enum ShopgateCartItemMessageType
    */
   get type () {
     return this._type

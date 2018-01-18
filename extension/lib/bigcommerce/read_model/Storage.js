@@ -2,17 +2,23 @@
  * Storage interface.
  *
  * @typedef {Object} BigCommerceStorage
- * @param {BigCommerceStorageGetter} get
- * @param {BigCommerceStorageSetter} set
+ * @property {BigCommerceStorageGetter} get
+ * @property {BigCommerceStorageSetter} set
+ * @property {BigCommerceStorageDelete} delete
  */
 
 /**
  * @callback BigCommerceStorageSetter
- * @param {string } key
+ * @param {string} key
  * @param {*} value
  */
 
 /**
  * @callback BigCommerceStorageGetter
+ * @param {string} key
+ */
+
+/**
+ * @callback BigCommerceStorageDelete
  * @param {string} key
  */
