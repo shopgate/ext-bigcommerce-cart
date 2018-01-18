@@ -2,36 +2,34 @@ const BigCommerceFactory = require('../bigcommerce/Factory')
 const BigCommerceCartRepository = require('../bigcommerce/CartRepository')
 const ShopgateExtensionStorage = require('./ExtensionStorage')
 const ShopgateCartFactory = require('./CartFactory')
-const StoreLogger = require('./logger/StoreLogger')
 
 class ShopgateCartExtensionPipeline {
   /**
    * @param {BigCommerceCartRepository} bigCommerceCartRepository
    * @param {ShopgateCartFactory} shopgateCartFactory
    */
-  constructor (bigCommerceCartRepository, shopgateCartFactory, storeLogger) {
+  constructor (bigCommerceCartRepository, shopgateCartFactory) {
     this._bigCommerceCartRepository = bigCommerceCartRepository
     this._shopgateCartFactory = shopgateCartFactory
-    this._storeLogger = storeLogger
   }
 
+  /**
+   * @param {ShopgateAddProduct[]} products
+   * @returns {Promise<void>}
+   */
   async addProducts (products) {
-    const bigCommerceLineItems = []
-    products.forEach((product) => {
-      bigCommerceLineItems.push(BigCommerceCartRepository.createLineItem(product.quantity, product.productId))
+    const bigCommerceLineItems = products.map((product) => {
+      return BigCommerceCartRepository.createLineItem(product.quantity, parseInt(product.productId))
     })
-    this._storeLogger.logDebug('This is what the bigCommerce lines look like: ' + JSON.stringify(bigCommerceLineItems))
+
     await this._bigCommerceCartRepository.addItems(bigCommerceLineItems)
-    this._storeLogger.logDebug('Looks like items were added successfully')
   }
 
   /**
    * @returns {Promise<ShopgateAddProductResponse>}
    */
   async get () {
-    this._storeLogger.logDebug('starting to get the cart')
     const bigCommerceCart = await this._bigCommerceCartRepository.load()
-    // this._storeLogger.logDebug('This is what the bigCommerceCart looks like: ' + JSON.stringify(bigCommerceCart))
     const shopgateCart = this._shopgateCartFactory.createFromBigCommerce(bigCommerceCart)
     const pipelineCartItems = shopgateCart.items.map((shopgateCartItem) => {
       return {
@@ -111,7 +109,7 @@ class ShopgateCartExtensionPipeline {
       /** @type BigCommerceStorage */
       new ShopgateExtensionStorage(context.storage.device))
 
-    return new ShopgateCartExtensionPipeline(bigCommerceCartRepository, new ShopgateCartFactory(), new StoreLogger(context.log))
+    return new ShopgateCartExtensionPipeline(bigCommerceCartRepository, new ShopgateCartFactory())
   }
 }
 

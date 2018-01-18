@@ -1,20 +1,20 @@
 class BigCommerceCart {
   /**
-   * @param {number} id
+   * @param {string} id
    * @param {string} currency
-   * @param {string} isTaxIncluded
+   * @param {boolean} isTaxIncluded
    * @param {number} baseAmount
    * @param {number} discountAmount
    * @param {number} cartAmount
    */
-  constructor ({id, currency, isTaxIncluded, baseAmount, discountAmount, cartAmount}) {
+  constructor (id, currency, isTaxIncluded, baseAmount, discountAmount, cartAmount) {
     this._id = id
     this._currency = currency
     this._isTaxIncluded = isTaxIncluded
     this._baseAmount = baseAmount
     this._discountAmount = discountAmount
     this._cartAmount = cartAmount
-    this._lineItems = {}
+    this._lineItems = []
     this._lineItems.physical = []
   }
 
@@ -42,22 +42,37 @@ class BigCommerceCart {
     return this._lineItems
   }
 
+  /**
+   * @returns {string}
+   */
   get currency () {
     return this._currency
   }
 
+  /**
+   * @returns {number}
+   */
   get baseAmount () {
     return this._baseAmount
   }
 
+  /**
+   * @returns {number}
+   */
   get discountAmount () {
     return this._discountAmount
   }
 
+  /**
+   * @returns {number}
+   */
   get cartAmount () {
     return this._cartAmount
   }
 
+  /**
+   * @returns {boolean}
+   */
   get taxIncluded () {
     return this._isTaxIncluded
   }

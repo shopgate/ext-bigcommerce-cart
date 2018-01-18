@@ -1,6 +1,6 @@
 class BigCommerceCartLineItemAbstract {
   /**
-   * @param {number} id
+   * @param {string} id
    * @param {number} productId
    * @param {number} variantId
    * @param {string} name

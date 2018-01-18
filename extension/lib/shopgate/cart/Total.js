@@ -1,6 +1,6 @@
 class ShopgateCartTotal {
   /**
-   * @param {ShopgateCartTotalType.SUBTOTAL|ShopgateCartTotalType.SHIPPING|ShopgateCartTotalType.TAX|ShopgateCartTotalType.PAYMENT|ShopgateCartTotalType.DISCOUNT|ShopgateCartTotalType.GRANDTOTAL} type
+   * @param {string} type - enum ShopgateCartTotalType.SUBTOTAL|ShopgateCartTotalType.SHIPPING|ShopgateCartTotalType.TAX|ShopgateCartTotalType.PAYMENT|ShopgateCartTotalType.DISCOUNT|ShopgateCartTotalType.GRANDTOTAL
    * @param {string} label
    * @param {number} amount
    * @param {ShopgateCartTotal[]} subTotals
@@ -13,7 +13,7 @@ class ShopgateCartTotal {
   }
 
   /**
-   * @return {ShopgateCartTotalType.SUBTOTAL|ShopgateCartTotalType.SHIPPING|ShopgateCartTotalType.TAX|ShopgateCartTotalType.PAYMENT|ShopgateCartTotalType.DISCOUNT|ShopgateCartTotalType.GRANDTOTAL}
+   * @return {string} enum ShopgateCartTotalType.SUBTOTAL|ShopgateCartTotalType.SHIPPING|ShopgateCartTotalType.TAX|ShopgateCartTotalType.PAYMENT|ShopgateCartTotalType.DISCOUNT|ShopgateCartTotalType.GRANDTOTAL
    */
   get type () {
     return this._type

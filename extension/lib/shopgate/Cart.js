@@ -1,16 +1,17 @@
 const ShopgateCartTotal = require('./cart/Total')
 const ShopgateCartItemBuilder = require('./cart/ItemBuilder')
+const ShopgateCartFlags = require('./cart/Flags')
 
 class ShopgateCart {
   /**
+   * @param {ShopgateCartFlags} flags
+   * @param {string} currency
    * @param {boolean} isOrderable
    * @param {boolean} isTaxIncluded
-   * @param {string} currency
    * @param {ShopgateCartMessage[]} messages
    * @param {object} text
-   * @param {ShopgateCartFlags} flags
    */
-  constructor ({isOrderable, isTaxIncluded, currency, messages, text, flags}) {
+  constructor (flags = new ShopgateCartFlags(), currency = '', isOrderable = false, isTaxIncluded = false, messages = [], text = []) {
     this._isOrderable = isOrderable
     this._isTaxIncluded = isTaxIncluded
     this._currency = currency
@@ -38,7 +39,6 @@ class ShopgateCart {
   }
 
   /**
-   *
    * @param id
    * @param quantity
    * @returns {ShopgateCartItemBuilder}
@@ -51,9 +51,6 @@ class ShopgateCart {
    * @return {boolean}
    */
   get isOrderable () {
-    if (!this._isOrderable) {
-      return false
-    }
     return this._isOrderable
   }
 
@@ -61,9 +58,6 @@ class ShopgateCart {
    * @return {boolean}
    */
   get isTaxIncluded () {
-    if (!this._isTaxIncluded) {
-      return false
-    }
     return this._isTaxIncluded
   }
 
@@ -71,9 +65,6 @@ class ShopgateCart {
    * @return {ShopgateCartFlags}
    */
   get flags () {
-    if (!this._flags) {
-      return {}
-    }
     return this._flags
   }
 
@@ -88,9 +79,6 @@ class ShopgateCart {
    * @return {string}
    */
   get currency () {
-    if (!this._currency) {
-      return ''
-    }
     return this._currency
   }
 
@@ -105,20 +93,13 @@ class ShopgateCart {
    * @return {ShopgateCartMessage[]}
    */
   get messages () {
-    if (!this._messages) {
-      return []
-    }
     return this._messages
   }
 
   /**
-   *
    * @return {ShopgateCartText[]}
    */
   get text () {
-    if (!this._text) {
-      return []
-    }
     return this._text
   }
 }

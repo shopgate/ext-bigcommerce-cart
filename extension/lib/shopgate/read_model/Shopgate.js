@@ -5,7 +5,7 @@
  */
 /**
  * @callback AddProductsToCartCallback
- * @para {Error} [error]
+ * @param {Error} [error]
  * @param {ShopgateAddProductResponse} [AddProductResponse]
  */
 
@@ -21,8 +21,8 @@
 
 /**
  * @typedef {Object} ShopgateAddProduct
- * @param {string} productId
- * @param {number} quantity
+ * @property {string} productId
+ * @property {number} quantity
  */
 
 /**

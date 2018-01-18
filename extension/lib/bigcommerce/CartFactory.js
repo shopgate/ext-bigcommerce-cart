@@ -12,20 +12,34 @@ class BigCommerceCartFactory {
    * @returns {BigCommerceCart}
    */
   fromApiResponse (bigCommerceResponse) {
-    const bigCommerceCart = new BigCommerceCart({
-      id: bigCommerceResponse.id,
-      currency: bigCommerceResponse.currency.code,
-      isTaxIncluded: bigCommerceResponse.is_tax_included,
-      baseAmount: bigCommerceResponse.base_amount,
-      discountAmount: bigCommerceResponse.discount_amount,
-      cartAmount: bigCommerceResponse.cart_amount
-    })
-    for (const physicalItem of bigCommerceResponse.line_items.physical_items) {
+    const bigCommerceCart = new BigCommerceCart(
+      bigCommerceResponse.id,
+      bigCommerceResponse.currency.code,
+      bigCommerceResponse.is_tax_included,
+      bigCommerceResponse.base_amount,
+      bigCommerceResponse.discount_amount,
+      bigCommerceResponse.cart_amount
+    )
+
+    for (const physicalItem of this._getPhysicalItems(bigCommerceResponse.line_items)) {
       bigCommerceCart.addPhysicalItem(this._lineItemFactory.createPhysicalItem(physicalItem))
     }
 
     // later on add coupons, discounts, etc
     return bigCommerceCart
+  }
+
+  /**
+   * @param {Object} lineItems
+   * @return {Array}
+   * @private
+   */
+  _getPhysicalItems (lineItems) {
+    if (!lineItems || !lineItems.physical_items) {
+      return []
+    }
+
+    return lineItems.physical_items
   }
 }
 
