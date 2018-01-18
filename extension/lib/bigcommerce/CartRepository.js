@@ -107,18 +107,23 @@ class BigCommerceCartRepository {
   }
 
   /**
-   * @param {string} cartId
    * @returns {Promise<string>}
    */
-  async getCheckoutUrl (cartId) {
-    /** @type BigCommerceRedirectUrlsResponse */
-    const response = await this._client.get('/carts/' + cartId + '/redirect_urls')
+  async getCheckoutUrl () {
+    const cartId = await this._storage.get(CART_ID)
 
-    if (!response.data.hasOwnProperty('redirect_urls')) {
+    if (!cartId) {
+      throw new Error('no cart found')
+    }
+
+    /** @type BigCommerceRedirectUrlsResponse */
+    const response = await this._client.post('/carts/' + cartId + '/redirect_urls')
+
+    if (!response.data.hasOwnProperty('checkout_url')) {
       throw new Error('could not create webcheckout url')
     }
 
-    return response.data.redirect_urls
+    return response.data.checkout_url
   }
 
   async deleteItems () {

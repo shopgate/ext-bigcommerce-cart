@@ -85,13 +85,7 @@ class ShopgateCartExtensionPipeline {
    * @returns {Promise<string>}
    */
   async getCheckoutUrl () {
-    const bigCommerceCart = await this._bigCommerceCartRepository.load()
-
-    if (bigCommerceCart === null) {
-      throw new Error('cart not found')
-    }
-
-    return this._bigCommerceCartRepository.getCheckoutUrl(bigCommerceCart.id)
+    return this._bigCommerceCartRepository.getCheckoutUrl()
   }
 
   /**
