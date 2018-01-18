@@ -6,27 +6,27 @@
  /**
  * @typedef {Object} BigCommerceApiCartData
  * @property {string} id
- * @property {BigcommerceCurrency} currency
+ * @property {BigCommerceCurrency} currency
  * @property {boolean} is_tax_included
  * @property {number} base_amount
  * @property {number} discount_amount
  * @property {number} cart_amount
- * @property {BigcommerceApiCartAppliedCoupon[]} coupons
- * @property {BigcommerceApiCartAppliedDiscount[]} discounts
+ * @property {BigCommerceApiCartAppliedCoupon[]} coupons
+ * @property {BigCommerceApiCartAppliedDiscount[]} discounts
  * @property {string} created_time
  * @property {string} updated_time
- * @property {BigcommerceApiCartLineItems} line_items
+ * @property {BigCommerceApiCartLineItems} line_items
  */
 
 /**
- * @typedef {Object} BigcommerceApiCartLineItems
- * @property {BigcommerceApiCartLineItemPhysical[]} physical_items
- * @property {BigcommerceApiCartLineItemDigital[]} digital_items
- * @property {BigcommerceApiCartLineItemGiftCertificates[]} gift_certificates
+ * @typedef {Object} BigCommerceApiCartLineItems
+ * @property {BigCommerceApiCartLineItemPhysical[]} physical_items
+ * @property {BigCommerceApiCartLineItemDigital[]} digital_items
+ * @property {BigCommerceApiCartLineItemGiftCertificates[]} gift_certificates
  */
 
 /**
- * @typedef {Object} BigcommerceApiCartLineItemPhysical
+ * @typedef {Object} BigCommerceApiCartLineItemPhysical
  * @property {string} id
  * @property {number} product_id
  * @property {number} variant_id
@@ -49,20 +49,20 @@
  */
 
 /**
- * @typedef {Object} BigcommerceApiCartLineItemDigital
+ * @typedef {Object} BigCommerceApiCartLineItemDigital
  */
 
 /**
- * @typedef {Object} BigcommerceApiCartLineItemGiftCertificates
+ * @typedef {Object} BigCommerceApiCartLineItemGiftCertificates
  */
 
 /**
- * @typedef {Object} BigcommerceCurrency
+ * @typedef {Object} BigCommerceCurrency
  * @property {string} code
  */
 
 /**
- * @typedef {Object} BigcommerceApiCartAppliedCoupon
+ * @typedef {Object} BigCommerceApiCartAppliedCoupon
  * @property {string} id
  * @property {string} code
  * @property {string} name
@@ -72,7 +72,7 @@
  */
 
 /**
- * @typedef {Object} BigcommerceApiCartAppliedDiscount
+ * @typedef {Object} BigCommerceApiCartAppliedDiscount
  * @property {number} id
  * @property {number} discounted_amount
  */

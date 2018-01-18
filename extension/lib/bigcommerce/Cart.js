@@ -14,7 +14,7 @@ class BigCommerceCart {
     this._baseAmount = baseAmount
     this._discountAmount = discountAmount
     this._cartAmount = cartAmount
-    this._lineItems = []
+    this._lineItems = {}
     this._lineItems.physical = []
   }
 

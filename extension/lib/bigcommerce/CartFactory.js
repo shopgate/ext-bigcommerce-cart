@@ -7,6 +7,7 @@ class BigCommerceCartFactory {
   constructor (lineItemFactory) {
     this._lineItemFactory = lineItemFactory
   }
+
   /**
    * @param {BigCommerceApiCartResponse} bigCommerceResponse
    * @returns {BigCommerceCart}
@@ -30,8 +31,8 @@ class BigCommerceCartFactory {
   }
 
   /**
-   * @param {BigcommerceApiCartLineItems} lineItems
-   * @return {BigcommerceApiCartLineItemPhysical[]}
+   * @param {BigCommerceApiCartLineItems} lineItems
+   * @return {BigCommerceApiCartLineItemPhysical[]}
    * @private
    */
   _getPhysicalItems (lineItems) {

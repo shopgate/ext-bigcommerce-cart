@@ -1,8 +1,8 @@
 class ShopgateCartFlags {
   /**
-   * @param {boolean} taxIncluded
-   * @param {boolean} orderable
-   * @param {boolean} coupons
+   * @param {boolean} [taxIncluded]
+   * @param {boolean} [orderable]
+   * @param {boolean} [coupons]
    */
   constructor (taxIncluded = false, orderable = true, coupons = false) {
     this._taxIncluded = taxIncluded

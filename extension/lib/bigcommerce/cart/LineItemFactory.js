@@ -2,7 +2,7 @@ const BigCommerceCartLineItemPhysical = require('./line_item/Physical')
 
 class BigCommerceCartLineItemFactory {
   /**
-   * @param {BigcommerceApiCartLineItemPhysical} bigCommerceItem
+   * @param {BigCommerceApiCartLineItemPhysical} bigCommerceItem
    *
    * @return {BigCommerceCartLineItemPhysical}
    */
