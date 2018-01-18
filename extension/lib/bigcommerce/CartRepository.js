@@ -125,10 +125,6 @@ class BigCommerceCartRepository {
 
     return response.data.checkout_url
   }
-
-  async deleteItems () {
-
-  }
 }
 
 module.exports = BigCommerceCartRepository
