@@ -6,6 +6,9 @@ class ShopgateCartText {
     this._legal = legal
   }
 
+  /**
+   * @return {string}
+   */
   get legal () {
     return this._legal
   }

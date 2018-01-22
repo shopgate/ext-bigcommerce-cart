@@ -38,8 +38,8 @@
  * @property {number} sale_price
  * @property {boolean} is_require_shipping
  * @property {boolean} gift_wrapping
- * @property {Array} coupons
- * @property {Array} discounts
+ * @property {BigCommerceApiCartAppliedCoupon[]} coupons
+ * @property {BigCommerceApiCartAppliedDiscount[]} discounts
  * @property {number} discounted_amount
  * @property {boolean} gift_wrapping
  * @property {number} extended_list_price

@@ -20,6 +20,12 @@ class ShopgateCartItemProduct {
     this._appliedDiscounts = appliedDiscounts
   }
 
+  /**
+   * @param {number} listPrice
+   * @param {number} defaultPrice
+   * @param {number} special
+   * @return {ShopgateCartItemProductPrice}
+   */
   static createPrice (listPrice, defaultPrice, special) {
     return new ShopgateCartProductPrice({
       unit: listPrice,

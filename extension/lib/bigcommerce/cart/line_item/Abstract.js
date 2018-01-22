@@ -31,58 +31,100 @@ class BigCommerceCartLineItemAbstract {
   addDiscount () {}
   addCoupon () {}
 
+  /**
+   * @return {string}
+   */
   get id () {
     return this._id
   }
 
+  /**
+   * @return {number}
+   */
   get productId () {
     return this._productId
   }
 
+  /**
+   *@return {number}
+   */
   get variantId () {
     return this._variantId
   }
 
+  /**
+   * @return {string}
+   */
   get name () {
     return this._name
   }
 
+  /**
+   * @return {string}
+   */
   get url () {
     return this._url
   }
 
+  /**
+   *  @return {number}
+   */
   get quantity () {
     return this._quantity
   }
 
+  /**
+   * @return {boolean}
+   */
   get isTaxable () {
     return this._isTaxable
   }
 
+  /**
+   * @return {string}
+   */
   get imageUrl () {
     return this._imageUrl
   }
 
+  /**
+   * @return {number}
+   */
   get listPrice () {
     return this._listPrice
   }
 
+  /**
+   * @return {number}
+   */
   get salePrice () {
     return this._salePrice
   }
 
+  /**
+   * @return {BigCommerceApiCartAppliedDiscount[]}
+   */
   get discounts () {
     return this._discounts
   }
 
+  /**
+   * @return {BigCommerceApiCartAppliedCoupon[]}
+   */
   get coupons () {
     return this._coupons
   }
 
+  /**
+   * @return {number}
+   */
   get discountAmount () {
     return this._discountAmount
   }
 
+  /**
+   * @return {number}
+   */
   get couponAmount () {
     return this._couponAmount
   }

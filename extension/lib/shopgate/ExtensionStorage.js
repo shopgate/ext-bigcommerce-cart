@@ -3,6 +3,10 @@ class ShopgateExtensionStorage {
     this._storage = storage
   }
 
+  /**
+   * @param {string} key
+   * @return {Promise}
+   */
   get (key) {
     return new Promise((resolve, reject) => {
       this._storage.get(key, (err, value) => {
@@ -16,6 +20,11 @@ class ShopgateExtensionStorage {
     })
   }
 
+  /**
+   * @param {string} key
+   * @param {string} value
+   * @return {Promise}
+   */
   set (key, value) {
     return new Promise((resolve, reject) => {
       this._storage.set(key, value, (err) => {
@@ -29,6 +38,10 @@ class ShopgateExtensionStorage {
     })
   }
 
+  /**
+   * @param {string} key
+   * @return {Promise}
+   */
   delete (key) {
     return new Promise((resolve, reject) => {
       this._storage.del(key, (err, value) => {

@@ -3,7 +3,7 @@ class ShopgateCartItem {
   /**
    * @param {string} id
    * @param {number} quantity
-   * @param {ShopgateCartItemType.PRODUCT|ShopgateCartItemType.COUPON} type
+   * @param {string} type enum ShopgateCartItemType
    * @param {ShopgateCartItemCoupon} coupon
    * @param {ShopgateCartItemProduct} product
    */
@@ -31,7 +31,7 @@ class ShopgateCartItem {
   }
 
   /**
-   * @return {ShopgateCartItemType.PRODUCT|ShopgateCartItemType.COUPON}
+   * @return {string} enum ShopgateCartItemType
    */
   get type () {
     return this._type

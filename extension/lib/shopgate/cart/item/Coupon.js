@@ -13,28 +13,28 @@ class ShopgateCartItemCoupon {
   }
 
   /**
-   *@return {string}
+   * @return {string}
    */
   get code () {
     return this._code
   }
 
   /**
-   *@return {string}
+   * @return {string}
    */
   get description () {
     return this._description
   }
 
   /**
-   *@return {string}
+   * @return {string}
    */
   get label () {
     return this._label
   }
 
   /**
-   *@return {ShopgateCartItemSavedPrice}
+   * @return {ShopgateCartItemSavedPrice}
    */
   get savedPrice () {
     return this._savedPrice
