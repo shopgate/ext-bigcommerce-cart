@@ -39,8 +39,6 @@ describe('ShopgateCartFactory', () => {
   })
   it('should create shopgateCart from bigCommerce cart', () => {
     const expectedShopgateCart = {
-      "_isOrderable": true,
-      "_isTaxIncluded": false,
       "_messages": [],
       "_text": [],
       "_cartItems": [
@@ -111,7 +109,7 @@ describe('ShopgateCartFactory', () => {
       "_flags": {
         "_taxIncluded": false,
         "_orderable": true,
-        "_coupons": false
+        "_supportsCoupons": false
       }
     }
 

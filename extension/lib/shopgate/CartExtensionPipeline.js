@@ -64,20 +64,18 @@ class ShopgateCartExtensionPipeline {
     const pipelineCartFlags = {
       taxIncluded: shopgateCart.flags.taxIncluded,
       orderable: shopgateCart.flags.orderable,
-      coupons: shopgateCart.flags.coupons
+      coupons: shopgateCart.flags.supportsCoupons
     }
 
     return {
-      output: {
-        isOrderable: shopgateCart.isOrderable,
-        isTaxIncluded: shopgateCart.isTaxIncluded,
-        currency: shopgateCart.currency,
-        messages: shopgateCart.messages,
-        text: shopgateCart.text,
-        cartItems: pipelineCartItems,
-        totals: pipelineCartTotals,
-        flags: pipelineCartFlags
-      }
+      isOrderable: shopgateCart.flags.orderable,
+      isTaxIncluded: shopgateCart.flags.taxIncluded,
+      currency: shopgateCart.currency,
+      messages: shopgateCart.messages,
+      text: shopgateCart.text,
+      cartItems: pipelineCartItems,
+      totals: pipelineCartTotals,
+      flags: pipelineCartFlags
     }
   }
 

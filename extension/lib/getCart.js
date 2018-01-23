@@ -10,7 +10,8 @@ module.exports = async (context, input, cb) => {
   const cartPipeline = ShopgateCartPipeline.create(context)
   try {
     const cartPipelineResponse = await cartPipeline.get()
-    cb(null, cartPipelineResponse.output)
+    context.log.debug(cartPipelineResponse)
+    cb(null, cartPipelineResponse)
   } catch (error) {
     context.log.error(error)
     cb(error)

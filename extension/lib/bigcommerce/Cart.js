@@ -1,3 +1,5 @@
+const BigCommerceCartLineItems = require('./cart/LineItems')
+
 class BigCommerceCart {
   /**
    * @param {string} id
@@ -14,8 +16,7 @@ class BigCommerceCart {
     this._baseAmount = baseAmount
     this._discountAmount = discountAmount
     this._cartAmount = cartAmount
-    this._lineItems = {}
-    this._lineItems.physical = []
+    this._lineItems = new BigCommerceCartLineItems()
   }
 
   /**
@@ -36,7 +37,7 @@ class BigCommerceCart {
   }
 
   /**
-   * @returns {BigCommerceCartLineItems[]}
+   * @returns {BigCommerceCartLineItems}
    */
   get lineItems () {
     return this._lineItems

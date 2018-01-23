@@ -2,12 +2,12 @@ class ShopgateCartFlags {
   /**
    * @param {boolean} [taxIncluded]
    * @param {boolean} [orderable]
-   * @param {boolean} [coupons]
+   * @param {boolean} [supportsCoupons]
    */
-  constructor (taxIncluded = false, orderable = true, coupons = false) {
+  constructor (taxIncluded = false, orderable = true, supportsCoupons = false) {
     this._taxIncluded = taxIncluded
     this._orderable = orderable
-    this._coupons = coupons
+    this._supportsCoupons = supportsCoupons
   }
 
   /**
@@ -27,8 +27,8 @@ class ShopgateCartFlags {
   /**
    * @return {boolean}
    */
-  get coupons () {
-    return this._coupons
+  get supportsCoupons () {
+    return this._supportsCoupons
   }
 }
 

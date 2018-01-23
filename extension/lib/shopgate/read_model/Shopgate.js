@@ -33,7 +33,7 @@
 
 /**
  * @typedef {Object} PipelineContext
- * @property {Object} config
+ * @property {PipelineConfiguration} config
  * @property {Object} log
  * @property {PipelineStorageContainer} storage
  */
@@ -47,4 +47,12 @@
 /**
  * @typedef {Object} GetCartInput
  * @property {Object} sgxsMeta
+ */
+
+/**
+ * @typedef {Object} PipelineConfiguration
+ * @property {string} clientId
+ * @property {string} accessToken
+ * @property {string} storeHash
+ * @property {string} clientSecret
  */

@@ -2,7 +2,7 @@ class ShopgateCartText {
   /**
    * @param {string} legal
    */
-  constructor ({legal}) {
+  constructor (legal) {
     this._legal = legal
   }
 

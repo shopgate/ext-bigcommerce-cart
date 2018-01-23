@@ -1,18 +1,29 @@
 class BigCommerceCartLineItems {
+  constructor () {
+    this._physical = []
+    this._digital = []
+    this._giftCertificates = []
+  }
   /**
    * @returns {BigCommerceCartLineItemDigital[]}
    */
-  get digital () {}
+  get digital () {
+    return this._digital
+  }
 
   /**
    * @returns {BigCommerceCartLineItemPhysical[]}
    */
-  get physical () {}
+  get physical () {
+    return this._physical
+  }
 
   /**
    * @returns {BigCommerceCartLineItemGiftCertificate[]}
    */
-  get giftCertificate () {}
+  get giftCertificate () {
+    return this._giftCertificates
+  }
 }
 
 module.exports = BigCommerceCartLineItems

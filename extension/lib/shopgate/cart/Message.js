@@ -4,7 +4,7 @@ class ShopgateCartMessage {
    * @param {string} message
    * @param {number} code
    */
-  constructor ({type, message, code}) {
+  constructor (type, message, code) {
     this._type = type
     this._message = message
     this._code = code

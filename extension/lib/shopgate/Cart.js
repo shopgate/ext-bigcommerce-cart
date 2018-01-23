@@ -4,22 +4,17 @@ const ShopgateCartFlags = require('./cart/Flags')
 
 class ShopgateCart {
   /**
-   * @param {ShopgateCartFlags} flags
    * @param {string} currency
-   * @param {boolean} isOrderable
-   * @param {boolean} isTaxIncluded
-   * @param {ShopgateCartMessage[]} messages
-   * @param {object} text
+   * @param {boolean} [isOrderable=true]
+   * @param {boolean} [isTaxIncluded=false]
    */
-  constructor (flags = new ShopgateCartFlags(), currency = '', isOrderable = false, isTaxIncluded = false, messages = [], text = []) {
-    this._isOrderable = isOrderable
-    this._isTaxIncluded = isTaxIncluded
+  constructor (currency, isOrderable = true, isTaxIncluded = false) {
     this._currency = currency
-    this._messages = messages
-    this._text = text
+    this._messages = []
+    this._text = []
     this._cartItems = []
     this._totals = []
-    this._flags = flags
+    this._flags = new ShopgateCartFlags(isTaxIncluded, isOrderable, false)
   }
 
   /**
@@ -45,20 +40,6 @@ class ShopgateCart {
    */
   createItembuilder (id, quantity) {
     return new ShopgateCartItemBuilder(id, quantity)
-  }
-
-  /**
-   * @return {boolean}
-   */
-  get isOrderable () {
-    return this._isOrderable
-  }
-
-  /**
-   * @return {boolean}
-   */
-  get isTaxIncluded () {
-    return this._isTaxIncluded
   }
 
   /**

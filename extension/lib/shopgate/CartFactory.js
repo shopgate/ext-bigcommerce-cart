@@ -1,5 +1,4 @@
 const ShopgateCart = require('./Cart')
-const ShopgateCartFlags = require('./cart/Flags')
 
 // factory, maybe builder name would still apply
 class ShopgateCartFactory {
@@ -13,16 +12,9 @@ class ShopgateCartFactory {
     }
 
     const cart = new ShopgateCart(
-      new ShopgateCartFlags(
-        (bigCommerceCart.taxIncluded) ? bigCommerceCart.taxIncluded : false,
-        true,
-        false
-      ),
       bigCommerceCart.currency,
       true,
-       (bigCommerceCart.taxIncluded) ? bigCommerceCart.taxIncluded : false,
-      [],
-      []
+       (bigCommerceCart.taxIncluded) ? bigCommerceCart.taxIncluded : false
     )
 
     cart.addTotal('subTotal', 'SubTotal', bigCommerceCart.baseAmount)
