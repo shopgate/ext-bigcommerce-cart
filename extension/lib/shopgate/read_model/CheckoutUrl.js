@@ -11,5 +11,4 @@
 
 /**
  *  @typedef {Object} GetCheckoutUrlInput
- *  @property {Object} sgxsMeta
  */
