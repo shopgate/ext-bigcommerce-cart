@@ -4,11 +4,11 @@ const ShopgateCartFlags = require('./cart/Flags')
 
 class ShopgateCart {
   /**
-   * @param {string} currency
+   * @param {string} [currency='']
    * @param {boolean} [isOrderable=true]
    * @param {boolean} [isTaxIncluded=false]
    */
-  constructor (currency, isOrderable = true, isTaxIncluded = false) {
+  constructor (currency = '', isOrderable = true, isTaxIncluded = false) {
     this._currency = currency
     this._messages = []
     this._text = []
