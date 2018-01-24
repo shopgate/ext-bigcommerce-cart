@@ -1,0 +1,38 @@
+{
+  "version": "1",
+  "pipeline": {
+    "id": "getCheckoutUrl_v1",
+    "public": true,
+    "input": [],
+    "output": [
+      {
+        "key": "url",
+        "id": "1010"
+      },
+      {
+        "key": "expires",
+        "id": "1020",
+        "optional": true
+      }
+    ],
+    "steps": [
+      {
+        "type": "extension",
+        "id": "@shopgate/bigcommerce-cart",
+        "path": "@shopgate/bigcommerce-cart/lib/getCheckoutUrl.js",
+        "input": [],
+        "output": [
+          {
+            "key": "url",
+            "id": "1010"
+          },
+          {
+            "key": "expires",
+            "id": "1020",
+            "optional": true
+          }
+        ]
+      }
+    ]
+  }
+}

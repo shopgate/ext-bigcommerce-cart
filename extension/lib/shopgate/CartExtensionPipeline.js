@@ -80,6 +80,13 @@ class ShopgateCartExtensionPipeline {
   }
 
   /**
+   * @returns {Promise<string>}
+   */
+  async getCheckoutUrl () {
+    return this._bigCommerceCartRepository.getCheckoutUrl()
+  }
+
+  /**
    * @param {PipelineContext} context
    * @returns {ShopgateCartExtensionPipeline}
    */
