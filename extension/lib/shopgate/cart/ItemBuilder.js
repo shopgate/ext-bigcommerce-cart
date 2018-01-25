@@ -60,8 +60,8 @@ class ShopgateCartItemBuilder {
   /**
    * @return {ShopgateCartItemBuilder}
    */
-  withAddtionalInfo () {
-    this._addtionalInfo = []
+  withAdditionalInfo () {
+    this._additionalInfo = []
     return this
   }
 
@@ -99,7 +99,7 @@ class ShopgateCartItemBuilder {
       product = new ShopgateCartItemProduct({
         id: this._productId,
         name: this._productName,
-        addtionalInfo: this._addtionalInfo,
+        additionalInfo: this._additionalInfo,
         featuredImageUrl: this._featuredImageUrl,
         properties: this._productProperties,
         price: this._productPrice,

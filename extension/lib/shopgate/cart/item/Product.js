@@ -4,16 +4,16 @@ class ShopgateCartItemProduct {
   /**
    * @param {string} id
    * @param {string} name
-   * @param {ShopgateCartAdditionalInfo[]} addtionalInfo
+   * @param {ShopgateCartAdditionalInfo[]} additionalInfo
    * @param {string} featuredImageUrl
    * @param {ShopgateCartItemProductProperty[]} properties
    * @param {ShopgateCartItemProductPrice} price
    * @param {ShopgateCartItemProductAppliedDiscount[]} appliedDiscounts
    */
-  constructor ({id, name, addtionalInfo, featuredImageUrl, properties, price, appliedDiscounts}) {
+  constructor ({id, name, additionalInfo, featuredImageUrl, properties, price, appliedDiscounts}) {
     this._id = id
     this._name = name
-    this._addtionalInfo = addtionalInfo
+    this._additionalInfo = additionalInfo
     this._featuredImageUrl = featuredImageUrl
     this._properties = properties
     this._price = price
@@ -51,8 +51,8 @@ class ShopgateCartItemProduct {
   /**
    * @return {ShopgateCartAdditionalInfo[]}
    */
-  get addtionalInfo () {
-    return this._addtionalInfo
+  get additionalInfo () {
+    return this._additionalInfo
   }
 
   /**
