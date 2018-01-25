@@ -27,7 +27,7 @@ describe('BigCommerceCartRepository - integration', () => {
   })
 
   it('should add a product', () => {
-    storageMock.expects('set').once().callsFake((cartIdKey, cartIdValue) => { cartId = cartIdValue})
+    storageMock.expects('set').once().callsFake((cartIdKey, cartIdValue) => { cartId = cartIdValue })
     return subjectUnderTest.addItems([BigCommerceCartRepository.createLineItem(112, 1)]).should.eventually.be.fulfilled
   })
 
@@ -61,5 +61,4 @@ describe('BigCommerceCartRepository - integration', () => {
     storageMock.expects('get').once().returns(cartId)
     return subjectUnderTest.load().should.eventually.equal(null)
   })
-
 })

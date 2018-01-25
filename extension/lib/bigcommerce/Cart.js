@@ -29,7 +29,6 @@ class BigCommerceCart {
   }
 
   /**
-   *
    * @param {BigCommerceCartLineItemPhysical} item
    */
   addPhysicalItem (item) {

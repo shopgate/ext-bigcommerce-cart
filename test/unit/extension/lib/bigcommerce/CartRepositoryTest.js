@@ -89,7 +89,7 @@ describe('BigCommerceCartRepository - unit', function () {
           }
         ]
       }
-    ).returns({ data: { id: '0000-0000-0000-0000' }})
+    ).returns({data: { id: '0000-0000-0000-0000' }})
 
     return subjectUnderTest.addItems([ new BigCommerceCartLineItemRequest(42, 1) ]).should.eventually.be.fulfilled
   })
