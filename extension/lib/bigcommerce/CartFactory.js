@@ -16,7 +16,7 @@ class BigCommerceCartFactory {
     const bigCommerceCart = new BigCommerceCart(
       bigCommerceResponse.id,
       bigCommerceResponse.currency.code,
-      bigCommerceResponse.is_tax_included,
+      bigCommerceResponse.tax_included,
       bigCommerceResponse.base_amount,
       bigCommerceResponse.discount_amount,
       bigCommerceResponse.cart_amount

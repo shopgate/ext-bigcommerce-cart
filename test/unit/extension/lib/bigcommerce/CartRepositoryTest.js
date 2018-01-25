@@ -4,7 +4,7 @@ const BigCommerceCartLineItemRequest = require('../../../../../extension/lib/big
 const BigCommerce = require('node-bigcommerce')
 const sinon = require('sinon')
 
-describe('BigCommerceCartRepositoryTest', function () {
+describe('BigCommerceCartRepository - unit', function () {
   let bigCommerceMock
   let storageMock
   /** @type BigCommerceCartRepository */
@@ -12,7 +12,6 @@ describe('BigCommerceCartRepositoryTest', function () {
   const storage = { get: () => {}, set: () => {} }
   const bigCommerce = new BigCommerce({})
   beforeEach(() => {
-//    sinon.stub(BigCommerceCartRepository, '_createFactory').callsFake(() => {})
     bigCommerceMock = sinon.mock(bigCommerce)
     storageMock = sinon.mock(storage)
     subjectUnderTest = new BigCommerceCartRepository(
@@ -23,7 +22,6 @@ describe('BigCommerceCartRepositoryTest', function () {
   })
 
   afterEach(() => {
-//    BigCommerceCartRepository._createFactory.restore()
     bigCommerceMock.verify()
     bigCommerceMock.restore()
     storageMock.verify()
@@ -41,7 +39,7 @@ describe('BigCommerceCartRepositoryTest', function () {
       data: {
         id: '0000-0000-0000-0000',
         currency: { code: 'EUR' },
-        is_tax_included: true,
+        tax_included: true,
         base_amount: 10.00,
         discount_amount: 9.00,
         cart_amount: 10.00

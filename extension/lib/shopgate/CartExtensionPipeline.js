@@ -19,14 +19,14 @@ class ShopgateCartExtensionPipeline {
    */
   async addProducts (products) {
     const bigCommerceLineItems = products.map((product) => {
-      return BigCommerceCartRepository.createLineItem(product.quantity, parseInt(product.productId))
+      return BigCommerceCartRepository.createLineItem(parseInt(product.productId), product.quantity)
     })
 
     await this._bigCommerceCartRepository.addItems(bigCommerceLineItems)
   }
 
   /**
-   * @returns {Promise<ShopgateAddProductResponse>}
+   * @returns {Promise<ShopgateGetCartResponse>}
    */
   async get () {
     const bigCommerceCart = await this._bigCommerceCartRepository.load()

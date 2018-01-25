@@ -7,7 +7,7 @@
  * @typedef {Object} BigCommerceApiCartData
  * @property {string} id
  * @property {BigCommerceCurrency} currency
- * @property {boolean} is_tax_included
+ * @property {boolean} tax_included
  * @property {number} base_amount
  * @property {number} discount_amount
  * @property {number} cart_amount

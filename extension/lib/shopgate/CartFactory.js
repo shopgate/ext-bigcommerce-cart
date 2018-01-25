@@ -8,7 +8,7 @@ class ShopgateCartFactory {
    */
   createFromBigCommerce (bigCommerceCart) {
     if (bigCommerceCart === null) {
-      return new ShopgateCart()
+      return new ShopgateCart('', false)
     }
 
     const cart = new ShopgateCart(

@@ -41,7 +41,11 @@
 /**
  * @callback GetCartCallback
  * @param {Error} [error]
- * @param {ShopgateAddProductResponse} [ShopgateCart]
+ * @param {ShopgateGetCartResponse} [ShopgateCart]
+ */
+
+/**
+ * @typedef {Object} ShopgateGetCartResponse
  */
 
 /**

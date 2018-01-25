@@ -27,6 +27,16 @@ class BigCommerceCartRepository {
     return BigCommerceCartRepository._createFactory().fromApiResponse(cartResponse)
   }
 
+  async destroy () {
+    const cartId = await this._storage.get(CART_ID)
+    if (!cartId) {
+      return
+    }
+
+    await this._client.delete('/carts/' + cartId)
+    await this._storage.delete(CART_ID)
+  }
+
   /**
    * @returns {BigCommerceCartFactory}
    * @private
@@ -38,11 +48,11 @@ class BigCommerceCartRepository {
   /**
    * Creates new line item.
    *
-   * @param {number} quantity
    * @param {number} productId
+   * @param {number} quantity
    * @returns {BigCommerceCartLineItemRequest}
    */
-  static createLineItem (quantity, productId) {
+  static createLineItem (productId, quantity) {
     return new BigCommerceCartLineItemRequest(productId, quantity)
   }
 
