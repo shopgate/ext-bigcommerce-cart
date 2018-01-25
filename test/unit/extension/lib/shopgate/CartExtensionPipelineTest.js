@@ -12,7 +12,6 @@ describe('CartExtensionPipeline - unit', () => {
   let bigCommerceCartRepositoryMock
 
   let createLineItemSpy
-  let fakeCreateLineItem = () => {}
 
   let storageMock
   const storage = { get: () => {}, set: () => {} }
@@ -22,8 +21,7 @@ describe('CartExtensionPipeline - unit', () => {
   })
 
   beforeEach(() => {
-    fakeCreateLineItem = () => {}
-    createLineItemSpy = sinon.spy(BigCommerceCartRepository, 'createLineItem');
+    createLineItemSpy = sinon.spy(BigCommerceCartRepository, 'createLineItem')
     storageMock = sinon.mock(storage)
     const bigCommerceCartRepository = new BigCommerceCartRepository(sinon.createStubInstance(BigCommerce),   /** @type BigCommerceStorage */ storage)
     bigCommerceCartRepositoryMock = sinon.mock(bigCommerceCartRepository)
@@ -43,11 +41,11 @@ describe('CartExtensionPipeline - unit', () => {
 
     return subjectUnderTest.get().should.eventually.deep.equal({
       cartItems: [],
-      currency: "",
+      currency: '',
       flags: {
         coupons: false,
         orderable: false,
-        taxIncluded: false,
+        taxIncluded: false
       },
       isOrderable: false,
       isTaxIncluded: false,
