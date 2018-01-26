@@ -10,3 +10,5 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 ### Added
 - functionality to add simple products to the cart
 - functionality to return BigCommerce checkout url
+
+[0.1.0]: https://github.com/shopgate/cloud-ext-bigcommerce-cart/tree/v0.1.0
