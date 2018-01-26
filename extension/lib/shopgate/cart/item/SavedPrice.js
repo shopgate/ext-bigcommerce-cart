@@ -19,7 +19,7 @@ class ShopgateCartItemSavedPrice {
   }
 
   /**
-   * @return {*}
+   * @return {string}
    */
   get type () {
     return this._type

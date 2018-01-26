@@ -1,6 +1,5 @@
 const ShopgateCart = require('./Cart')
 
-// factory, maybe builder name would still apply
 class ShopgateCartFactory {
   /**
    * @param {BigCommerceCart|null} bigCommerceCart
@@ -38,6 +37,7 @@ class ShopgateCartFactory {
 
       cart.addItem(cartItem)
     }
+
     return cart
   }
 }

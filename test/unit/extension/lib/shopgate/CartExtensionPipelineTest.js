@@ -16,10 +16,6 @@ describe('CartExtensionPipeline - unit', () => {
   let storageMock
   const storage = { get: () => {}, set: () => {} }
 
-  before(() => {
-
-  })
-
   beforeEach(() => {
     createLineItemSpy = sinon.spy(BigCommerceCartRepository, 'createLineItem')
     storageMock = sinon.mock(storage)

@@ -62,8 +62,9 @@ class BigCommerceCartRepository {
    */
   async addItems (items) {
     const cartId = await this._storage.get(CART_ID)
+
     if (!cartId) {
-      const bigCommerceResponse = await this._client.post('/carts', {'line_items': items.map(BigCommerceCartRepository._toApiLineItem)})
+      const bigCommerceResponse = await this._client.post('/carts', {'line_items': items.map(this._toApiLineItem)})
       await this._storage.set(CART_ID, bigCommerceResponse.data.id)
 
       return
@@ -71,7 +72,7 @@ class BigCommerceCartRepository {
 
     await this._client.post('/carts/' + cartId + '/items', {
       'cartId': cartId,
-      'line_items': items.map(BigCommerceCartRepository._toApiLineItem)
+      'line_items': items.map(this._toApiLineItem)
     })
   }
 
@@ -79,7 +80,7 @@ class BigCommerceCartRepository {
    * @param {BigCommerceCartLineItemRequest} lineItemRequest
    * @private
    */
-  static _toApiLineItem (lineItemRequest) {
+  _toApiLineItem (lineItemRequest) {
     const lineItem = {
       product_id: lineItemRequest.productId,
       quantity: lineItemRequest.quantity
@@ -111,7 +112,9 @@ class BigCommerceCartRepository {
       if (error.code !== 404) {
         throw error
       }
+
       await this._storage.delete(CART_ID)
+
       return null
     }
   }
