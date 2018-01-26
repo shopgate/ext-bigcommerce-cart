@@ -19,6 +19,7 @@ class BigCommerceFactory {
 
   /**
    * @param {string} logLevel
+   * @returns {BigCommerce}
    */
   createV3 (logLevel = 'info') {
     return new BigCommerce({
@@ -33,6 +34,7 @@ class BigCommerceFactory {
 
   /**
    * @param {string} logLevel
+   * @returns {BigCommerce}
    */
   createV2 (logLevel = 'info') {
     return new BigCommerce({
