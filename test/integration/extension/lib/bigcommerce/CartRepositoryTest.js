@@ -50,6 +50,12 @@ describe('BigCommerceCartRepository - integration', () => {
     })
   })
 
+  it('should provide checkout url', function () {
+    storageMock.expects('get').once().returns(cartId)
+
+    return subjectUnderTest.getCheckoutUrl().should.eventually.be.a.string
+  })
+
   it('should remove previously created cart', () => {
     storageMock.expects('get').once().returns(cartId)
     storageMock.expects('delete').once()

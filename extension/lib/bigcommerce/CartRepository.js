@@ -132,7 +132,7 @@ class BigCommerceCartRepository {
     /** @type BigCommerceRedirectUrlsResponse */
     const response = await this._client.post('/carts/' + cartId + '/redirect_urls')
 
-    if (!response.data.hasOwnProperty('checkout_url')) {
+    if (!response.data || !response.data.hasOwnProperty('checkout_url')) {
       throw new Error('could not create webcheckout url')
     }
 

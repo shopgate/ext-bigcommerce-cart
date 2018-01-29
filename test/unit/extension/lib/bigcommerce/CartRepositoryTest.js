@@ -93,4 +93,17 @@ describe('BigCommerceCartRepository - unit', function () {
 
     return subjectUnderTest.addItems([ new BigCommerceCartLineItemRequest(42, 1) ]).should.eventually.be.fulfilled
   })
+
+  it('should fail getting the checkout url if we don\'t have a cart persisted', function () {
+    storageMock.expects('get').once().returns(null)
+
+    return subjectUnderTest.getCheckoutUrl().should.eventually.be.rejectedWith(Error)
+  })
+
+  it('should fail getting the checkout url if the bigcommerce response doesn\'t provide checkout_url property', function () {
+    storageMock.expects('get').once().returns('0000-0000-0000-0000')
+    bigCommerceMock.expects('post').once().withArgs('/carts/0000-0000-0000-0000/redirect_urls').returns(null)
+
+    return subjectUnderTest.getCheckoutUrl().should.eventually.be.rejectedWith(Error)
+  })
 })

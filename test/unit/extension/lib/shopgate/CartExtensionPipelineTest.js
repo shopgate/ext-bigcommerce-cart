@@ -69,4 +69,11 @@ describe('CartExtensionPipeline - unit', () => {
       done()
     })
   })
+
+  it('should provide checkout url', function () {
+    const expectedUrl = 'https://astore.mybigcommerce.com/cart.php'
+    bigCommerceCartRepositoryMock.expects('getCheckoutUrl').once().returns(expectedUrl)
+
+    return subjectUnderTest.getCheckoutUrl().should.eventually.equal(expectedUrl)
+  })
 })
