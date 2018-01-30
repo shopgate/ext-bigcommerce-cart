@@ -1,6 +1,7 @@
 const BigCommerceCartFactory = require('./CartFactory')
 const BigCommerceCartLineItemFactory = require('./cart/LineItemFactory')
 const BigCommerceCartLineItemRequest = require('./cart/LineItemRequest')
+const BigCommerceCartLineItemUpdateRequest = require('./cart/LineItemUpdateRequest')
 
 const CART_ID = 'cartId'
 
@@ -57,6 +58,16 @@ class BigCommerceCartRepository {
   }
 
   /**
+   * @param {string} itemId
+   * @param {number} productId
+   * @param {number} quantity
+   * @return {BigCommerceCartLineItemUpdateRequest}
+   */
+  static createUpdateLineItem (itemId, productId, quantity) {
+    return new BigCommerceCartLineItemUpdateRequest(itemId, productId, quantity)
+  }
+
+  /**
    * @param {BigCommerceCartLineItemRequest[]} items
    * @returns {Promise<void>}
    */
@@ -91,6 +102,34 @@ class BigCommerceCartRepository {
     }
 
     return lineItem
+  }
+
+  /**
+   * @param {[BigCommerceCartLineItemUpdateRequest]} items
+   * @return {Promise.<void>}
+   */
+  async updateCartItems (items) {
+    const cartId = await this._storage.get(CART_ID)
+    const updatePromises = items.map((item) => {
+      return this._client.put('/carts/' + cartId + '/items/' + item.itemId, {
+        'cart_id': cartId,
+        'item_id': item.itemId,
+        'line_item': this._toApiUpdateLineItem(item)
+      })
+    })
+    await Promise.all(updatePromises)
+  }
+
+  /**
+   * @param {BigCommerceCartLineItemUpdateRequest} updateLineItem
+   * @return {{product_id, quantity}}
+   * @private
+   */
+  _toApiUpdateLineItem (updateLineItem) {
+    return {
+      product_id: updateLineItem.productId,
+      quantity: updateLineItem.quantity
+    }
   }
 
   /**
