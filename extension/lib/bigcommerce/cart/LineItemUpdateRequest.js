@@ -1,13 +1,11 @@
 class BigCommerceCartLineItemUpdateRequest {
   /**
    * @param {string} itemId
-   * @param {number} productId
    * @param {number} quantity
    *
    */
-  constructor (itemId, productId, quantity) {
+  constructor (itemId, quantity) {
     this._itemId = itemId
-    this._productId = productId
     this._quantity = quantity
   }
 
@@ -19,24 +17,10 @@ class BigCommerceCartLineItemUpdateRequest {
   }
 
   /**
-   * @returns {string}
-   */
-  get productId () {
-    return this._productId
-  }
-
-  /**
    * @return {string}
    */
   get itemId () {
     return this._itemId
-  }
-
-  /**
-   * @returns {number|null}
-   */
-  get variantId () {
-    return this._varriantId
   }
 }
 

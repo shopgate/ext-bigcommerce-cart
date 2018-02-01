@@ -39,7 +39,7 @@ describe('BigCommerceCartRepository - integration', () => {
       _id: cartId,
       _isTaxIncluded: false,
       _lineItems: {
-        _physical: [
+        _items: [
           {
             _productId: 112,
             _variantId: 3107,

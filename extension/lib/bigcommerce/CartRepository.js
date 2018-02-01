@@ -59,12 +59,11 @@ class BigCommerceCartRepository {
 
   /**
    * @param {string} itemId
-   * @param {number} productId
    * @param {number} quantity
    * @return {BigCommerceCartLineItemUpdateRequest}
    */
-  static createUpdateLineItem (itemId, productId, quantity) {
-    return new BigCommerceCartLineItemUpdateRequest(itemId, productId, quantity)
+  static createLineItemUpdate (itemId, quantity) {
+    return new BigCommerceCartLineItemUpdateRequest(itemId, quantity)
   }
 
   /**
@@ -108,28 +107,29 @@ class BigCommerceCartRepository {
    * @param {[BigCommerceCartLineItemUpdateRequest]} items
    * @return {Promise.<void>}
    */
-  async updateCartItems (items) {
-    const cartId = await this._storage.get(CART_ID)
-    const updatePromises = items.map((item) => {
-      return this._client.put('/carts/' + cartId + '/items/' + item.itemId, {
-        'cart_id': cartId,
-        'item_id': item.itemId,
-        'line_item': this._toApiUpdateLineItem(item)
-      })
-    })
-    await Promise.all(updatePromises)
-  }
+  async updateItems (items) {
+    const cart = await this.load()
 
-  /**
-   * @param {BigCommerceCartLineItemUpdateRequest} updateLineItem
-   * @return {{product_id, quantity}}
-   * @private
-   */
-  _toApiUpdateLineItem (updateLineItem) {
-    return {
-      product_id: updateLineItem.productId,
-      quantity: updateLineItem.quantity
+    const updatePromises = []
+
+    for (const item of items) {
+      const lineItem = cart.findItem(item.itemId)
+
+      if (lineItem === null) {
+        // todo report error
+        break
+      }
+
+      updatePromises.push(
+        this._client.put('/carts/' + cart.id + '/items/' + lineItem.id, {
+          'cart_id': cart.id,
+          'item_id': lineItem.id,
+          'line_item': this._toApiLineItem(BigCommerceCartRepository.createLineItem(lineItem.productId, item.quantity))
+        })
+      )
     }
+
+    await Promise.all(updatePromises)
   }
 
   /**

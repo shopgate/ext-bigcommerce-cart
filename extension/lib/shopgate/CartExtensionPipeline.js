@@ -87,31 +87,13 @@ class ShopgateCartExtensionPipeline {
   }
 
   /**
-   * @param {[Object]}cartItems
-   * @return {Promise.<void>}
+   * @param {[Object]} cartItems
+   * @return {Promise<void>}
    */
-  async updateProductsInCart (lineItems) {
-    const currentCart = await this.get()
-    const updateLineItems = lineItems.map(lineItem => {
-      return this._addProductIdToLineItems(currentCart.cartItems, lineItem)
-    })
-
-    await this._bigCommerceCartRepository.updateCartItems(updateLineItems)
-  }
-
-  /**
-   * @param {[Object]} cartLineItems
-   * @param {Object} updateLineItem
-   * @return {BigCommerceCartLineItemUpdateRequest}
-   * @private
-   */
-  _addProductIdToLineItems (cartLineItems, updateLineItem) {
-    for (let cartItem of cartLineItems) {
-      if (cartItem.id === updateLineItem.CartItemId) {
-        return BigCommerceCartRepository.createUpdateLineItem(updateLineItem.CartItemId, parseInt(cartItem.product.id), updateLineItem.quantity)
-      }
-    }
-    return BigCommerceCartRepository.createUpdateLineItem(updateLineItem.CartItemId, 0, 0)
+  async updateProducts (cartItems) {
+    await this._bigCommerceCartRepository.updateItems(cartItems.map((item) => {
+      return BigCommerceCartRepository.createLineItemUpdate(item.CartItemId, item.quantity)
+    }))
   }
 
   /**

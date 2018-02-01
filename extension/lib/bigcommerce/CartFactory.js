@@ -23,7 +23,7 @@ class BigCommerceCartFactory {
     )
 
     for (const physicalItem of this._getPhysicalItems(bigCommerceResponse.line_items)) {
-      bigCommerceCart.addPhysicalItem(this._lineItemFactory.createPhysicalItem(physicalItem))
+      bigCommerceCart.addItem(this._lineItemFactory.createPhysicalItem(physicalItem))
     }
 
     // later on add coupons, discounts, etc
