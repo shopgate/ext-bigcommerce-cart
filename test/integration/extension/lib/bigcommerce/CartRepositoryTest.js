@@ -29,9 +29,9 @@ describe('BigCommerceCartRepository - integration', () => {
     storageMock.restore()
   })
 
-  it('should add a product', () => {
+  it('should add a product', async () => {
     storageMock.expects('set').once().callsFake((cartIdKey, cartIdValue) => { cartId = cartIdValue })
-    return subjectUnderTest.addItems([BigCommerceCartRepository.createLineItem(112, 1)]).should.eventually.be.fulfilled
+    await subjectUnderTest.addItems([BigCommerceCartRepository.createLineItem(112, 1)]).should.eventually.be.fulfilled
   })
 
   it('should get the cart of previously added product', () => {
@@ -57,7 +57,7 @@ describe('BigCommerceCartRepository - integration', () => {
     storageMock.expects('get').once().returns(cartId)
 
     // The BigCommerce API call getCheckoutUrl was sometimes throwing an error.
-    // We need the timeout to give the BigCommerce infrastructure time to replicate their data along all instances
+    // We need the delay to give the BigCommerce infrastructure time to replicate their data along all instances
     setTimeout(async () => {
       try {
         const checkoutUrl = await subjectUnderTest.getCheckoutUrl()
@@ -83,9 +83,10 @@ describe('BigCommerceCartRepository - integration', () => {
 
   it('should calculate the grand total of the cart correctly', async () => {
     storageMock.expects('set').once().callsFake((cartIdKey, cartIdValue) => { cartId = cartIdValue })
-    await subjectUnderTest.addItems([BigCommerceCartRepository.createLineItem(112, 2)])
+    await subjectUnderTest.addItems([BigCommerceCartRepository.createLineItem(112, 2)]).should.eventually.be.fulfilled
+
     storageMock.expects('get').once().returns(cartId)
-    const bigCommerceCart = await subjectUnderTest.load()
+    const bigCommerceCart = await subjectUnderTest.load().should.eventually.be.fulfilled
     const shopgateCart = shopgateCartFactory.createFromBigCommerce(bigCommerceCart)
 
     shopgateCart.totals.should.containSubset([{
