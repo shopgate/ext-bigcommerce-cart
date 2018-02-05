@@ -28,7 +28,7 @@ class BigCommerceCartLineItems {
   /**
    * @returns {BigCommerceCartLineItemGiftCertificate[]}
    */
-  get giftCertificate () {
+  get giftCertificates () {
     return this._items.filter((item) => {
       return item instanceof BigCommerceCartLineItemGiftCertificate
     })
@@ -42,7 +42,7 @@ class BigCommerceCartLineItems {
   }
 
   /**
-   * @param {string|null} itemId
+   * @param {string} itemId
    * @return {BigCommerceCartLineItemAbstract|null}
    */
   find (itemId) {

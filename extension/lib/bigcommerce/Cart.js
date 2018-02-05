@@ -36,7 +36,7 @@ class BigCommerceCart {
   }
 
   /**
-   * @param {string|null} itemId
+   * @param {string} itemId
    * @return {BigCommerceCartLineItemAbstract|null}
    */
   findItem (itemId) {
@@ -83,6 +83,21 @@ class BigCommerceCart {
    */
   get taxIncluded () {
     return this._isTaxIncluded
+  }
+
+  /**
+   * @returns {number}
+   */
+  get productsSubTotal () {
+    let subtotal = 0
+    for (const lineItem of this._lineItems.physical) {
+      subtotal += lineItem.salePrice * lineItem.quantity
+    }
+    for (const lineItem of this._lineItems.digital) {
+      subtotal += lineItem.salePrice * lineItem.quantity
+    }
+
+    return subtotal
   }
 }
 

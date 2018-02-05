@@ -4,7 +4,6 @@
     "id": "addProductsToCart_v1",
     "public": true,
     "input": [
-      {"key": "sgxsMeta", "id": "1010", "optional": true},
       {"key": "products", "id": "1020"}
     ],
     "output": [
@@ -16,8 +15,7 @@
         "id": "@shopgate/bigcommerce-cart",
         "path": "@shopgate/bigcommerce-cart/lib/addProductsToCart.js",
         "input": [
-          {"key": "sgxsMeta", "id": "1010", "optional": true},
-          {"key": "products", "id": "1020", "optional": true}
+          {"key": "products", "id": "1020"}
         ],
         "output": [
           {"key": "messages", "id": "1030", "optional": true}

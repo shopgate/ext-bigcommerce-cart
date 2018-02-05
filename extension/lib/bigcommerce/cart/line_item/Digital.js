@@ -1,4 +1,6 @@
-class BigCommerceCartLineItemDigital {
+const BigCommerceCartLineItemAbstract = require('./Abstract')
+
+class BigCommerceCartLineItemDigital extends BigCommerceCartLineItemAbstract {
 
 }
 
