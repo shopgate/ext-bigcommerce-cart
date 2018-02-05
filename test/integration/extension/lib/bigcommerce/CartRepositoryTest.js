@@ -53,6 +53,15 @@ describe('BigCommerceCartRepository - integration', () => {
     })
   })
 
+  it('should not allow an previously nonexistent product to be added via update call', async () => {
+    storageMock.expects('get').once().returns(cartId)
+    const reportWarnings = sinon.spy()
+
+    await subjectUnderTest.updateItems([BigCommerceCartRepository.createLineItemUpdate('000-000-000', 2)], reportWarnings).should.eventually.be.fulfilled
+    assert.equal(reportWarnings.called, true, 'An warning should have been reported.')
+    assert.equal(reportWarnings.args[0][0].item.itemId, '000-000-000')
+  })
+
   it('should provide checkout url', function (done) {
     storageMock.expects('get').once().returns(cartId)
 

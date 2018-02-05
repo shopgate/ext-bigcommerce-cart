@@ -105,9 +105,10 @@ class BigCommerceCartRepository {
 
   /**
    * @param {[BigCommerceCartLineItemUpdateRequest]} items
-   * @return {Promise.<void>}
+   * @param {bigCommerceUpdateFailureNotifier} updateFailureNotifier
+   * @return {Promise<void>}
    */
-  async updateItems (items) {
+  async updateItems (items, updateFailureNotifier) {
     const cart = await this.load()
 
     const updatePromises = []
@@ -116,7 +117,10 @@ class BigCommerceCartRepository {
       const lineItem = cart.findItem(item.itemId)
 
       if (lineItem === null) {
-        // todo report error
+        updateFailureNotifier({
+          item: item,
+          reason: 'Item not found in BigCommerce cart'
+        })
         break
       }
 

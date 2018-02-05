@@ -36,7 +36,7 @@ class BigCommerceCart {
   }
 
   /**
-   * @param {string|null} itemId
+   * @param {string} itemId
    * @return {BigCommerceCartLineItemAbstract|null}
    */
   findItem (itemId) {
