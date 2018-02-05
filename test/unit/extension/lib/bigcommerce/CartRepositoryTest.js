@@ -106,4 +106,45 @@ describe('BigCommerceCartRepository - unit', function () {
 
     return subjectUnderTest.getCheckoutUrl().should.eventually.be.rejectedWith(Error)
   })
+
+  it('should update an item in the cart', function () {
+    const cartItems = [
+      {
+        itemId: 'abc-def-ghi-jkl-mno',
+        quantity: 1
+      }
+    ]
+    storageMock.expects('get').once().returns('0000-0000-0000-0000')
+
+    bigCommerceMock.expects('get').withArgs('/carts/0000-0000-0000-0000').returns({
+      data: {
+        id: '0000-0000-0000-0000',
+        currency: {
+          code: 'USD'
+        },
+        line_items: {
+          physical_items: [
+            {
+              id: 'abc-def-ghi-jkl-mno',
+              product_id: 42,
+              quantity: 1
+            }
+          ]
+        }
+      }
+    })
+
+    bigCommerceMock.expects('put').withArgs(
+      '/carts/0000-0000-0000-0000/items/abc-def-ghi-jkl-mno',
+      {
+        cart_id: '0000-0000-0000-0000',
+        item_id: 'abc-def-ghi-jkl-mno',
+        line_item: {
+          product_id: 42,
+          quantity: 1
+        }
+      }
+    ).returns({data: {id: '0000-0000-0000-0000'}})
+    return subjectUnderTest.updateItems(cartItems)
+  })
 })
