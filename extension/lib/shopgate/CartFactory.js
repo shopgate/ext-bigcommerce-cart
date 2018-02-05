@@ -13,13 +13,11 @@ class ShopgateCartFactory {
     const cart = new ShopgateCart(
       bigCommerceCart.currency,
       true,
-       (bigCommerceCart.taxIncluded) ? bigCommerceCart.taxIncluded : false
+      (bigCommerceCart.taxIncluded) ? bigCommerceCart.taxIncluded : false
     )
 
-    cart.addTotal('subTotal', 'SubTotal', bigCommerceCart.baseAmount)
     cart.addTotal('discount', 'Discount', bigCommerceCart.discountAmount)
     cart.addTotal('grandTotal', 'Total', bigCommerceCart.cartAmount)
-    cart.addTotal('subTotal', 'SubTotal', bigCommerceCart.cartAmount)
 
     for (const lineItem of bigCommerceCart.lineItems.physical) {
       const listPrice = lineItem.listPrice !== 0 ? lineItem.listPrice : lineItem.salePrice
@@ -37,6 +35,8 @@ class ShopgateCartFactory {
 
       cart.addItem(cartItem)
     }
+
+    cart.addTotal('subTotal', 'SubTotal', bigCommerceCart.productsSubTotal)
 
     return cart
   }
