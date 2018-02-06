@@ -5,7 +5,7 @@
 
 /**
  * @typedef {Object} ShopgateUpdateProduct
- * @property {string} CartItemId
+ * @property {string} itemId
  * @property {number} quantity
  */
 

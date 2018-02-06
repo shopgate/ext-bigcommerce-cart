@@ -145,6 +145,7 @@ describe('BigCommerceCartRepository - unit', function () {
         }
       }
     ).returns({data: {id: '0000-0000-0000-0000'}})
+
     return subjectUnderTest.updateItems(cartItems)
   })
 })
