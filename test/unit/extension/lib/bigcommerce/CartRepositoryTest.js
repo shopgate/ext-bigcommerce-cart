@@ -3,6 +3,7 @@ const BigCommerceCart = require('../../../../../extension/lib/bigcommerce/Cart')
 const BigCommerceCartLineItemRequest = require('../../../../../extension/lib/bigcommerce/cart/LineItemRequest')
 const BigCommerce = require('node-bigcommerce')
 const sinon = require('sinon')
+const assert = require('assert')
 
 describe('BigCommerceCartRepository - unit', function () {
   let bigCommerceMock
@@ -147,5 +148,35 @@ describe('BigCommerceCartRepository - unit', function () {
     ).returns({data: {id: '0000-0000-0000-0000'}})
 
     return subjectUnderTest.updateItems(cartItems)
+  })
+  it('Should call updateFailureNotifier callback when update item fails to find item in bigcommerce cart', async () => {
+    const cartItems = [
+      {
+        itemId: 'abc-def-ghi-jkl-mno',
+        quantity: 1
+      }
+    ]
+    storageMock.expects('get').once().returns('0000-0000-0000-0000')
+
+    bigCommerceMock.expects('get').withArgs('/carts/0000-0000-0000-0000').returns({
+      data: {
+        id: '0000-0000-0000-0000',
+        currency: {
+          code: 'USD'
+        },
+        line_items: {
+          physical_items: [
+            {
+              id: 'qrs-tuz-wxy-zzz',
+              product_id: 42,
+              quantity: 1
+            }
+          ]
+        }
+      }
+    })
+    const updateFailureNotifier = sinon.spy()
+    await subjectUnderTest.updateItems(cartItems, updateFailureNotifier).should.eventually.be.fulfilled
+    assert(updateFailureNotifier.calledWith({item: cartItems[0], reason: 'Item not found in BigCommerce cart'}))
   })
 })
