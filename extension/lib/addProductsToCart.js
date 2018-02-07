@@ -3,15 +3,14 @@ const ShopgateCartPipeline = require('./shopgate/CartExtensionPipeline')
 /**
  * @param {PipelineContext} context
  * @param {AddProductsInput} input
- * @param {AddProductsToCartCallback} cb
- * @returns {Promise<void>}
+ * @returns {Promise<AddProductsToCartResponse>}
  */
-module.exports = async (context, input, cb) => {
+module.exports = async (context, input) => {
   try {
     await ShopgateCartPipeline.create(context).addProducts(input.products)
-    cb(null, {})
+    return {}
   } catch (error) {
     context.log.error(error)
-    cb(error)
+    throw error
   }
 }
