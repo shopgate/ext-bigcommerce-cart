@@ -38,11 +38,6 @@
  */
 
 /**
- * @typedef {Object} GetCartInput
- * @property {Object} sgxsMeta
- */
-
-/**
  * @typedef {Object} PipelineConfiguration
  * @property {string} clientId
  * @property {string} accessToken
