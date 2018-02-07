@@ -3,11 +3,6 @@
  * @property {PipelineStorage} device
  * @property {PipelineStorage} user
  */
-/**
- * @callback AddProductsToCartCallback
- * @param {Error} [error]
- * @param {ShopgateAddProductResponse} [AddProductResponse]
- */
 
 /**
  *  @typedef {Object} ShopgateAddProductResponse
@@ -36,12 +31,6 @@
  * @property {PipelineConfiguration} config
  * @property {Object} log
  * @property {PipelineStorageContainer} storage
- */
-
-/**
- * @callback GetCartCallback
- * @param {Error} [error]
- * @param {ShopgateGetCartResponse} [ShopgateCart]
  */
 
 /**
