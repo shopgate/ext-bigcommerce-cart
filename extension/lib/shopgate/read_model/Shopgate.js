@@ -5,6 +5,22 @@
  */
 
 /**
+ *  @typedef {Object} ShopgateAddProductResponse
+ */
+
+/**
+ *  @typedef {Object} AddProductsInput
+ *  @property {Object} sgxsMeta
+ *  @property {ShopgateAddProduct[]} products
+ */
+
+/**
+ * @typedef {Object} ShopgateAddProduct
+ * @property {string} productId
+ * @property {number} quantity
+ */
+
+/**
  * @typedef {Object} PipelineStorage
  * @property {BigCommerceStorageGetter} get
  * @property {BigCommerceStorageSetter} set
@@ -15,6 +31,10 @@
  * @property {PipelineConfiguration} config
  * @property {Object} log
  * @property {PipelineStorageContainer} storage
+ */
+
+/**
+ * @typedef {Object} ShopgateGetCartResponse
  */
 
 /**
