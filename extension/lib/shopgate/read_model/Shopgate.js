@@ -3,11 +3,6 @@
  * @property {PipelineStorage} device
  * @property {PipelineStorage} user
  */
-/**
- * @callback AddProductsToCartCallback
- * @param {Error} [error]
- * @param {ShopgateAddProductResponse} [AddProductResponse]
- */
 
 /**
  *  @typedef {Object} ShopgateAddProductResponse
@@ -39,18 +34,7 @@
  */
 
 /**
- * @callback GetCartCallback
- * @param {Error} [error]
- * @param {ShopgateGetCartResponse} [ShopgateCart]
- */
-
-/**
  * @typedef {Object} ShopgateGetCartResponse
- */
-
-/**
- * @typedef {Object} GetCartInput
- * @property {Object} sgxsMeta
  */
 
 /**
