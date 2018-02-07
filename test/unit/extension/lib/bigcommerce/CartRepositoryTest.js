@@ -28,7 +28,7 @@ describe('BigCommerceCartRepository - unit', function () {
     storageMock.restore()
   })
 
-  it('should load empty cart when there is no cart id previously stored', function () {
+  it('should return null when there is no cart id previously stored', function () {
     storageMock.expects('get').once().returns(null)
 
     return subjectUnderTest.load().should.eventually.equal(null)
