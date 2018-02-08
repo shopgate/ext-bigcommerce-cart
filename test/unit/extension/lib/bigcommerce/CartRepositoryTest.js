@@ -106,4 +106,11 @@ describe('BigCommerceCartRepository - unit', function () {
 
     return subjectUnderTest.getCheckoutUrl().should.eventually.be.rejectedWith(Error)
   })
+
+  it('should properly call bigCommerce client delete method when doing a deleteProductsFromCart', function () {
+    const cartItemIds = ['abc-def-ghi-jk']
+    storageMock.expects('get').once().returns('0000-0000-0000-0000')
+    bigCommerceMock.expects('delete').withArgs('/carts/0000-0000-0000-0000/items/' + cartItemIds[0])
+    return subjectUnderTest.deleteProductFromCart(cartItemIds)
+  })
 })
