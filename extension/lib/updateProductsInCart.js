@@ -3,10 +3,9 @@ const ShopgateCartPipeline = require('./shopgate/CartExtensionPipeline')
 /**
  * @param {PipelineContext} context
  * @param {UpdateProductsInput} input
- * @param {UpdateProductsCallback} cb
- * @returns {Promise<void>}
+ * @returns {Promise<UpdateCartMessage[]>}
  */
-module.exports = async (context, input, cb) => {
+module.exports = async (context, input) => {
   try {
     const warningsPresent = await ShopgateCartPipeline.create(context).updateProducts(input.CartItem)
     // todo see about proper way to send an warning in case there are non breaking errors present.
@@ -19,9 +18,9 @@ module.exports = async (context, input, cb) => {
       })
     }
 
-    cb(null, messages)
+    return messages
   } catch (error) {
     context.log.error(error)
-    cb(error)
+    throw error
   }
 }

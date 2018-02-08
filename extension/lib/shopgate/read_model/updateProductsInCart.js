@@ -9,7 +9,9 @@
  * @property {number} quantity
  */
 
-/** @callback UpdateProductsCallback
- * @param {Error} [err]
- * @param {Object} [response]
- */
+/**
+ * @typedef {Object} UpdateCartMessage
+ * @property {string} code
+ * @property {string} message
+ * @property {string} type
+  */
