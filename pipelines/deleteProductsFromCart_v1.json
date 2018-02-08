@@ -1,0 +1,51 @@
+{
+  "version": "1",
+  "pipeline": {
+    "id": "deleteProductsFromCart_v1",
+    "input": [
+      {
+        "id": "1010",
+        "key": "sgxsMeta",
+        "optional": true
+      },
+      {
+        "id": "1020",
+        "key": "CartItemIds"
+      }
+    ],
+    "steps": [
+      {
+        "id": "@shopgate/bigcommerce-cart",
+        "path": "@shopgate/bigcommerce-cart/lib/deleteProductFromCart.js",
+        "type": "extension",
+        "input": [
+          {
+            "id": "1010",
+            "key": "sgxsMeta",
+            "optional": true
+          },
+          {
+            "id": "1020",
+            "key": "CartItemIds",
+            "optional": true
+          }
+        ],
+        "output": [
+          {
+            "id": "1030",
+            "key": "messages",
+            "optional": true
+          }
+        ]
+      }
+    ],
+    "output": [
+      {
+        "id": "1030",
+        "key": "messages",
+        "optional": true
+      }
+    ],
+    "public": true
+  }
+}
