@@ -111,6 +111,23 @@ describe('BigCommerceCartRepository - unit', function () {
     const cartItemIds = ['abc-def-ghi-jk']
     storageMock.expects('get').once().returns('0000-0000-0000-0000')
     bigCommerceMock.expects('delete').withArgs('/carts/0000-0000-0000-0000/items/' + cartItemIds[0])
-    return subjectUnderTest.deleteProductFromCart(cartItemIds)
+
+    return subjectUnderTest.deleteProductFromCart(cartItemIds).should.eventually.be.fulfilled
+  })
+
+  it('should see error when bigCommerce delete method throws and error', function () {
+    const cartItemIds = ['abc-def-ghi-jk']
+    storageMock.expects('get').once().returns('0000-0000-0000-0000')
+    bigCommerceMock.expects('delete').withArgs('/carts/0000-0000-0000-0000/items/' + cartItemIds[0]).throws(Error)
+
+    return subjectUnderTest.deleteProductFromCart(cartItemIds).should.eventually.be.rejectedWith(Error)
+  })
+
+  it('should see error when cartId is not returned during delete', function () {
+    const cartItemIds = ['abc-def-ghi-jk']
+    storageMock.expects('get').once().returns()
+    bigCommerceMock.expects('delete').never()
+
+    return subjectUnderTest.deleteProductFromCart(cartItemIds).should.eventually.be.rejectedWith(Error)
   })
 })
