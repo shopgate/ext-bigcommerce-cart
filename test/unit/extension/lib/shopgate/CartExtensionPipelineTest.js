@@ -76,7 +76,7 @@ describe('CartExtensionPipeline - unit', () => {
 
     return subjectUnderTest.getCheckoutUrl().should.eventually.equal(expectedUrl)
   })
-  it('update products should return true', function () {
+  it('should return false when update product runs without error', function () {
     bigCommerceCartRepositoryMock.expects('updateItems').once().returns()
     return subjectUnderTest.updateProducts([{productId: '1', quantity: 1}]).should.eventually.equal(false)
   })
