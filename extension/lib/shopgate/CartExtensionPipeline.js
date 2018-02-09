@@ -93,7 +93,7 @@ class ShopgateCartExtensionPipeline {
    * @return {Promise<boolean>}
    */
   async updateProducts (cartItems) {
-    let nonBreakingErrorsPresent = false
+    let updateSuccess = true
     await this._bigCommerceCartRepository.updateItems(
       cartItems.map((item) => {
         return BigCommerceCartRepository.createLineItemUpdate(item.CartItemId, item.quantity)
@@ -105,11 +105,11 @@ class ShopgateCartExtensionPipeline {
           cartItemId: failureEvent.item.itemId,
           quantity: failureEvent.item.quantity
         })
-        nonBreakingErrorsPresent = true
+        updateSuccess = false
       }
     )
 
-    return nonBreakingErrorsPresent
+    return updateSuccess
   }
 
   /**

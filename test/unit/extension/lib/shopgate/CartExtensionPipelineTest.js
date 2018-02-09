@@ -77,13 +77,13 @@ describe('CartExtensionPipeline - unit', () => {
 
     return subjectUnderTest.getCheckoutUrl().should.eventually.equal(expectedUrl)
   })
-  it('should return false when update product runs without error', function () {
+  it('should return true when update product runs without error', function () {
     bigCommerceCartRepositoryMock.expects('updateItems').once().returns()
 
-    return subjectUnderTest.updateProducts([{ productId: '1', quantity: 1 }]).should.eventually.equal(false)
+    return subjectUnderTest.updateProducts([{ productId: '1', quantity: 1 }]).should.eventually.equal(true)
   })
 
-  it('should return true when update product encounters a non-breaking error', function () {
+  it('should return false when update product encounters a non-breaking error', function () {
     bigCommerceCartRepositoryMock.expects('updateItems').once().callsFake((items, notify) => {
       notify({
         reason: 'fake reason',
@@ -94,6 +94,6 @@ describe('CartExtensionPipeline - unit', () => {
       })
     })
 
-    return subjectUnderTest.updateProducts([{ productId: '1', quantity: 1 }]).should.eventually.equal(true)
+    return subjectUnderTest.updateProducts([{ productId: '1', quantity: 1 }]).should.eventually.equal(false)
   })
 })
