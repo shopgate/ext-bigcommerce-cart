@@ -147,8 +147,9 @@ describe('BigCommerceCartRepository - unit', function () {
       }
     ).returns({data: {id: '0000-0000-0000-0000'}})
 
-    return subjectUnderTest.updateItems(cartItems)
+    return subjectUnderTest.updateItems(cartItems).should.eventually.be.fulfilled
   })
+
   it('Should call updateFailureNotifier callback when update item fails to find item in bigcommerce cart', async () => {
     const cartItems = [
       {

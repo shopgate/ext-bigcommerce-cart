@@ -12,7 +12,7 @@ describe('Cart - unit', function () {
     genericExampleItem = new BigCommerceCartLineItemPhysical('aaa-aaa-aaa-aaa', 99, 120, 'product name', 'product.url', 1, true, 'image.url', 100, 0, true, false)
   })
 
-  it('should find a products', function () {
+  it('should find a single products', function () {
     subjectUnderTest.addItem(genericExampleItem)
 
     subjectUnderTest.findItem('aaa-aaa-aaa-aaa').should.deep.equal(genericExampleItem)

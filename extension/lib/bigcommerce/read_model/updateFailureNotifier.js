@@ -1,5 +1,11 @@
 
 /**
  * @callback bigCommerceUpdateFailureNotifier
- * @param {Object} event
+ * @param {BigCommerceNonBreakingErrorEvent} event
  */
+
+/**
+  * @typedef {Object} BigCommerceNonBreakingErrorEvent
+  * @property {BigCommerceCartLineItemUpdateRequest} item
+  * @property {string} reason
+  */
