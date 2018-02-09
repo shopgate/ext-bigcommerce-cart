@@ -15,13 +15,14 @@ describe('CartExtensionPipeline - unit', () => {
 
   let storageMock
   const storage = { get: () => {}, set: () => {} }
+  const context = { log: { error: () => {} } }
 
   beforeEach(() => {
     createLineItemSpy = sinon.spy(BigCommerceCartRepository, 'createLineItem')
     storageMock = sinon.mock(storage)
     const bigCommerceCartRepository = new BigCommerceCartRepository(sinon.createStubInstance(BigCommerce),   /** @type BigCommerceStorage */ storage)
     bigCommerceCartRepositoryMock = sinon.mock(bigCommerceCartRepository)
-    subjectUnderTest = new ShopgateCartExtensionPipeline(bigCommerceCartRepository, new ShopgateCartFactory())
+    subjectUnderTest = new ShopgateCartExtensionPipeline(bigCommerceCartRepository, new ShopgateCartFactory(), /** @type PipelineContext */ context)
   })
 
   afterEach(() => {
@@ -78,6 +79,21 @@ describe('CartExtensionPipeline - unit', () => {
   })
   it('should return false when update product runs without error', function () {
     bigCommerceCartRepositoryMock.expects('updateItems').once().returns()
-    return subjectUnderTest.updateProducts([{productId: '1', quantity: 1}]).should.eventually.equal(false)
+
+    return subjectUnderTest.updateProducts([{ productId: '1', quantity: 1 }]).should.eventually.equal(false)
+  })
+
+  it('should return true when update product encounters a non-breaking error', function () {
+    bigCommerceCartRepositoryMock.expects('updateItems').once().callsFake((items, notify) => {
+      notify({
+        reason: 'fake reason',
+        item: {
+          itemId: '21321',
+          quantity: 1
+        }
+      })
+    })
+
+    return subjectUnderTest.updateProducts([{ productId: '1', quantity: 1 }]).should.eventually.equal(true)
   })
 })
