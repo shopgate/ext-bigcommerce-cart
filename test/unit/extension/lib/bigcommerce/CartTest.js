@@ -14,11 +14,13 @@ describe('Cart - unit', function () {
 
   it('should find a products', function () {
     subjectUnderTest.addItem(genericExampleItem)
+
     subjectUnderTest.findItem('aaa-aaa-aaa-aaa').should.deep.equal(genericExampleItem)
   })
 
   it('should result in find returning null when no product matches', function () {
     subjectUnderTest.addItem(genericExampleItem)
+
     assert.equal(subjectUnderTest.findItem('bbb-bbb-bbb-bbb'), null)
   })
 
@@ -28,6 +30,7 @@ describe('Cart - unit', function () {
     subjectUnderTest.addItem(examplePhysicalItem)
     subjectUnderTest.addItem(genericExampleItem)
     subjectUnderTest.addItem(exampleDigitalItem)
+
     assert.equal(subjectUnderTest.productsSubTotal, 238)
   })
 })
