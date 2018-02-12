@@ -78,10 +78,12 @@ describe('CartExtensionPipeline - unit', () => {
     return subjectUnderTest.getCheckoutUrl().should.eventually.equal(expectedUrl)
   })
 
-  it('should return true when update product runs without error', function () {
+  it('should return true when update product runs without error', async () => {
     bigCommerceCartRepositoryMock.expects('updateItems').once().returns()
+    const errorLogSpy = sinon.spy(subjectUnderTest._context.log, 'error')
 
-    return subjectUnderTest.updateProducts([{ productId: '1', quantity: 1 }]).should.eventually.equal(true)
+    await subjectUnderTest.updateProducts([{productId: '1', quantity: 1}]).should.eventually.equal(true)
+    assert(errorLogSpy.notCalled)
   })
 
   it('should return false when update product encounters a non-breaking error', function () {

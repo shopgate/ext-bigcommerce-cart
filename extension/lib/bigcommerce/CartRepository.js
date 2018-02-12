@@ -111,6 +111,14 @@ class BigCommerceCartRepository {
   async updateItems (items, updateFailureNotifier) {
     const cart = await this.load()
 
+    if (!cart) {
+      updateFailureNotifier({
+        item: {},
+        reason: 'BigCommerce Cart not found'
+      })
+      return
+    }
+
     const updatePromises = []
 
     for (const item of items) {
