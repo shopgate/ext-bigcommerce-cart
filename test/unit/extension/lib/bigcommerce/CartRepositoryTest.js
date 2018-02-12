@@ -152,7 +152,7 @@ describe('BigCommerceCartRepository - unit', function () {
     assert(updateFailureNotifier.notCalled)
   })
 
-  it('Should call updateFailureNotifier callback when update item fails to find item in bigcommerce cart', async () => {
+  it('should call updateFailureNotifier callback when update item fails to find item in bigcommerce cart', async () => {
     const cartItems = [
       {
         itemId: 'abc-def-ghi-jkl-mno',
