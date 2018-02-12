@@ -140,7 +140,7 @@ class BigCommerceCartRepository {
   }
 
   /**
-   * @param {Array} cartItemIds
+   * @param {[string]} cartItemIds
    * @return {Promise.<void>}
    */
   async deleteProductFromCart (cartItemIds) {

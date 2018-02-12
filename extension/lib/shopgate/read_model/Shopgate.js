@@ -44,3 +44,8 @@
  * @property {string} storeHash
  * @property {string} clientSecret
  */
+
+/**
+ * @typedef {Object} DeleteProductsInput
+ * @property {[string]} CartItemIds
+ */
