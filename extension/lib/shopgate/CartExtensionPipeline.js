@@ -87,8 +87,8 @@ class ShopgateCartExtensionPipeline {
   }
 
   /**
-   * @param {Array} cartItemIds
-   * @return {Promise.<void>}
+   * @param {[string]} cartItemIds
+   * @return {Promise<void>}
    */
   async deleteProductFromCart (cartItemIds) {
     await this._bigCommerceCartRepository.deleteProductFromCart(cartItemIds)
