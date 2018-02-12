@@ -108,7 +108,7 @@ describe('BigCommerceCartRepository - unit', function () {
     return subjectUnderTest.getCheckoutUrl().should.eventually.be.rejectedWith(Error)
   })
 
-  it('should update an item in the cart', function () {
+  it('should update an item in the cart', async () => {
     const cartItems = [
       {
         itemId: 'abc-def-ghi-jkl-mno',
@@ -146,8 +146,10 @@ describe('BigCommerceCartRepository - unit', function () {
         }
       }
     ).returns({data: {id: '0000-0000-0000-0000'}})
+    const updateFailureNotifier = sinon.spy()
 
-    return subjectUnderTest.updateItems(cartItems).should.eventually.be.fulfilled
+    await subjectUnderTest.updateItems(cartItems, updateFailureNotifier).should.eventually.be.fulfilled
+    assert(updateFailureNotifier.notCalled)
   })
 
   it('Should call updateFailureNotifier callback when update item fails to find item in bigcommerce cart', async () => {

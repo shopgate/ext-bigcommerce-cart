@@ -96,7 +96,6 @@ describe('CartExtensionPipeline - unit', () => {
         }
       })
     })
-
     return subjectUnderTest.updateProducts([{ productId: '1', quantity: 1 }]).should.eventually.equal(false)
   })
 })
