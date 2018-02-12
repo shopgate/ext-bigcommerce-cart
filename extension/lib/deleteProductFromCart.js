@@ -8,7 +8,6 @@ const ShopgateCartPipeline = require('./shopgate/CartExtensionPipeline')
 module.exports = async (context, input) => {
   try {
     await ShopgateCartPipeline.create(context).deleteProductFromCart(input.CartItemIds)
-    return {}
   } catch (error) {
     context.log.error(error)
     throw error
