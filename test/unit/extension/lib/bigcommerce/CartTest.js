@@ -24,7 +24,7 @@ describe('Cart - unit', function () {
     assert.equal(subjectUnderTest.findItem('bbb-bbb-bbb-bbb'), null)
   })
 
-  it('Should return the total of physical and digital cartLineItems\'s salePrice times quantity', function () {
+  it('should return the total of physical and digital cartLineItems\'s salePrice times quantity', function () {
     const examplePhysicalItem = new BigCommerceCartLineItemPhysical('aaa-aaa-aaa-aaa', 99, 120, 'product name', 'product.url', 2, true, 'image.url', 100, 95, true, false)
     const exampleDigitalItem = new BigCommerceCartLineItemDigital('zzz-zzz-zzz-zzz', 22, 32, 'product name', 'product.url', 2, true, 'image.url', 35, 24)
     subjectUnderTest.addItem(examplePhysicalItem)
