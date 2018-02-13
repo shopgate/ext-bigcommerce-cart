@@ -15,3 +15,7 @@
  * @property {string} message
  * @property {string} type
   */
+
+/** @typedef {Object} UpdateCartResponse
+ * @property {UpdateCartMessage[]} messages
+ */

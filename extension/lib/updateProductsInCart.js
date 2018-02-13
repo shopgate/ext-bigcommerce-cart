@@ -3,12 +3,11 @@ const ShopgateCartPipeline = require('./shopgate/CartExtensionPipeline')
 /**
  * @param {PipelineContext} context
  * @param {UpdateProductsInput} input
- * @returns {Promise<UpdateCartMessage[]>}
+ * @returns {Promise<UpdateCartResponse>}
  */
 module.exports = async (context, input) => {
   try {
     const updateSuccess = await ShopgateCartPipeline.create(context).updateProducts(input.CartItem)
-    // todo see about proper way to send an warning in case there are non breaking errors present.
     const messages = []
     if (!updateSuccess) {
       messages.push({
@@ -18,7 +17,7 @@ module.exports = async (context, input) => {
       })
     }
 
-    return messages
+    return {messages: messages}
   } catch (error) {
     context.log.error(error)
     throw error
