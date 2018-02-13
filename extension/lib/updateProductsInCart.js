@@ -3,7 +3,7 @@ const ShopgateCartPipeline = require('./shopgate/CartExtensionPipeline')
 /**
  * @param {PipelineContext} context
  * @param {UpdateProductsInput} input
- * @returns {Promise<UpdateCartResponse>}
+ * @returns {Promise<Object>}
  */
 module.exports = async (context, input) => {
   try {
@@ -17,7 +17,7 @@ module.exports = async (context, input) => {
       })
     }
 
-    return {messages: messages}
+    return { messages }
   } catch (error) {
     context.log.error(error)
     throw error
