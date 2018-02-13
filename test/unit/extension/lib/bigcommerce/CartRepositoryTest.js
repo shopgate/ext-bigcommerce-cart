@@ -182,4 +182,17 @@ describe('BigCommerceCartRepository - unit', function () {
     await subjectUnderTest.updateItems(cartItems, updateFailureNotifier).should.eventually.be.fulfilled
     assert(updateFailureNotifier.calledWith({item: cartItems[0], reason: 'Item not found in BigCommerce cart'}))
   })
+
+  it('should throw an error when no cart is found during updateItems', async () => {
+    const cartItems = [
+      {
+        itemId: 'abc-def-ghi-jkl-mno',
+        quantity: 1
+      }
+    ]
+    storageMock.expects('get').once().returns()
+    const updateFailureNotifier = sinon.spy()
+    await subjectUnderTest.updateItems(cartItems, updateFailureNotifier).should.eventually.be.rejectedWith(Error)
+    assert(updateFailureNotifier.notCalled)
+  })
 })
