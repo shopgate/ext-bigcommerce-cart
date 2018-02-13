@@ -89,7 +89,7 @@ class ShopgateCartExtensionPipeline {
   }
 
   /**
-   * @param {[string]} cartItems
+   * @param {string[]} cartItems
    * @return {Promise<boolean>}
    */
   async updateProducts (cartItems) {
