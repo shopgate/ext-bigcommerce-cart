@@ -47,5 +47,5 @@
 
 /**
  * @typedef {Object} DeleteProductsInput
- * @property {[string]} CartItemIds
+ * @property {string[]} CartItemIds
  */

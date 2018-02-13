@@ -87,7 +87,7 @@ class ShopgateCartExtensionPipeline {
   }
 
   /**
-   * @param {[string]} cartItemIds
+   * @param {string[]} cartItemIds
    * @return {Promise<void>}
    */
   async deleteProductFromCart (cartItemIds) {
