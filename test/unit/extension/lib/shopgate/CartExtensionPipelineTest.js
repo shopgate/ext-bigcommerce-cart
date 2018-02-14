@@ -79,16 +79,16 @@ describe('CartExtensionPipeline - unit', () => {
   })
 
   it('should return true when update product runs without error', async () => {
-    bigCommerceCartRepositoryMock.expects('updateItems').once().returns()
+    bigCommerceCartRepositoryMock.expects('updateItems').once().withArgs([BigCommerceCartRepository.createLineItemUpdate('1', 1)])
     const errorLogSpy = sinon.spy(subjectUnderTest._context.log, 'error')
 
-    await subjectUnderTest.updateProducts([{productId: '1', quantity: 1}]).should.eventually.equal(true)
+    await subjectUnderTest.updateProducts([{CartItemId: '1', quantity: 1}]).should.eventually.equal(true)
     assert(errorLogSpy.notCalled)
     subjectUnderTest._context.log.error.restore()
   })
 
   it('should return false when update product encounters a non-breaking error', async () => {
-    bigCommerceCartRepositoryMock.expects('updateItems').once().callsFake((items, notify) => {
+    bigCommerceCartRepositoryMock.expects('updateItems').once().withArgs([BigCommerceCartRepository.createLineItemUpdate('1', 1)]).callsFake((items, notify) => {
       notify({
         reason: 'reason test message',
         item: {
@@ -99,7 +99,7 @@ describe('CartExtensionPipeline - unit', () => {
     })
     const errorLogSpy = sinon.spy(subjectUnderTest._context.log, 'error')
 
-    await subjectUnderTest.updateProducts([{ productId: '1', quantity: 1 }]).should.eventually.equal(false)
+    await subjectUnderTest.updateProducts([{ CartItemId: '1', quantity: 1 }]).should.eventually.equal(false)
     assert(errorLogSpy.calledWith({msg: 'Failed updating product', reason: 'reason test message', cartItemId: '1', quantity: 1}))
     subjectUnderTest._context.log.error.restore()
   })
