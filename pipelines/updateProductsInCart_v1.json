@@ -1,0 +1,40 @@
+{
+  "version": "1",
+  "pipeline": {
+    "id": "updateProductsInCart_v1",
+    "input": [
+      {
+        "id": "1020",
+        "key": "CartItem"
+      }
+    ],
+    "steps": [
+      {
+        "id": "@shopgate/bigcommerce-cart",
+        "path": "@shopgate/bigcommerce-cart/lib/updateProductsInCart.js",
+        "type": "extension",
+        "input": [
+          {
+            "id": "1020",
+            "key": "CartItem"
+          }
+        ],
+        "output": [
+          {
+            "id": "1030",
+            "key": "messages",
+            "optional": true
+          }
+        ]
+      }
+    ],
+    "output": [
+      {
+        "id": "1030",
+        "key": "messages",
+        "optional": true
+      }
+    ],
+    "public": true
+  }
+}

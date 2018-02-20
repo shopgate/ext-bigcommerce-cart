@@ -7,10 +7,12 @@ class ShopgateCartExtensionPipeline {
   /**
    * @param {BigCommerceCartRepository} bigCommerceCartRepository
    * @param {ShopgateCartFactory} shopgateCartFactory
+   * @param {PipelineContext} context
    */
-  constructor (bigCommerceCartRepository, shopgateCartFactory) {
+  constructor (bigCommerceCartRepository, shopgateCartFactory, context) {
     this._bigCommerceCartRepository = bigCommerceCartRepository
     this._shopgateCartFactory = shopgateCartFactory
+    this._context = context
   }
 
   /**
@@ -87,6 +89,30 @@ class ShopgateCartExtensionPipeline {
   }
 
   /**
+   * @param {ShopgateUpdateProduct[]} cartItems
+   * @return {Promise<boolean>}
+   */
+  async updateProducts (cartItems) {
+    let updateSuccess = true
+    await this._bigCommerceCartRepository.updateItems(
+      cartItems.map((item) => {
+        return BigCommerceCartRepository.createLineItemUpdate(item.CartItemId, item.quantity)
+      }),
+      (failureEvent) => {
+        this._context.log.error({
+          msg: 'Failed updating product',
+          reason: failureEvent.reason,
+          cartItemId: failureEvent.item.itemId,
+          quantity: failureEvent.item.quantity
+        })
+        updateSuccess = false
+      }
+    )
+
+    return updateSuccess
+  }
+
+  /**
    * @param {PipelineContext} context
    * @returns {ShopgateCartExtensionPipeline}
    */
@@ -101,7 +127,7 @@ class ShopgateCartExtensionPipeline {
       /** @type BigCommerceStorage */
       new ShopgateExtensionStorage(context.storage.device))
 
-    return new ShopgateCartExtensionPipeline(bigCommerceCartRepository, new ShopgateCartFactory())
+    return new ShopgateCartExtensionPipeline(bigCommerceCartRepository, new ShopgateCartFactory(), context)
   }
 }
 

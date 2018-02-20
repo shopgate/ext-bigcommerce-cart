@@ -3,9 +3,7 @@
   "pipeline": {
     "id": "getCart_v1",
     "public": true,
-    "input": [
-      {"key": "sgxsMeta", "id": "1010", "optional": true}
-    ],
+    "input": [],
     "output": [
       {"key": "isOrderable", "id": "1010"},
       {"key": "isTaxIncluded", "id": "1020"},
@@ -21,9 +19,7 @@
         "type": "extension",
         "id": "@shopgate/bigcommerce-cart",
         "path": "@shopgate/bigcommerce-cart/lib/getCart.js",
-        "input": [
-          {"key": "sgxsMeta", "id": "1010", "optional": true}
-        ],
+        "input": [],
         "output": [
           {"key": "isOrderable", "id": "1010"},
           {"key": "isTaxIncluded", "id": "1020"},
