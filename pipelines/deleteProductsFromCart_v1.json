@@ -11,7 +11,7 @@
     "steps": [
       {
         "id": "@shopgate/bigcommerce-cart",
-        "path": "@shopgate/bigcommerce-cart/lib/deleteProductFromCart.js",
+        "path": "@shopgate/bigcommerce-cart/lib/deleteProductsFromCart.js",
         "type": "extension",
         "input": [
           {

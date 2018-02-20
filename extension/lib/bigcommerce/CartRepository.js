@@ -187,8 +187,8 @@ class BigCommerceCartRepository {
   }
 
   /**
-   * @param {[string]} cartItemIds
-   * @return {Promise.<void>}
+   * @param {string[]} cartItemIds
+   * @return {Promise<void>}
    */
   async deleteProductFromCart (cartItemIds) {
     const cartId = await this._storage.get(CART_ID)
