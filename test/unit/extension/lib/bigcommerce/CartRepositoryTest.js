@@ -195,4 +195,29 @@ describe('BigCommerceCartRepository - unit', function () {
     await subjectUnderTest.updateItems(cartItems, updateFailureNotifier).should.eventually.be.rejectedWith(Error)
     assert(updateFailureNotifier.notCalled)
   })
+
+  it('should properly call bigCommerce client delete method when doing a deleteProductsFromCart', function () {
+    const cartItemIds = ['abc-def-ghi-jk', 'lmn-opq-rst-uvw']
+    storageMock.expects('get').once().returns('0000-0000-0000-0000')
+    bigCommerceMock.expects('delete').withArgs('/carts/0000-0000-0000-0000/items/' + cartItemIds[0]).onCall(0)
+    bigCommerceMock.expects('delete').withArgs('/carts/0000-0000-0000-0000/items/' + cartItemIds[1]).onCall(1)
+
+    return subjectUnderTest.deleteProductFromCart(cartItemIds).should.eventually.be.fulfilled
+  })
+
+  it('should fail to delete cart items when bigCommerce delete operation fails', function () {
+    const cartItemIds = ['abc-def-ghi-jk']
+    storageMock.expects('get').once().returns('0000-0000-0000-0000')
+    bigCommerceMock.expects('delete').withArgs('/carts/0000-0000-0000-0000/items/' + cartItemIds[0]).throws(Error)
+
+    return subjectUnderTest.deleteProductFromCart(cartItemIds).should.eventually.be.rejectedWith(Error)
+  })
+
+  it('should fail to delete cart items when no cart id is available', function () {
+    const cartItemIds = ['abc-def-ghi-jk']
+    storageMock.expects('get').once().returns()
+    bigCommerceMock.expects('delete').never()
+
+    return subjectUnderTest.deleteProductFromCart(cartItemIds).should.eventually.be.rejectedWith(Error)
+  })
 })

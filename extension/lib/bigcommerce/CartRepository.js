@@ -185,6 +185,23 @@ class BigCommerceCartRepository {
 
     return response.data.checkout_url
   }
+
+  /**
+   * @param {string[]} cartItemIds
+   * @return {Promise<void>}
+   */
+  async deleteProductFromCart (cartItemIds) {
+    const cartId = await this._storage.get(CART_ID)
+    if (!cartId) {
+      throw (new Error('Cart ID is not available'))
+    }
+    const deletePromises = []
+    for (let cartItemId of cartItemIds) {
+      deletePromises.push(this._client.delete('/carts/' + cartId + '/items/' + cartItemId))
+    }
+
+    await Promise.all(deletePromises)
+  }
 }
 
 module.exports = BigCommerceCartRepository
