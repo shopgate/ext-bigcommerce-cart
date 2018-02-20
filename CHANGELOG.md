@@ -6,6 +6,11 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## [Unreleased]
 
+## [0.1.3] -2018-02-20
+### Added
+- functionality to update simple product in cart
+- functionality to delete product from cart
+
 ## [0.1.2] - 2018-02-07
 ### Added
 - true support for async/await and JS promises in steps
@@ -19,7 +24,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 - functionality to add simple products to the cart
 - functionality to return BigCommerce checkout url
 
-[Unreleased]: https://github.com/shopgate/cloud-ext-bigcommerce-cart/compare/v0.1.2...HEAD
+[Unreleased]: https://github.com/shopgate/cloud-ext-bigcommerce-cart/compare/v0.1.3...HEAD
+[0.1.3]: https://github.com/shopgate/cloud-ext-bigcommerce-cart/compare/v0.1.2...v0.1.3
 [0.1.2]: https://github.com/shopgate/cloud-ext-bigcommerce-cart/compare/v0.1.1...v0.1.2
 [0.1.1]: https://github.com/shopgate/cloud-ext-bigcommerce-cart/compare/v0.1.0...v0.1.1
 [0.1.0]: https://github.com/shopgate/cloud-ext-bigcommerce-cart/tree/v0.1.0
