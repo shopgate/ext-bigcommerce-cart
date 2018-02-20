@@ -15,13 +15,14 @@ describe('CartExtensionPipeline - unit', () => {
 
   let storageMock
   const storage = { get: () => {}, set: () => {} }
+  const context = { log: { error: () => {} } }
 
   beforeEach(() => {
     createLineItemSpy = sinon.spy(BigCommerceCartRepository, 'createLineItem')
     storageMock = sinon.mock(storage)
     const bigCommerceCartRepository = new BigCommerceCartRepository(sinon.createStubInstance(BigCommerce),   /** @type BigCommerceStorage */ storage)
     bigCommerceCartRepositoryMock = sinon.mock(bigCommerceCartRepository)
-    subjectUnderTest = new ShopgateCartExtensionPipeline(bigCommerceCartRepository, new ShopgateCartFactory())
+    subjectUnderTest = new ShopgateCartExtensionPipeline(bigCommerceCartRepository, new ShopgateCartFactory(), /** @type PipelineContext */ context)
   })
 
   afterEach(() => {
@@ -75,5 +76,31 @@ describe('CartExtensionPipeline - unit', () => {
     bigCommerceCartRepositoryMock.expects('getCheckoutUrl').once().returns(expectedUrl)
 
     return subjectUnderTest.getCheckoutUrl().should.eventually.equal(expectedUrl)
+  })
+
+  it('should return true when update product runs without error', async () => {
+    bigCommerceCartRepositoryMock.expects('updateItems').once().withArgs([BigCommerceCartRepository.createLineItemUpdate('1', 1)])
+    const errorLogSpy = sinon.spy(subjectUnderTest._context.log, 'error')
+
+    await subjectUnderTest.updateProducts([{CartItemId: '1', quantity: 1}]).should.eventually.equal(true)
+    assert(errorLogSpy.notCalled)
+    subjectUnderTest._context.log.error.restore()
+  })
+
+  it('should return false when update product encounters a non-breaking error', async () => {
+    bigCommerceCartRepositoryMock.expects('updateItems').once().withArgs([BigCommerceCartRepository.createLineItemUpdate('1', 1)]).callsFake((items, notify) => {
+      notify({
+        reason: 'reason test message',
+        item: {
+          itemId: '1',
+          quantity: 1
+        }
+      })
+    })
+    const errorLogSpy = sinon.spy(subjectUnderTest._context.log, 'error')
+
+    await subjectUnderTest.updateProducts([{ CartItemId: '1', quantity: 1 }]).should.eventually.equal(false)
+    assert(errorLogSpy.calledWith({msg: 'Failed updating product', reason: 'reason test message', cartItemId: '1', quantity: 1}))
+    subjectUnderTest._context.log.error.restore()
   })
 })

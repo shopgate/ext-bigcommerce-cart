@@ -1,6 +1,7 @@
 const BigCommerceCartFactory = require('./CartFactory')
 const BigCommerceCartLineItemFactory = require('./cart/LineItemFactory')
 const BigCommerceCartLineItemRequest = require('./cart/LineItemRequest')
+const BigCommerceCartLineItemUpdateRequest = require('./cart/LineItemUpdateRequest')
 
 const CART_ID = 'cartId'
 
@@ -57,6 +58,15 @@ class BigCommerceCartRepository {
   }
 
   /**
+   * @param {string} itemId
+   * @param {number} quantity
+   * @return {BigCommerceCartLineItemUpdateRequest}
+   */
+  static createLineItemUpdate (itemId, quantity) {
+    return new BigCommerceCartLineItemUpdateRequest(itemId, quantity)
+  }
+
+  /**
    * @param {BigCommerceCartLineItemRequest[]} items
    * @returns {Promise<void>}
    */
@@ -91,6 +101,43 @@ class BigCommerceCartRepository {
     }
 
     return lineItem
+  }
+
+  /**
+   * @param {[BigCommerceCartLineItemUpdateRequest]} items
+   * @param {bigCommerceUpdateFailureNotifier} updateFailureNotifier
+   * @return {Promise<void>}
+   */
+  async updateItems (items, updateFailureNotifier) {
+    const cart = await this.load()
+
+    if (!cart) {
+      throw new Error('No cart was found to update')
+    }
+
+    const updatePromises = []
+
+    for (const item of items) {
+      const lineItem = cart.findItem(item.itemId)
+
+      if (lineItem === null) {
+        updateFailureNotifier({
+          item: item,
+          reason: 'Item not found in BigCommerce cart'
+        })
+        break
+      }
+
+      updatePromises.push(
+        this._client.put('/carts/' + cart.id + '/items/' + lineItem.id, {
+          'cart_id': cart.id,
+          'item_id': lineItem.id,
+          'line_item': this._toApiLineItem(BigCommerceCartRepository.createLineItem(lineItem.productId, item.quantity))
+        })
+      )
+    }
+
+    await Promise.all(updatePromises)
   }
 
   /**

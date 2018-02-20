@@ -3,6 +3,7 @@ const BigCommerceCart = require('../../../../../extension/lib/bigcommerce/Cart')
 const BigCommerceCartLineItemRequest = require('../../../../../extension/lib/bigcommerce/cart/LineItemRequest')
 const BigCommerce = require('node-bigcommerce')
 const sinon = require('sinon')
+const assert = require('assert')
 
 describe('BigCommerceCartRepository - unit', function () {
   let bigCommerceMock
@@ -28,7 +29,7 @@ describe('BigCommerceCartRepository - unit', function () {
     storageMock.restore()
   })
 
-  it('should load empty cart when there is no cart id previously stored', function () {
+  it('should return null when there is no cart id previously stored', function () {
     storageMock.expects('get').once().returns(null)
 
     return subjectUnderTest.load().should.eventually.equal(null)
@@ -105,6 +106,94 @@ describe('BigCommerceCartRepository - unit', function () {
     bigCommerceMock.expects('post').once().withArgs('/carts/0000-0000-0000-0000/redirect_urls').returns(null)
 
     return subjectUnderTest.getCheckoutUrl().should.eventually.be.rejectedWith(Error)
+  })
+
+  it('should update an item in the cart', async () => {
+    const cartItems = [
+      {
+        itemId: 'abc-def-ghi-jkl-mno',
+        quantity: 1
+      }
+    ]
+    storageMock.expects('get').once().returns('0000-0000-0000-0000')
+
+    bigCommerceMock.expects('get').withArgs('/carts/0000-0000-0000-0000').returns({
+      data: {
+        id: '0000-0000-0000-0000',
+        currency: {
+          code: 'USD'
+        },
+        line_items: {
+          physical_items: [
+            {
+              id: 'abc-def-ghi-jkl-mno',
+              product_id: 42,
+              quantity: 1
+            }
+          ]
+        }
+      }
+    })
+
+    bigCommerceMock.expects('put').withArgs(
+      '/carts/0000-0000-0000-0000/items/abc-def-ghi-jkl-mno',
+      {
+        cart_id: '0000-0000-0000-0000',
+        item_id: 'abc-def-ghi-jkl-mno',
+        line_item: {
+          product_id: 42,
+          quantity: 1
+        }
+      }
+    ).returns({data: {id: '0000-0000-0000-0000'}})
+    const updateFailureNotifier = sinon.spy()
+
+    await subjectUnderTest.updateItems(cartItems, updateFailureNotifier).should.eventually.be.fulfilled
+    assert(updateFailureNotifier.notCalled)
+  })
+
+  it('should call updateFailureNotifier callback when update item fails to find item in bigcommerce cart', async () => {
+    const cartItems = [
+      {
+        itemId: 'abc-def-ghi-jkl-mno',
+        quantity: 1
+      }
+    ]
+    storageMock.expects('get').once().returns('0000-0000-0000-0000')
+
+    bigCommerceMock.expects('get').withArgs('/carts/0000-0000-0000-0000').returns({
+      data: {
+        id: '0000-0000-0000-0000',
+        currency: {
+          code: 'USD'
+        },
+        line_items: {
+          physical_items: [
+            {
+              id: 'qrs-tuz-wxy-zzz',
+              product_id: 42,
+              quantity: 1
+            }
+          ]
+        }
+      }
+    })
+    const updateFailureNotifier = sinon.spy()
+    await subjectUnderTest.updateItems(cartItems, updateFailureNotifier).should.eventually.be.fulfilled
+    assert(updateFailureNotifier.calledWith({item: cartItems[0], reason: 'Item not found in BigCommerce cart'}))
+  })
+
+  it('should throw an error when no cart is found during updateItems', async () => {
+    const cartItems = [
+      {
+        itemId: 'abc-def-ghi-jkl-mno',
+        quantity: 1
+      }
+    ]
+    storageMock.expects('get').once().returns()
+    const updateFailureNotifier = sinon.spy()
+    await subjectUnderTest.updateItems(cartItems, updateFailureNotifier).should.eventually.be.rejectedWith(Error)
+    assert(updateFailureNotifier.notCalled)
   })
 
   it('should properly call bigCommerce client delete method when doing a deleteProductsFromCart', function () {

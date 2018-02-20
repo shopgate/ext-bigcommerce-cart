@@ -29,10 +29,18 @@ class BigCommerceCart {
   }
 
   /**
-   * @param {BigCommerceCartLineItemPhysical} item
+   * @param {BigCommerceCartLineItemAbstract} item
    */
-  addPhysicalItem (item) {
-    this._lineItems.physical.push(item)
+  addItem (item) {
+    this._lineItems.add(item)
+  }
+
+  /**
+   * @param {string} itemId
+   * @return {BigCommerceCartLineItemAbstract|null}
+   */
+  findItem (itemId) {
+    return this.lineItems.find(itemId)
   }
 
   /**
