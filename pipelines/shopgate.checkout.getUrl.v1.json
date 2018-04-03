@@ -1,7 +1,7 @@
 {
   "version": "1",
   "pipeline": {
-    "id": "getCheckoutUrl_v1",
+    "id": "shopgate.checkout.getUrl.v1",
     "public": true,
     "input": [],
     "output": [
