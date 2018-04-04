@@ -21,6 +21,9 @@ class ShopgateCartExtensionPipeline {
    */
   async addProducts (products) {
     const bigCommerceLineItems = products.map((product) => {
+      if (product.hasOwnProperty('variantId')) {
+        return BigCommerceCartRepository.createLineItem(parseInt(product.productId), product.quantity, product.variantId)
+      }
       return BigCommerceCartRepository.createLineItem(parseInt(product.productId), product.quantity)
     })
 
