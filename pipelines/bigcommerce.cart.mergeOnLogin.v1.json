@@ -1,0 +1,22 @@
+{
+  "version": "1",
+  "pipeline": {
+    "id": "bigcommerce.cart.mergeOnLogin.v1",
+    "public": true,
+    "input": [
+      {"key": "sgxsMeta", "id": "1000"}
+    ],
+    "output": [],
+    "steps": [
+      {
+        "type": "extension",
+        "id": "@shopgate/bigcommerce-cart",
+        "path": "@shopgate/bigcommerce-cart/lib/mergeCartsOnLogin.js",
+        "input": [
+          {"key": "sgxsMeta", "id": "1000"}
+        ],
+        "output": []
+      }
+    ]
+  }
+}

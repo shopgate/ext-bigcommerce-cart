@@ -121,10 +121,18 @@ class ShopgateCartExtensionPipeline {
   }
 
   /**
+   * @returns {Promise<void>}
+   */
+  destroyCart () {
+    return this._bigCommerceCartRepository.destroy()
+  }
+
+  /**
    * @param {PipelineContext} context
+   * @param {boolean} [forceDeviceStorage = false] force using device storage, even if user is logged in
    * @returns {ShopgateCartExtensionPipeline}
    */
-  static create (context) {
+  static create (context, forceDeviceStorage = false) {
     const bigCommerceFactory = new BigCommerceFactory(
       context.config.clientId,
       context.config.accessToken,
@@ -133,7 +141,8 @@ class ShopgateCartExtensionPipeline {
     const bigCommerceCartRepository = new BigCommerceCartRepository(
       bigCommerceFactory.createV3(),
       /** @type BigCommerceStorage */
-      new ShopgateExtensionStorage(context.storage.device))
+      new ShopgateExtensionStorage((context.meta.userId && !forceDeviceStorage) ? context.storage.user : context.storage.device)
+    )
 
     return new ShopgateCartExtensionPipeline(bigCommerceCartRepository, new ShopgateCartFactory(), context)
   }
