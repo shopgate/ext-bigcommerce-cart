@@ -133,8 +133,8 @@ class ShopgateCartExtensionPipeline {
    */
   static create (context) {
     return context.meta.userId
-      ? create(context.storage.device)
-      : create(context.storage.user)
+      ? create(context, context.storage.user)
+      : create(context, context.storage.device)
   }
 
   /**
@@ -142,7 +142,7 @@ class ShopgateCartExtensionPipeline {
    * @returns {ShopgateCartExtensionPipeline}
    */
   static createForDevice (context) {
-    return create(context.storage.device)
+    return create(context, context.storage.device)
   }
 }
 
