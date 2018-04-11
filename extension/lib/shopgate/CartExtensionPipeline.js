@@ -129,23 +129,36 @@ class ShopgateCartExtensionPipeline {
 
   /**
    * @param {PipelineContext} context
-   * @param {boolean} [forceDeviceStorage = false] force using device storage, even if user is logged in
    * @returns {ShopgateCartExtensionPipeline}
    */
-  static create (context, forceDeviceStorage = false) {
-    const bigCommerceFactory = new BigCommerceFactory(
-      context.config.clientId,
-      context.config.accessToken,
-      context.config.storeHash)
-
-    const bigCommerceCartRepository = new BigCommerceCartRepository(
-      bigCommerceFactory.createV3(),
-      /** @type BigCommerceStorage */
-      new ShopgateExtensionStorage((context.meta.userId && !forceDeviceStorage) ? context.storage.user : context.storage.device)
-    )
-
-    return new ShopgateCartExtensionPipeline(bigCommerceCartRepository, new ShopgateCartFactory(), context)
+  static create (context) {
+    return context.meta.userId
+      ? create(context.storage.device)
+      : create(context.storage.user)
   }
+
+  /**
+   * @param {PipelineContext} context
+   * @returns {ShopgateCartExtensionPipeline}
+   */
+  static createForDevice (context) {
+    return create(context.storage.device)
+  }
+}
+
+const create = (context, storage) => {
+  const bigCommerceFactory = new BigCommerceFactory(
+    context.config.clientId,
+    context.config.accessToken,
+    context.config.storeHash)
+
+  const bigCommerceCartRepository = new BigCommerceCartRepository(
+    bigCommerceFactory.createV3(),
+    /** @type BigCommerceStorage */
+    new ShopgateExtensionStorage(storage)
+  )
+
+  return new ShopgateCartExtensionPipeline(bigCommerceCartRepository, new ShopgateCartFactory(), context)
 }
 
 module.exports = ShopgateCartExtensionPipeline
