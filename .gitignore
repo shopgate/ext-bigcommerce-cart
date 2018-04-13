@@ -11,3 +11,4 @@ extension/config.json
 /extension/.nyc_output
 .nyc_output
 .integration-credentials.js
+package-lock.json
