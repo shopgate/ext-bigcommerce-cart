@@ -1,10 +1,40 @@
 'use strict'
 const sinon = require('sinon')
+const Logger = require('bunyan')
 
 const ShopgateCartPipeline = require('../../../../extension/lib/shopgate/CartExtensionPipeline')
 const mergeCartsOnLogin = require('../../../../extension/lib/mergeCartsOnLogin')
 
 describe('mergeCartsOnLogin', () => {
+  const sandbox = /** @type sinon */sinon.sandbox.create()
+  const context = {
+    meta: {
+      deviceId: '9729bcf398c10598aa23a04b3557a4c750c714eb5e177375196660beeb506704',
+      userId: '15358639',
+      appId: 'shop_31422'
+    },
+    storage: {
+      extension: null,
+      device: null,
+      user: null
+    },
+    config: {
+      storeHash: null,
+      accessToken: null,
+      clientId: null,
+      clientSecret: null,
+      requestTimeout: '15000'
+    }
+  }
+
+  beforeEach(() => {
+    context.log = sandbox.createStubInstance(Logger)
+  })
+
+  afterEach(() => {
+    sandbox.verifyAndRestore()
+  })
+
   it('should put all items from the anonymous cart into the user cart', async () => {
     let getCartResponse = {
       isOrderable: true,
@@ -81,30 +111,11 @@ describe('mergeCartsOnLogin', () => {
       }
     }
 
-    const pipelineStub = sinon.createStubInstance(ShopgateCartPipeline)
-    sinon.stub(ShopgateCartPipeline, 'createForDevice').returns(pipelineStub)
-    sinon.stub(ShopgateCartPipeline, 'create').returns(pipelineStub)
+    const pipelineStub = sandbox.createStubInstance(ShopgateCartPipeline)
+    sandbox.stub(ShopgateCartPipeline, 'createForDevice').returns(pipelineStub)
+    sandbox.stub(ShopgateCartPipeline, 'create').returns(pipelineStub)
     pipelineStub.get.returns(getCartResponse)
 
-    const context = {
-      meta: {
-        deviceId: '9729bcf398c10598aa23a04b3557a4c750c714eb5e177375196660beeb506704',
-        userId: '15358639',
-        appId: 'shop_31422'
-      },
-      storage: {
-        extension: null,
-        device: null,
-        user: null
-      },
-      config: {
-        storeHash: null,
-        accessToken: null,
-        clientId: null,
-        clientSecret: null,
-        requestTimeout: '15000'
-      }
-    }
     await mergeCartsOnLogin(context, {})
 
     sinon.assert.calledWith(pipelineStub.addProducts, [
@@ -113,5 +124,11 @@ describe('mergeCartsOnLogin', () => {
     ])
 
     sinon.assert.calledOnce(pipelineStub.destroyCart)
+  })
+
+  it('should log errors', async () => {
+    const error = new TypeError('wat')
+    sandbox.stub(ShopgateCartPipeline, 'createForDevice').throws(error)
+    return mergeCartsOnLogin(context, {}).should.eventually.be.rejectedWith(error)
   })
 })
