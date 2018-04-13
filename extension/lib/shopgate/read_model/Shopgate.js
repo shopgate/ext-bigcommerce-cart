@@ -1,5 +1,6 @@
 /**
  * @typedef {Object} PipelineStorageContainer
+ * @property {PipelineStorage} extension
  * @property {PipelineStorage} device
  * @property {PipelineStorage} user
  */

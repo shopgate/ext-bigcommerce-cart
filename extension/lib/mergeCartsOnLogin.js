@@ -2,6 +2,11 @@
 
 const ShopgateCartPipeline = require('./shopgate/CartExtensionPipeline')
 
+/**
+ * @param {PipelineContext} context
+ * @param {Object} input
+ * @returns {Promise<void>}
+ */
 module.exports = async (context, input) => {
   try {
     const anonymousPipeline = ShopgateCartPipeline.createForDevice(context)

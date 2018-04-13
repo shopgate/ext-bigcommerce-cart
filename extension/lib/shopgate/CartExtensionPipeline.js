@@ -146,6 +146,11 @@ class ShopgateCartExtensionPipeline {
   }
 }
 
+/**
+ * @param {PipelineContext} context
+ * @param {PipelineStorage} storage
+ * @returns {ShopgateCartExtensionPipeline}
+ */
 const create = (context, storage) => {
   const bigCommerceFactory = new BigCommerceFactory(
     context.config.clientId,
