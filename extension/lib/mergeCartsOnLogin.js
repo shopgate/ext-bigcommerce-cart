@@ -13,7 +13,7 @@ module.exports = async (context, input) => {
     }))
 
     await loggedInPipeline.addProducts(itemsToAdd)
-    anonymousPipeline.destroyCart()
+    await anonymousPipeline.destroyCart()
   } catch (error) {
     context.log.error(error)
     throw error
