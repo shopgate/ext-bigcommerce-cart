@@ -3,14 +3,19 @@
 const ShopgateCartPipeline = require('./shopgate/CartExtensionPipeline')
 
 module.exports = async (context, input) => {
-  const anonymousPipeline = ShopgateCartPipeline.createForDevice(context)
-  const loggedInPipeline = ShopgateCartPipeline.create(context)
+  try {
+    const anonymousPipeline = ShopgateCartPipeline.createForDevice(context)
+    const loggedInPipeline = ShopgateCartPipeline.create(context)
 
-  const itemsToAdd = (await anonymousPipeline.get()).cartItems.map(item => ({
-    productId: item.product.id,
-    quantity: item.quantity
-  }))
+    const itemsToAdd = (await anonymousPipeline.get()).cartItems.map(item => ({
+      productId: item.product.id,
+      quantity: item.quantity
+    }))
 
-  await loggedInPipeline.addProducts(itemsToAdd)
-  anonymousPipeline.destroyCart()
+    await loggedInPipeline.addProducts(itemsToAdd)
+    anonymousPipeline.destroyCart()
+  } catch (error) {
+    context.log.error(error)
+    throw error
+  }
 }
