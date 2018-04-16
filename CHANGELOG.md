@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## [Unreleased]
 
+## [0.1.5] - 2018-04-16
+### Added
+- new pipeline "bigcommerce.cart.mergeOnLogin" which merges anonymous + user cart on loging
+
 ## [0.1.4] - 2018-04-03
 ### Changed
 - pipelines renamed according to the new naming scheme
@@ -28,7 +32,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 - functionality to add simple products to the cart
 - functionality to return BigCommerce checkout url
 
-[Unreleased]: https://github.com/shopgate/cloud-ext-bigcommerce-cart/compare/v0.1.4...HEAD
+[Unreleased]: https://github.com/shopgate/cloud-ext-bigcommerce-cart/compare/v0.1.5...HEAD
+[0.1.5]: https://github.com/shopgate/cloud-ext-bigcommerce-cart/compare/v0.1.4...v0.1.5
 [0.1.4]: https://github.com/shopgate/cloud-ext-bigcommerce-cart/compare/v0.1.3...v0.1.4
 [0.1.3]: https://github.com/shopgate/cloud-ext-bigcommerce-cart/compare/v0.1.2...v0.1.3
 [0.1.2]: https://github.com/shopgate/cloud-ext-bigcommerce-cart/compare/v0.1.1...v0.1.2
