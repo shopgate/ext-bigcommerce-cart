@@ -121,22 +121,49 @@ class ShopgateCartExtensionPipeline {
   }
 
   /**
+   * @returns {Promise<void>}
+   */
+  destroyCart () {
+    return this._bigCommerceCartRepository.destroy()
+  }
+
+  /**
    * @param {PipelineContext} context
    * @returns {ShopgateCartExtensionPipeline}
    */
   static create (context) {
-    const bigCommerceFactory = new BigCommerceFactory(
-      context.config.clientId,
-      context.config.accessToken,
-      context.config.storeHash)
-
-    const bigCommerceCartRepository = new BigCommerceCartRepository(
-      bigCommerceFactory.createV3(),
-      /** @type BigCommerceStorage */
-      new ShopgateExtensionStorage(context.storage.device))
-
-    return new ShopgateCartExtensionPipeline(bigCommerceCartRepository, new ShopgateCartFactory(), context)
+    return context.meta.userId
+      ? create(context, context.storage.user)
+      : create(context, context.storage.device)
   }
+
+  /**
+   * @param {PipelineContext} context
+   * @returns {ShopgateCartExtensionPipeline}
+   */
+  static createForDevice (context) {
+    return create(context, context.storage.device)
+  }
+}
+
+/**
+ * @param {PipelineContext} context
+ * @param {PipelineStorage} storage
+ * @returns {ShopgateCartExtensionPipeline}
+ */
+const create = (context, storage) => {
+  const bigCommerceFactory = new BigCommerceFactory(
+    context.config.clientId,
+    context.config.accessToken,
+    context.config.storeHash)
+
+  const bigCommerceCartRepository = new BigCommerceCartRepository(
+    bigCommerceFactory.createV3(),
+    /** @type BigCommerceStorage */
+    new ShopgateExtensionStorage(storage)
+  )
+
+  return new ShopgateCartExtensionPipeline(bigCommerceCartRepository, new ShopgateCartFactory(), context)
 }
 
 module.exports = ShopgateCartExtensionPipeline
