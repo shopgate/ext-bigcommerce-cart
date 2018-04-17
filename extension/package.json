@@ -18,7 +18,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/shopgate/cloud-ext-bigcommerce-cart.git"
+    "url": "https://github.com/shopgate/ext-bigcommerce-cart.git"
   },
   "license": "Apache-2.0",
   "dependencies": {
