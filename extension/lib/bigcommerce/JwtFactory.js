@@ -25,24 +25,39 @@ class jwtFactory {
     const payload = {
       iss: this._clientId,
       iat: Math.round((new Date()).getTime() / 1000),
-      jti: this._hexIt(randomBytes(32)),
+      jti: this._bin2hex(randomBytes(32)),
       operation: 'customer_login',
       store_hash: this._storeHash,
       customer_id: customerId
     }
+
+    return jwt.encode(payload, this._clientSecret)
   }
 
   /**
-   * @param {string} a
+   * @param  s
    * @returns {string}
    * @private
    */
-  _hexIt (a) {
-    let hexV = ''
-    for (let x = 0; x < a.length; x++) {
-      hexV += a.charCodeAt(x).toString(16)
+  _bin2hex (s) {
+    // From: http://phpjs.org/functions
+    // +   original by: Kevin van Zonneveld (http://kevin.vanzonneveld.net)
+    // +   bugfixed by: Onno Marsman
+    // +   bugfixed by: Linuxworld
+    // +   improved by: ntoniazzi (http://phpjs.org/functions/bin2hex:361#comment_177616)
+    let i
+    let l = null
+    let o = ''
+    let n = null
+
+    s += ''
+
+    for (i = 0, l = s.length; i < l; i++) {
+      n = s.charCodeAt(i).toString(16)
+      o += n.length < 2 ? '0' + n : n
     }
-    return hexV
+
+    return o
   }
 }
 
