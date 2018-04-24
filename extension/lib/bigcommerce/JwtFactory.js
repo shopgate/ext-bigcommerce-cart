@@ -20,9 +20,9 @@ class JwtFactory {
 
   /**
    * @param {string} customerId
-   * @param {string} redirectLink
+   * @param {string|null} redirectLink
    */
-  create (customerId, redirectLink) {
+  create (customerId, redirectLink = null) {
     const payload = {
       iss: this._clientId,
       iat: Math.round((new Date()).getTime() / 1000),
