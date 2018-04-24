@@ -21,7 +21,7 @@ class jwtFactory {
   /**
    * @param {string} customerId
    */
-  create (customerId) {
+  create (customerId, redirectLink) {
     const payload = {
       iss: this._clientId,
       iat: Math.round((new Date()).getTime() / 1000),
@@ -29,6 +29,9 @@ class jwtFactory {
       operation: 'customer_login',
       store_hash: this._storeHash,
       customer_id: customerId
+    }
+    if (redirectLink) {
+      payload.redirect_to = redirectLink
     }
 
     return jwt.encode(payload, this._clientSecret)
