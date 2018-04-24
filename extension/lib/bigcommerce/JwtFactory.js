@@ -6,7 +6,7 @@ const randomBytes = require('randombytes')
  * @property {string} _storeHash
  * @property {string} _clientSecret
  */
-class jwtFactory {
+class JwtFactory {
   /**
    * @param {string} clientId
    * @param {string} storeHash
@@ -20,6 +20,7 @@ class jwtFactory {
 
   /**
    * @param {string} customerId
+   * @param {string} redirectLink
    */
   create (customerId, redirectLink) {
     const payload = {
@@ -38,30 +39,21 @@ class jwtFactory {
   }
 
   /**
-   * @param  s
+   * @param  binary
    * @returns {string}
    * @private
    */
-  _bin2hex (s) {
-    // From: http://phpjs.org/functions
-    // +   original by: Kevin van Zonneveld (http://kevin.vanzonneveld.net)
-    // +   bugfixed by: Onno Marsman
-    // +   bugfixed by: Linuxworld
-    // +   improved by: ntoniazzi (http://phpjs.org/functions/bin2hex:361#comment_177616)
-    let i
-    let l = null
-    let o = ''
-    let n = null
+  _bin2hex (binary) {
+    let op = ''
+    binary += ''
 
-    s += ''
-
-    for (i = 0, l = s.length; i < l; i++) {
-      n = s.charCodeAt(i).toString(16)
-      o += n.length < 2 ? '0' + n : n
+    for (let i = 0; i < binary.length; i++) {
+      let hexChar = binary.charCodeAt(i).toString(16)
+      op += hexChar.length < 2 ? '0' + hexChar : hexChar
     }
 
-    return o
+    return op
   }
 }
 
-module.exports = jwtFactory
+module.exports = JwtFactory

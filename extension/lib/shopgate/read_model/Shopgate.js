@@ -45,3 +45,8 @@
  * @property {string} storeHash
  * @property {string} clientSecret
  */
+
+/**
+ *  @typedef {Object} GetAuthCheckoutInput
+ *  @property {string} url
+ */
