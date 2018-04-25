@@ -1,12 +1,12 @@
 const jwt = require('jwt-simple')
-const randomBytes = require('randombytes')
+const crypto = require('crypto')
 
 /**
  * @property {string} _clientId
  * @property {string} _storeHash
  * @property {string} _clientSecret
  */
-class JwtFactory {
+class AuthRepository {
   /**
    * @param {string} clientId
    * @param {string} storeHash
@@ -22,11 +22,11 @@ class JwtFactory {
    * @param {string} customerId
    * @param {string|null} redirectLink
    */
-  create (customerId, redirectLink = null) {
+  preAuthToken (customerId, redirectLink = null) {
     const payload = {
       iss: this._clientId,
       iat: Math.round((new Date()).getTime() / 1000),
-      jti: this._bin2hex(randomBytes(32)),
+      jti: crypto.randomBytes(32).toString('hex'),
       operation: 'customer_login',
       store_hash: this._storeHash,
       customer_id: customerId
@@ -37,23 +37,6 @@ class JwtFactory {
 
     return jwt.encode(payload, this._clientSecret)
   }
-
-  /**
-   * @param  binary
-   * @returns {string}
-   * @private
-   */
-  _bin2hex (binary) {
-    let op = ''
-    binary += ''
-
-    for (let i = 0; i < binary.length; i++) {
-      let hexChar = binary.charCodeAt(i).toString(16)
-      op += hexChar.length < 2 ? '0' + hexChar : hexChar
-    }
-
-    return op
-  }
 }
 
-module.exports = JwtFactory
+module.exports = AuthRepository

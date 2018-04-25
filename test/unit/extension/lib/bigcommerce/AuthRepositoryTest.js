@@ -1,9 +1,9 @@
 const assert = require('assert')
 const jwt = require('jwt-simple')
 
-const JwtFactory = require('../../../../../extension/lib/bigcommerce/JwtFactory')
+const JwtFactory = require('../../../../../extension/lib/bigcommerce/AuthRepository')
 
-describe('JwtFactory - unit', () => {
+describe('AuthRepository - unit', () => {
   const clientId = '1111111'
   const storeHash = '2222222'
   const clientSecret = '123123123'
@@ -12,7 +12,7 @@ describe('JwtFactory - unit', () => {
   it('should return jwt token containing the correct information', () => {
     const customerId = '1'
     const redirectLink = 'https://my-shop.com/cart.php?id=123'
-    const token = testJwtFactory.create(customerId, redirectLink)
+    const token = testJwtFactory.preAuthToken(customerId, redirectLink)
     const decodedToken = jwt.decode(token, clientSecret)
 
     assert.equal(decodedToken.iss, clientId)
@@ -24,7 +24,7 @@ describe('JwtFactory - unit', () => {
 
   it('should return a jwt token without a redirect link', () => {
     const customerId = '1'
-    const token = testJwtFactory.create(customerId)
+    const token = testJwtFactory.preAuthToken(customerId)
     const decodedToken = jwt.decode(token, clientSecret)
 
     assert.equal(decodedToken.iss, clientId)

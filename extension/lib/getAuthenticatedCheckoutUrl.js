@@ -1,5 +1,5 @@
 const { URL } = require('url')
-const JwtFactory = require('./bigcommerce/JwtFactory')
+const AuthRepository = require('./bigcommerce/AuthRepository')
 
 /**
  * @param {PipelineContext} context
@@ -11,12 +11,12 @@ module.exports = async (context, input) => {
     return {url: input.url}
   }
   try {
-    const jwtFactory = new JwtFactory(
+    const authRepository = new AuthRepository(
       context.config.clientId,
       context.config.storeHash,
       context.config.clientSecret)
     const cartUrl = new URL(input.url)
-    const token = jwtFactory.create(context.meta.userId, input.url)
+    const token = authRepository.preAuthToken(context.meta.userId, input.url)
     const loginUrl = `${cartUrl.protocol}//${cartUrl.host}/login/token/${token}`
     return {url: loginUrl}
   } catch (error) {
