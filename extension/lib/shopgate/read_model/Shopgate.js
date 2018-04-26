@@ -32,6 +32,7 @@
  * @property {PipelineConfiguration} config
  * @property {Object} log
  * @property {PipelineStorageContainer} storage
+ * @property {Object} meta
  */
 
 /**

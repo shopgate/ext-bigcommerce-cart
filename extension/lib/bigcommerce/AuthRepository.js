@@ -20,22 +20,20 @@ class AuthRepository {
 
   /**
    * @param {string} customerId
-   * @param {string|null} redirectLink
+   * @param {string} redirectLink
    */
-  preAuthToken (customerId, redirectLink = null) {
+  preAuthToken (customerId, redirectLink) {
     const payload = {
       iss: this._clientId,
       iat: Math.round((new Date()).getTime() / 1000),
       jti: crypto.randomBytes(32).toString('hex'),
       operation: 'customer_login',
       store_hash: this._storeHash,
-      customer_id: customerId
-    }
-    if (redirectLink) {
-      payload.redirect_to = redirectLink
+      customer_id: customerId,
+      redirect_to: redirectLink
     }
 
-    return jwt.encode(payload, this._clientSecret)
+    return jwt.encode(payload, this._clientSecret, 'HS256', {})
   }
 }
 
