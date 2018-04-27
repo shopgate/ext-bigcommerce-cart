@@ -1,6 +1,8 @@
 const assert = require('assert')
+const sinon = require('sinon')
 
 const getAuthenticatedCheckoutUrl = require('../../../../extension/lib/getAuthenticatedCheckoutUrl')
+const AuthRepository = require('../../../../extension/lib/bigcommerce/AuthRepository')
 
 describe('getAuthenticatedCheckoutUrl - unit', () => {
   const baseUrl = 'https://my-shop.com'
@@ -24,9 +26,29 @@ describe('getAuthenticatedCheckoutUrl - unit', () => {
     const meta = {
       userId: '15358639'
     }
+    const testToken = '111.222.333'
+    const authRepositoryFactoryStub = sinon.stub(AuthRepository, 'create')
+    const authRepositoryStub = sinon.createStubInstance(AuthRepository)
+    authRepositoryStub.preAuthToken.returns(testToken)
+    authRepositoryFactoryStub.returns(authRepositoryStub)
     const response = await getAuthenticatedCheckoutUrl({...context, meta}, input)
-    console.log('response', response)
-    assert.equal(response.url.indexOf(baseUrl + '/login/token/'), 0)
+    assert.equal(response.url, baseUrl + '/login/token/' + testToken)
+    authRepositoryFactoryStub.restore()
+  })
+
+  it('should return an error', async () => {
+    const meta = {
+      userId: '15358639'
+    }
+    const error = new TypeError('wat')
+    const authRepositoryFactoryStub = sinon.stub(AuthRepository, 'create')
+    const authRepositoryStub = sinon.createStubInstance(AuthRepository)
+    authRepositoryStub.preAuthToken.throws(error)
+    authRepositoryFactoryStub.returns(authRepositoryStub)
+    const logSpy = sinon.spy(context.log, 'error')
+    getAuthenticatedCheckoutUrl({...context, meta}, input).should.eventually.be.rejectedWith(error)
+    assert(logSpy.calledWith(error))
+    authRepositoryFactoryStub.restore()
   })
 
   it('should return link to cart because userId is null', async () => {

@@ -3,11 +3,11 @@ const jwt = require('jwt-simple')
 
 const AuthRepository = require('../../../../../extension/lib/bigcommerce/AuthRepository')
 
-describe('AuthRepository - unit', () => {
+describe('BigCommerceAuthRepository - unit', () => {
   const clientId = '1111111'
   const storeHash = '2222222'
   const clientSecret = '123123123'
-  const testAuthRepository = new AuthRepository(clientId, storeHash, clientSecret)
+  const testAuthRepository = AuthRepository.create(clientId, storeHash, clientSecret)
 
   it('should return jwt token containing the correct information', () => {
     const customerId = '1'

@@ -6,7 +6,7 @@ const crypto = require('crypto')
  * @property {string} _storeHash
  * @property {string} _clientSecret
  */
-class AuthRepository {
+class BigCommerceAuthRepository {
   /**
    * @param {string} clientId
    * @param {string} storeHash
@@ -35,6 +35,10 @@ class AuthRepository {
 
     return jwt.encode(payload, this._clientSecret, 'HS256', {})
   }
+
+  static create (clientId, storeHash, clientSecret) {
+    return new BigCommerceAuthRepository(clientId, storeHash, clientSecret)
+  }
 }
 
-module.exports = AuthRepository
+module.exports = BigCommerceAuthRepository

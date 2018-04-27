@@ -11,7 +11,7 @@ module.exports = async (context, input) => {
     return {url: input.url}
   }
   try {
-    const authRepository = new AuthRepository(
+    const authRepository = AuthRepository.create(
       context.config.clientId,
       context.config.storeHash,
       context.config.clientSecret)
