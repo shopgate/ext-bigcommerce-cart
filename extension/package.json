@@ -22,7 +22,8 @@
   },
   "license": "Apache-2.0",
   "dependencies": {
-    "node-bigcommerce": "^3.0.0"
+    "node-bigcommerce": "^3.0.0",
+    "jwt-simple": "^0.5.1"
   },
   "devDependencies": {
     "bunyan": "^1.8.12",

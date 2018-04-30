@@ -7,7 +7,7 @@
     "output": [
       {
         "key": "url",
-        "id": "1010"
+        "id": "1030"
       },
       {
         "key": "expires",
@@ -30,6 +30,23 @@
             "key": "expires",
             "id": "1020",
             "optional": true
+          }
+        ]
+      },
+      {
+        "type": "extension",
+        "id": "@shopgate/bigcommerce-cart",
+        "path": "@shopgate/bigcommerce-cart/lib/getAuthenticatedCheckoutUrl.js",
+        "input": [
+          {
+            "key": "url",
+            "id": "1010"
+          }
+        ],
+        "output": [
+          {
+            "key": "url",
+            "id": "1030"
           }
         ]
       }

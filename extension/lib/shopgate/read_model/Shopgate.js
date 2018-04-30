@@ -32,6 +32,7 @@
  * @property {PipelineConfiguration} config
  * @property {Object} log
  * @property {PipelineStorageContainer} storage
+ * @property {Object} meta
  */
 
 /**
@@ -44,4 +45,9 @@
  * @property {string} accessToken
  * @property {string} storeHash
  * @property {string} clientSecret
+ */
+
+/**
+ *  @typedef {Object} GetAuthCheckoutInput
+ *  @property {string} url
  */
