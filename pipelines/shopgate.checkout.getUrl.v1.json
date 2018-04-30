@@ -17,9 +17,8 @@
     ],
     "steps": [
       {
-        "type": "extension",
-        "id": "@shopgate/bigcommerce-cart",
-        "path": "@shopgate/bigcommerce-cart/lib/getCheckoutUrl.js",
+        "type": "pipeline",
+        "id": "bigcommerce.checkout.getUrl.v1",
         "input": [],
         "output": [
           {
