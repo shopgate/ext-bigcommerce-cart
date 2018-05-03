@@ -111,19 +111,43 @@ describe('mergeCartsOnLogin', () => {
       }
     }
 
-    const pipelineStub = sandbox.createStubInstance(ShopgateCartPipeline)
-    sandbox.stub(ShopgateCartPipeline, 'createForDevice').returns(pipelineStub)
-    sandbox.stub(ShopgateCartPipeline, 'create').returns(pipelineStub)
-    pipelineStub.get.returns(getCartResponse)
+    const anonymousPipelineStub = sandbox.createStubInstance(ShopgateCartPipeline)
+    const loggedInPipelineStub = sandbox.createStubInstance(ShopgateCartPipeline)
+    sandbox.stub(ShopgateCartPipeline, 'createForDevice').returns(anonymousPipelineStub)
+    sandbox.stub(ShopgateCartPipeline, 'createForUser').returns(loggedInPipelineStub)
+
+    anonymousPipelineStub.get.returns(getCartResponse)
+
+    anonymousPipelineStub.getCartId.returns('my_cart_id')
+    loggedInPipelineStub.getCartId.returns('user_cart_id')
 
     await mergeCartsOnLogin(context, {})
 
-    sinon.assert.calledWith(pipelineStub.addProducts, [
+    sinon.assert.calledWith(loggedInPipelineStub.addProducts, [
       {productId: 120, quantity: 1},
       {productId: 121, quantity: 1}
     ])
 
-    sinon.assert.calledOnce(pipelineStub.destroyCart)
+    sinon.assert.calledOnce(anonymousPipelineStub.destroyCart)
+    sinon.assert.notCalled(loggedInPipelineStub.setCartId)
+  })
+
+  it('should move the cart to loggedin pipeline when cart there does not exist', async () => {
+    const anonymousPipelineStub = sandbox.createStubInstance(ShopgateCartPipeline)
+    const loggedInPipelineStub = sandbox.createStubInstance(ShopgateCartPipeline)
+
+    sandbox.stub(ShopgateCartPipeline, 'createForDevice').returns(anonymousPipelineStub)
+    sandbox.stub(ShopgateCartPipeline, 'createForUser').returns(loggedInPipelineStub)
+
+    anonymousPipelineStub.getCartId.returns('my_cart_id')
+    loggedInPipelineStub.getCartId.returns(null)
+
+    await mergeCartsOnLogin(context, {})
+
+    sinon.assert.calledWith(loggedInPipelineStub.setCartId, 'my_cart_id')
+    sinon.assert.notCalled(loggedInPipelineStub.addProducts)
+    sinon.assert.notCalled(anonymousPipelineStub.get)
+    sinon.assert.notCalled(anonymousPipelineStub.destroyCart)
   })
 
   it('should log errors', async () => {
