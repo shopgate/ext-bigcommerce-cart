@@ -5,6 +5,8 @@ const Logger = require('bunyan')
 const ShopgateCartPipeline = require('../../../../extension/lib/shopgate/CartExtensionPipeline')
 const mergeCartsOnLogin = require('../../../../extension/lib/mergeCartsOnLogin')
 
+const {describe, it, beforeEach, afterEach} = require('mocha')
+
 describe('mergeCartsOnLogin', () => {
   const sandbox = /** @type sinon */sinon.sandbox.create()
   const context = {
@@ -65,7 +67,7 @@ describe('mergeCartsOnLogin', () => {
         },
         {
           id: '28c02f8b-a0ab-4c5a-aef7-fd27eec6c358',
-          quantity: 1,
+          quantity: 2,
           type: 'product',
           coupon: {},
           product: {
@@ -111,19 +113,43 @@ describe('mergeCartsOnLogin', () => {
       }
     }
 
-    const pipelineStub = sandbox.createStubInstance(ShopgateCartPipeline)
-    sandbox.stub(ShopgateCartPipeline, 'createForDevice').returns(pipelineStub)
-    sandbox.stub(ShopgateCartPipeline, 'create').returns(pipelineStub)
-    pipelineStub.get.returns(getCartResponse)
+    const anonymousPipelineStub = sandbox.createStubInstance(ShopgateCartPipeline)
+    const loggedInPipelineStub = sandbox.createStubInstance(ShopgateCartPipeline)
+    sandbox.stub(ShopgateCartPipeline, 'createForDevice').returns(anonymousPipelineStub)
+    sandbox.stub(ShopgateCartPipeline, 'createForUser').returns(loggedInPipelineStub)
+
+    anonymousPipelineStub.get.returns(getCartResponse)
+
+    anonymousPipelineStub.getCartId.returns('my_cart_id')
+    loggedInPipelineStub.getCartId.returns('user_cart_id')
 
     await mergeCartsOnLogin(context, {})
 
-    sinon.assert.calledWith(pipelineStub.addProducts, [
+    sinon.assert.calledWith(loggedInPipelineStub.addProducts, [
       {productId: 120, quantity: 1},
-      {productId: 121, quantity: 1}
+      {productId: 121, quantity: 2}
     ])
 
-    sinon.assert.calledOnce(pipelineStub.destroyCart)
+    sinon.assert.calledOnce(anonymousPipelineStub.destroyCart)
+    sinon.assert.notCalled(loggedInPipelineStub.setCartId)
+  })
+
+  it('should move the cart to loggedin pipeline when cart there does not exist', async () => {
+    const anonymousPipelineStub = sandbox.createStubInstance(ShopgateCartPipeline)
+    const loggedInPipelineStub = sandbox.createStubInstance(ShopgateCartPipeline)
+
+    sandbox.stub(ShopgateCartPipeline, 'createForDevice').returns(anonymousPipelineStub)
+    sandbox.stub(ShopgateCartPipeline, 'createForUser').returns(loggedInPipelineStub)
+
+    anonymousPipelineStub.getCartId.returns('my_cart_id')
+    loggedInPipelineStub.getCartId.returns(null)
+
+    await mergeCartsOnLogin(context, {})
+
+    sinon.assert.calledWith(loggedInPipelineStub.setCartId, 'my_cart_id')
+    sinon.assert.notCalled(loggedInPipelineStub.addProducts)
+    sinon.assert.notCalled(anonymousPipelineStub.get)
+    sinon.assert.notCalled(anonymousPipelineStub.destroyCart)
   })
 
   it('should log errors', async () => {

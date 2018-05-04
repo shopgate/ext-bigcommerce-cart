@@ -28,6 +28,20 @@ class BigCommerceCartRepository {
     return BigCommerceCartRepository._createFactory().fromApiResponse(cartResponse)
   }
 
+  /**
+   * @returns {Promise<string>}
+   */
+  get id () {
+    return this._storage.get(CART_ID)
+  }
+
+  /**
+   * @param {string} cartId
+   */
+  async useId (cartId) {
+    await this._storage.set(CART_ID, cartId)
+  }
+
   async destroy () {
     const cartId = await this._storage.get(CART_ID)
     if (!cartId) {
@@ -75,7 +89,7 @@ class BigCommerceCartRepository {
 
     if (!cartId) {
       const bigCommerceResponse = await this._client.post('/carts', {'line_items': items.map(this._toApiLineItem)})
-      await this._storage.set(CART_ID, bigCommerceResponse.data.id)
+      await this.useId(bigCommerceResponse.data.id)
 
       return
     }

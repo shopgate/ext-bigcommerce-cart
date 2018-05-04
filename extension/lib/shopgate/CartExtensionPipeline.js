@@ -121,6 +121,20 @@ class ShopgateCartExtensionPipeline {
   }
 
   /**
+   * @returns {Promise<string>}
+   */
+  getCartId () {
+    return this._bigCommerceCartRepository.id
+  }
+
+  /**
+   * @param {string} cartId
+   */
+  async setCartId (cartId) {
+    await this._bigCommerceCartRepository.useId(cartId)
+  }
+
+  /**
    * @returns {Promise<void>}
    */
   destroyCart () {
@@ -143,6 +157,14 @@ class ShopgateCartExtensionPipeline {
    */
   static createForDevice (context) {
     return create(context, context.storage.device)
+  }
+
+  /**
+   * @param {PipelineContext} context
+   * @returns {ShopgateCartExtensionPipeline}
+   */
+  static createForUser (context) {
+    return create(context, context.storage.user)
   }
 }
 
