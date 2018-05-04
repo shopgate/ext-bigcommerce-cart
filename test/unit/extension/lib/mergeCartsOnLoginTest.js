@@ -5,6 +5,8 @@ const Logger = require('bunyan')
 const ShopgateCartPipeline = require('../../../../extension/lib/shopgate/CartExtensionPipeline')
 const mergeCartsOnLogin = require('../../../../extension/lib/mergeCartsOnLogin')
 
+const {describe, it, beforeEach, afterEach} = require('mocha')
+
 describe('mergeCartsOnLogin', () => {
   const sandbox = /** @type sinon */sinon.sandbox.create()
   const context = {
@@ -65,7 +67,7 @@ describe('mergeCartsOnLogin', () => {
         },
         {
           id: '28c02f8b-a0ab-4c5a-aef7-fd27eec6c358',
-          quantity: 1,
+          quantity: 2,
           type: 'product',
           coupon: {},
           product: {
@@ -125,7 +127,7 @@ describe('mergeCartsOnLogin', () => {
 
     sinon.assert.calledWith(loggedInPipelineStub.addProducts, [
       {productId: 120, quantity: 1},
-      {productId: 121, quantity: 1}
+      {productId: 121, quantity: 2}
     ])
 
     sinon.assert.calledOnce(anonymousPipelineStub.destroyCart)
