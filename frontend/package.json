@@ -1,0 +1,21 @@
+{
+  "name": "@shopgate/bigcommerce-cart",
+  "version": "0.2.0",
+  "description": "Shopgate Cloud BigCommerce Cart",
+  "scripts": {
+    "lint": "eslint --ignore-path ../.gitignore --ext .js --ext .jsx ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/shopgate/ext-bigcommerce-cart.git"
+  },
+  "license": "Apache-2.0",
+  "dependencies": {},
+  "devDependencies": {
+    "@shopgate/eslint-config": "^5.3.0-beta.7",
+    "@shopgate/pwa-common": "^5.3.0-beta.7",
+    "@shopgate/pwa-common-commerce": "^5.3.0-beta.7",
+    "@shopgate/tracking-core": "^5.3.0-beta.7",
+    "eslint": "^4.19.1"
+  }
+}
