@@ -1,10 +1,6 @@
 {
   "version": "0.2.0",
   "id": "@shopgate/bigcommerce-cart",
-  "directories": {
-    "steps": "./extension/",
-    "pipelines": "./pipelines/"
-  },
   "steps": [],
   "configuration": {
     "storeHash" : {

@@ -2,8 +2,8 @@
 const sinon = require('sinon')
 const Logger = require('bunyan')
 
-const ShopgateCartPipeline = require('../../../../extension/lib/shopgate/CartExtensionPipeline')
-const mergeCartsOnLogin = require('../../../../extension/lib/mergeCartsOnLogin')
+const ShopgateCartPipeline = require('../../../../lib/shopgate/CartExtensionPipeline')
+const mergeCartsOnLogin = require('../../../../lib/mergeCartsOnLogin')
 
 const {describe, it, beforeEach, afterEach} = require('mocha')
 

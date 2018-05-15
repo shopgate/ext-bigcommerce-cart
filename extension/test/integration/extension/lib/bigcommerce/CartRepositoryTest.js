@@ -1,7 +1,7 @@
-const BigCommerceCartRepository = require('../../../../../extension/lib/bigcommerce/CartRepository')
-const BigCommerceFactory = require('../../../../../extension/lib/bigcommerce/Factory')
-const integrationCredentials = require('../../../../../.integration-credentials')
-const ShopgateCartFactory = require('../../../../../extension/lib/shopgate/CartFactory')
+const BigCommerceCartRepository = require('../../../../../lib/bigcommerce/CartRepository')
+const BigCommerceFactory = require('../../../../../lib/bigcommerce/Factory')
+const integrationCredentials = require('../../../../../../.integration-credentials')
+const ShopgateCartFactory = require('../../../../../lib/shopgate/CartFactory')
 const sinon = require('sinon')
 const assert = require('assert')
 

@@ -1,17 +1,20 @@
 const BigCommerceFactory = require('../bigcommerce/Factory')
 const BigCommerceCartRepository = require('../bigcommerce/CartRepository')
 const ShopgateExtensionStorage = require('./ExtensionStorage')
+const IdentifierConverter = require('./IdentifierConverter')
 const ShopgateCartFactory = require('./CartFactory')
 
 class ShopgateCartExtensionPipeline {
   /**
    * @param {BigCommerceCartRepository} bigCommerceCartRepository
    * @param {ShopgateCartFactory} shopgateCartFactory
+   * @param {IdentifierConverter} identifierConverter
    * @param {PipelineContext} context
    */
-  constructor (bigCommerceCartRepository, shopgateCartFactory, context) {
+  constructor (bigCommerceCartRepository, shopgateCartFactory, identifierConverter, context) {
     this._bigCommerceCartRepository = bigCommerceCartRepository
     this._shopgateCartFactory = shopgateCartFactory
+    this._identifierConverter = identifierConverter
     this._context = context
   }
 
@@ -21,7 +24,9 @@ class ShopgateCartExtensionPipeline {
    */
   async addProducts (products) {
     const bigCommerceLineItems = products.map((product) => {
-      return BigCommerceCartRepository.createLineItem(parseInt(product.productId), product.quantity)
+      const {productId, variantId} = this._identifierConverter.extractProductIds(product.productId)
+
+      return BigCommerceCartRepository.createLineItem(productId, product.quantity, variantId)
     })
 
     await this._bigCommerceCartRepository.addItems(bigCommerceLineItems)
@@ -185,7 +190,7 @@ const create = (context, storage) => {
     new ShopgateExtensionStorage(storage)
   )
 
-  return new ShopgateCartExtensionPipeline(bigCommerceCartRepository, new ShopgateCartFactory(), context)
+  return new ShopgateCartExtensionPipeline(bigCommerceCartRepository, new ShopgateCartFactory(), new IdentifierConverter(), context)
 }
 
 module.exports = ShopgateCartExtensionPipeline

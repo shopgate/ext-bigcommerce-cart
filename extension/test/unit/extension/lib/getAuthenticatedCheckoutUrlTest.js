@@ -1,8 +1,8 @@
 const assert = require('assert')
 const sinon = require('sinon')
 
-const getAuthenticatedCheckoutUrl = require('../../../../extension/lib/getAuthenticatedCheckoutUrl')
-const AuthRepository = require('../../../../extension/lib/bigcommerce/AuthRepository')
+const getAuthenticatedCheckoutUrl = require('../../../../lib/getAuthenticatedCheckoutUrl')
+const AuthRepository = require('../../../../lib/bigcommerce/AuthRepository')
 
 describe('getAuthenticatedCheckoutUrl - unit', () => {
   const baseUrl = 'https://my-shop.com'

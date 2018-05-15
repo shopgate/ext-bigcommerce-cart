@@ -1,7 +1,7 @@
-const BigCommerceCartLineItems = require('../../../../../../extension/lib/bigcommerce/cart/LineItems')
-const BigCommerceCartLineItemPhysical = require('../../../../../../extension/lib/bigcommerce/cart/line_item/Physical')
-const BigCommerceCartLineItemDigital = require('../../../../../../extension/lib/bigcommerce/cart/line_item/Digital')
-const BigCommerceCartLineItemGiftCertificate = require('../../../../../../extension/lib/bigcommerce/cart/line_item/GiftCertificate')
+const BigCommerceCartLineItems = require('../../../../../../lib/bigcommerce/cart/LineItems')
+const BigCommerceCartLineItemPhysical = require('../../../../../../lib/bigcommerce/cart/line_item/Physical')
+const BigCommerceCartLineItemDigital = require('../../../../../../lib/bigcommerce/cart/line_item/Digital')
+const BigCommerceCartLineItemGiftCertificate = require('../../../../../../lib/bigcommerce/cart/line_item/GiftCertificate')
 const assert = require('assert')
 
 describe('LineItems - unit', function () {
