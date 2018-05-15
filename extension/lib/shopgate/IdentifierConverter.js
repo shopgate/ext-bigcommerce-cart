@@ -1,6 +1,6 @@
 class IdentifierConverter {
   /**
-   * @param {string} productId
+   * @param {string|number} productId
    * @returns {{productId: number, variantId: number|null}}
    */
   extractProductIds (productId) {
