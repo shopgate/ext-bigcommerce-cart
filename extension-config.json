@@ -58,5 +58,12 @@
         "value": "15000"
       }
     }
-  }
+  },
+  "components": [
+    {
+      "id": "CheckoutSubscription",
+      "path": "frontend/Checkout/subscribers.js",
+      "type": "subscribers"
+    }
+  ]
 }
