@@ -108,7 +108,7 @@ describe('BigCommerceCartRepository - integration', () => {
       _label: 'Total',
       /**
        * BigCommerce currently returns $46.05 as cart_amount probably due to an API change between
-       * Fr 09th May 16:00 (MEZ) and Fr 09th May 16:00 (MEZ) and Mo 14th May 14:36 (MEZ)
+       * Fr 09th May 16:00 (MEZ) and Mo 14th May 14:36 (MEZ)
        * This seems to be a bug and we already created a ticket for BigCommerce.
        * Before that change BigCommerce returned $42.25
        */
