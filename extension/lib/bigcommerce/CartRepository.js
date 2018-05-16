@@ -65,10 +65,11 @@ class BigCommerceCartRepository {
    *
    * @param {number} productId
    * @param {number} quantity
+   * @param {number|null} [variantId=null]
    * @returns {BigCommerceCartLineItemRequest}
    */
-  static createLineItem (productId, quantity) {
-    return new BigCommerceCartLineItemRequest(productId, quantity)
+  static createLineItem (productId, quantity, variantId = null) {
+    return new BigCommerceCartLineItemRequest(productId, quantity, variantId)
   }
 
   /**

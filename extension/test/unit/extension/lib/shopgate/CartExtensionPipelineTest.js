@@ -1,9 +1,16 @@
-const ShopgateCartExtensionPipeline = require('../../../../../extension/lib/shopgate/CartExtensionPipeline')
-const ShopgateCartFactory = require('../../../../../extension/lib/shopgate/CartFactory')
-const BigCommerceCartRepository = require('../../../../../extension/lib/bigcommerce/CartRepository')
+'use strict'
 const BigCommerce = require('node-bigcommerce')
 const sinon = require('sinon')
 const assert = require('assert')
+const chai = require('chai')
+const {describe, it, beforeEach, afterEach} = require('mocha')
+const ShopgateCartExtensionPipeline = require('../../../../../lib/shopgate/CartExtensionPipeline')
+const IdentifierConverter = require('../../../../../lib/shopgate/IdentifierConverter')
+const ShopgateCartFactory = require('../../../../../lib/shopgate/CartFactory')
+const BigCommerceCartRepository = require('../../../../../lib/bigcommerce/CartRepository')
+
+chai.use(require('chai-subset'))
+chai.use(require('chai-as-promised')).should()
 
 describe('CartExtensionPipeline - unit', () => {
   /** @type ShopgateCartExtensionPipeline */
@@ -14,15 +21,15 @@ describe('CartExtensionPipeline - unit', () => {
   let createLineItemSpy
 
   let storageMock
-  const storage = { get: () => {}, set: () => {} }
-  const context = { log: { error: () => {} } }
+  const storage = {get: () => {}, set: () => {}}
+  const context = {log: {error: () => {}}}
 
   beforeEach(() => {
     createLineItemSpy = sinon.spy(BigCommerceCartRepository, 'createLineItem')
     storageMock = sinon.mock(storage)
-    const bigCommerceCartRepository = new BigCommerceCartRepository(sinon.createStubInstance(BigCommerce),   /** @type BigCommerceStorage */ storage)
+    const bigCommerceCartRepository = new BigCommerceCartRepository(sinon.createStubInstance(BigCommerce), /** @type BigCommerceStorage */ storage)
     bigCommerceCartRepositoryMock = sinon.mock(bigCommerceCartRepository)
-    subjectUnderTest = new ShopgateCartExtensionPipeline(bigCommerceCartRepository, new ShopgateCartFactory(), /** @type PipelineContext */ context)
+    subjectUnderTest = new ShopgateCartExtensionPipeline(bigCommerceCartRepository, new ShopgateCartFactory(), new IdentifierConverter(), /** @type PipelineContext */ context)
   })
 
   afterEach(() => {
@@ -99,8 +106,13 @@ describe('CartExtensionPipeline - unit', () => {
     })
     const errorLogSpy = sinon.spy(subjectUnderTest._context.log, 'error')
 
-    await subjectUnderTest.updateProducts([{ CartItemId: '1', quantity: 1 }]).should.eventually.equal(false)
-    assert(errorLogSpy.calledWith({msg: 'Failed updating product', reason: 'reason test message', cartItemId: '1', quantity: 1}))
+    await subjectUnderTest.updateProducts([{CartItemId: '1', quantity: 1}]).should.eventually.equal(false)
+    assert(errorLogSpy.calledWith({
+      msg: 'Failed updating product',
+      reason: 'reason test message',
+      cartItemId: '1',
+      quantity: 1
+    }))
     subjectUnderTest._context.log.error.restore()
   })
 })

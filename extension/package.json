@@ -1,17 +1,18 @@
 {
   "name": "@shopgate/bigcommerce-cart",
-  "version": "0.2.0",
+  "version": "1.0.0",
   "description": "Shopgate Cloud BigCommerce Cart",
   "scripts": {
     "precommit": "npm run test && npm run lint-staged",
-    "test": "_mocha --use_strict --require ../test/setupBackend.js --recursive ../test/unit -R mocha-jenkins-reporter",
-    "testIntegration": "_mocha --use_strict --timeout 4000 --require ../test/setupBackend.js --recursive ../test/integration",
+    "test": "mocha --use_strict --recursive test",
+    "test:unit": "mocha --use_strict --recursive ./test/unit",
+    "test:integration": "mocha --use_strict --timeout 4000 --recursive ./test/integration",
     "lint": "standard",
     "lint-staged": "lint-staged",
     "check": "nsp check",
-    "cover": "nyc _mocha --require ../test/setupBackend.js --recursive ../test/unit -R mocha-jenkins-reporter",
-    "coverIntegration": "nyc _mocha --use_strict --timeout 4000 --require ../test/setupBackend.js --recursive ../test/integration -R mocha-jenkins-reporter",
-    "coverAll": "nyc _mocha --use_strict --timeout 4000 --require ../test/setupBackend.js --recursive ../test/integration --recursive ../test/unit -R mocha-jenkins-reporter"
+    "cover": "nyc mocha --use_strict --timeout 4000 --recursive test",
+    "cover:unit": "nyc mocha --recursive ./test/unit",
+    "cover:integration": "nyc npm mocha --use_strict --timeout 4000 --recursive ./test/integration"
   },
   "lint-staged": {
     "*.js": "npm run lint"
@@ -35,24 +36,23 @@
     "chai": "^4.1.2",
     "chai-as-promised": "^7.1.1",
     "chai-subset": "^1.6.0",
-    "eslint": "^3.19.0",
-    "eslint-config-standard": "^10.2.1",
+    "eslint": "^4.19.1",
+    "eslint-config-standard": "^11.0.0",
     "eslint-plugin-chai": "0.0.1",
     "eslint-plugin-chai-expect": "^1.1.1",
     "eslint-plugin-import": "^2.8.0",
-    "eslint-plugin-node": "^5.2.1",
+    "eslint-plugin-node": "^6.0.1",
     "eslint-plugin-promise": "^3.6.0",
     "eslint-plugin-standard": "^3.0.1",
     "husky": "^0.14.3",
-    "lint-staged": "^6.0.0",
-    "mocha": "^3.2.0",
-    "mocha-jenkins-reporter": "^0.3.7",
+    "lint-staged": "^7.1.0",
+    "mocha": "^5.1.1",
     "nock": "^9.0.13",
     "nsp": "^3.1.0",
-    "nyc": "^11.3.0",
+    "nyc": "^11.7.3",
     "request": "^2.83.0",
-    "sinon": "^4.1.2",
-    "standard": "^10.0.3"
+    "sinon": "^5.0.7",
+    "standard": "^11.0.1"
   },
   "standard": {
     "env": {

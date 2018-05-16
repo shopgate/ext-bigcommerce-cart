@@ -1,9 +1,14 @@
-const BigCommerceCartRepository = require('../../../../../extension/lib/bigcommerce/CartRepository')
-const BigCommerceCart = require('../../../../../extension/lib/bigcommerce/Cart')
-const BigCommerceCartLineItemRequest = require('../../../../../extension/lib/bigcommerce/cart/LineItemRequest')
+'use strict'
 const BigCommerce = require('node-bigcommerce')
 const sinon = require('sinon')
 const assert = require('assert')
+const chai = require('chai')
+const BigCommerceCartRepository = require('../../../../../lib/bigcommerce/CartRepository')
+const BigCommerceCart = require('../../../../../lib/bigcommerce/Cart')
+const BigCommerceCartLineItemRequest = require('../../../../../lib/bigcommerce/cart/LineItemRequest')
+
+chai.use(require('chai-subset'))
+chai.use(require('chai-as-promised')).should()
 
 describe('BigCommerceCartRepository - unit', function () {
   let bigCommerceMock

@@ -1,8 +1,23 @@
 # Shopgate Cloud - Extension BigCommerce Cart
 [![GitHub license](http://dmlc.github.io/img/apache2.svg)](LICENSE.md)
-[![Build Status](https://travis-ci.org/shopgate/cloud-ext-bigcommerce-cart.svg?branch=master)](https://travis-ci.org/shopgate/cloud-ext-bigcommerce-cart)
+[![Build Status](https://travis-ci.org/shopgate/ext-bigcommerce-cart.svg?branch=master)](https://travis-ci.org/shopgate/ext-bigcommerce-cart)
 
 This BigCommerce extension will sync the cart from Shopgate to BigCommerce
+
+## Integration Tests
+
+The integration tests will only work when there is a file named .integration-credentials.js in folder extension. 
+It must contain the credentials to our BigCommerce test shop. The file is formatted as follow:
+
+```
+module.exports = {
+  clientId: '***',
+  accessToken: '***',
+  storeHash: '***'
+}
+```
+
+Replace the asterik with real credentials.
 
 ## Changelog
 

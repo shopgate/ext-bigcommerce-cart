@@ -1,14 +1,16 @@
 'use strict'
 const sinon = require('sinon')
 const Logger = require('bunyan')
-
-const ShopgateCartPipeline = require('../../../../extension/lib/shopgate/CartExtensionPipeline')
-const mergeCartsOnLogin = require('../../../../extension/lib/mergeCartsOnLogin')
-
+const chai = require('chai')
 const {describe, it, beforeEach, afterEach} = require('mocha')
+const ShopgateCartPipeline = require('../../../../lib/shopgate/CartExtensionPipeline')
+const mergeCartsOnLogin = require('../../../../lib/mergeCartsOnLogin')
+
+chai.use(require('chai-subset'))
+chai.use(require('chai-as-promised')).should()
 
 describe('mergeCartsOnLogin', () => {
-  const sandbox = /** @type sinon */sinon.sandbox.create()
+  const sandbox = /** @type sinon */sinon.createSandbox()
   const context = {
     meta: {
       deviceId: '9729bcf398c10598aa23a04b3557a4c750c714eb5e177375196660beeb506704',
