@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## [Unreleased]
 
+## [1.0.0] - 2018-05-16
+### Added
+- product variants can now be added to the cart
+
 ## [0.2.0] - 2018-05-08
 ### Added
 - new pipeline "bigcommerce.checkout.getUrl" which can get the url for the BigCommerce checkout
@@ -38,7 +42,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 - functionality to add simple products to the cart
 - functionality to return BigCommerce checkout url
 
-[Unreleased]: https://github.com/shopgate/cloud-ext-bigcommerce-cart/compare/v0.2.0...HEAD
+[Unreleased]: https://github.com/shopgate/cloud-ext-bigcommerce-cart/compare/v1.0.0...HEAD
+[1.0.0]: https://github.com/shopgate/cloud-ext-bigcommerce-cart/compare/v0.2.0...v1.0.0
 [0.2.0]: https://github.com/shopgate/cloud-ext-bigcommerce-cart/compare/v0.1.5...v0.2.0
 [0.1.5]: https://github.com/shopgate/cloud-ext-bigcommerce-cart/compare/v0.1.4...v0.1.5
 [0.1.4]: https://github.com/shopgate/cloud-ext-bigcommerce-cart/compare/v0.1.3...v0.1.4
