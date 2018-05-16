@@ -4,14 +4,15 @@
   "description": "Shopgate Cloud BigCommerce Cart",
   "scripts": {
     "precommit": "npm run test && npm run lint-staged",
-    "test": "_mocha --use_strict --require ./test/setupBackend.js --recursive ./test/unit",
-    "testIntegration": "_mocha --use_strict --timeout 4000 --require ./test/setupBackend.js --recursive ./test/integration",
+    "test": "mocha --use_strict --recursive test",
+    "test:unit": "mocha --use_strict --recursive ./test/unit",
+    "test:integration": "mocha --use_strict --timeout 4000 --recursive ./test/integration",
     "lint": "standard",
     "lint-staged": "lint-staged",
     "check": "nsp check",
-    "cover": "nyc _mocha --require ./test/setupBackend.js --recursive ./test/unit",
-    "coverIntegration": "nyc _mocha --use_strict --timeout 4000 --require ./test/setupBackend.js --recursive ./test/integration",
-    "coverAll": "nyc _mocha --use_strict --timeout 4000 --require ./test/setupBackend.js --recursive ./test/integration --recursive ./test/unit"
+    "cover": "nyc mocha --use_strict --timeout 4000 --recursive test",
+    "cover:unit": "nyc mocha --recursive ./test/unit",
+    "cover:integration": "nyc npm mocha --use_strict --timeout 4000 --recursive ./test/integration"
   },
   "lint-staged": {
     "*.js": "npm run lint"

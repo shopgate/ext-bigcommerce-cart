@@ -1,8 +1,13 @@
+'use strict'
+const assert = require('assert')
+const chai = require('chai')
 const BigCommerceCartLineItems = require('../../../../../../lib/bigcommerce/cart/LineItems')
 const BigCommerceCartLineItemPhysical = require('../../../../../../lib/bigcommerce/cart/line_item/Physical')
 const BigCommerceCartLineItemDigital = require('../../../../../../lib/bigcommerce/cart/line_item/Digital')
 const BigCommerceCartLineItemGiftCertificate = require('../../../../../../lib/bigcommerce/cart/line_item/GiftCertificate')
-const assert = require('assert')
+
+chai.use(require('chai-subset'))
+chai.use(require('chai-as-promised')).should()
 
 describe('LineItems - unit', function () {
   let subjectUnderTest

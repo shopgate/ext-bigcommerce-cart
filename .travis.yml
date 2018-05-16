@@ -13,15 +13,15 @@ matrix:
       env: TYPE=UNIT_CODESTYLE_DEPENDENCY
       script:
       - cd extension
-      - npm run test
+      - npm run test:unit
       - npm run lint
       - npm run check
     - node_js: 8
       env: TYPE=INTEGRATION
       script:
-      - if [[ "$INTEGRATION_CREDENTIALS" ]]; then echo "${INTEGRATION_CREDENTIALS}" > .integration-credentials.js; fi
+      - if [[ "$INTEGRATION_CREDENTIALS" ]]; then echo "${INTEGRATION_CREDENTIALS}" > extension/.integration-credentials.js; fi
       - cd extension
-      - if [[ "$INTEGRATION_CREDENTIALS" ]]; then npm run testIntegration; fi
+      - if [[ "$INTEGRATION_CREDENTIALS" ]]; then npm run test:integration; fi
   allow_failures:
     - node_js: 8
       env: TYPE=INTEGRATION

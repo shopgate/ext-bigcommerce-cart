@@ -1,6 +1,6 @@
+'use strict'
 const assert = require('assert')
 const jwt = require('jwt-simple')
-
 const AuthRepository = require('../../../../../lib/bigcommerce/AuthRepository')
 
 describe('BigCommerceAuthRepository - unit', () => {

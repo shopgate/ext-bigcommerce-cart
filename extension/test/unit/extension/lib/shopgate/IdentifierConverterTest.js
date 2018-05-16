@@ -1,6 +1,7 @@
-const IdentifierConverter = require('../../../../../lib/shopgate/IdentifierConverter')
+'use strict'
 const assert = require('assert')
 const {describe, it, beforeEach} = require('mocha')
+const IdentifierConverter = require('../../../../../lib/shopgate/IdentifierConverter')
 
 describe('CartExtensionPipeline - unit', () => {
   /** @type IdentifierConverter */
