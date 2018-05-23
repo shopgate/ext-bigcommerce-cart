@@ -14,6 +14,10 @@ module.exports = async (context, input) => {
 
     const anonymousCartId = await anonymousPipeline.getCartId()
     const loggedInUserCartId = await loggedInPipeline.getCartId()
+    if (!loggedInUserCartId && !anonymousCartId) {
+      return
+    }
+
     // if there is no user cart id available, we can just reuse the one we have from the device and we're done.
     if (!loggedInUserCartId) {
       await loggedInPipeline.setCartId(anonymousCartId)
