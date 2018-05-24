@@ -179,13 +179,12 @@ class ShopgateCartExtensionPipeline {
  * @returns {ShopgateCartExtensionPipeline}
  */
 const create = (context, storage) => {
-  const bigCommerceFactory = new BigCommerceFactory(
-    context.config.clientId,
-    context.config.accessToken,
-    context.config.storeHash)
-
   const bigCommerceCartRepository = new BigCommerceCartRepository(
-    bigCommerceFactory.createV3(),
+    BigCommerceFactory.createV3(
+      context.config.clientId,
+      context.config.accessToken,
+      context.config.storeHash
+    ),
     /** @type BigCommerceStorage */
     new ShopgateExtensionStorage(storage)
   )
