@@ -20,6 +20,7 @@ module.exports = async (context, input) => {
 
     // if there is no user cart id available, we can just reuse the one we have from the device and we're done.
     if (!loggedInUserCartId) {
+      await anonymousPipeline.setCartId(null)
       await loggedInPipeline.setCartId(anonymousCartId)
       return
     }
