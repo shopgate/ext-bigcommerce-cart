@@ -2,8 +2,8 @@
 const assert = require('assert')
 const sinon = require('sinon')
 const chai = require('chai')
-const getAuthenticatedCheckoutUrl = require('../../../../lib/getAuthenticatedCheckoutUrl')
-const AuthRepository = require('../../../../lib/bigcommerce/AuthRepository')
+const getAuthenticatedCheckoutUrl = require('../../lib/getAuthenticatedCheckoutUrl')
+const AuthRepository = require('../../lib/bigcommerce/AuthRepository')
 
 chai.use(require('chai-subset'))
 chai.use(require('chai-as-promised')).should()

@@ -2,10 +2,10 @@
 const sinon = require('sinon')
 const assert = require('assert')
 const chai = require('chai')
-const BigCommerceCartRepository = require('../../../../../lib/bigcommerce/CartRepository')
-const BigCommerceFactory = require('../../../../../lib/bigcommerce/Factory')
-const integrationCredentials = require('../../../../../.integration-credentials')
-const ShopgateCartFactory = require('../../../../../lib/shopgate/CartFactory')
+const BigCommerceCartRepository = require('../../../lib/bigcommerce/CartRepository')
+const BigCommerceFactory = require('../../../lib/bigcommerce/Factory')
+const integrationCredentials = require('../../../.integration-credentials')
+const ShopgateCartFactory = require('../../../lib/shopgate/CartFactory')
 
 chai.use(require('chai-subset'))
 chai.use(require('chai-as-promised')).should()
@@ -15,7 +15,6 @@ describe('BigCommerceCartRepository - integration', () => {
   /** @type BigCommerceCartRepository */
   let subjectUnderTest
   const storage = {get: () => {}, set: () => {}, delete: () => {}}
-  const bigCommerceFactory = new BigCommerceFactory(integrationCredentials.clientId, integrationCredentials.accessToken, integrationCredentials.storeHash)
   const shopgateCartFactory = new ShopgateCartFactory()
 
   let cartId
@@ -23,7 +22,7 @@ describe('BigCommerceCartRepository - integration', () => {
   beforeEach(() => {
     storageMock = sinon.mock(storage)
     subjectUnderTest = new BigCommerceCartRepository(
-      bigCommerceFactory.createV3(),
+      BigCommerceFactory.createV3(integrationCredentials.clientId, integrationCredentials.accessToken, integrationCredentials.storeHash),
       /** @type BigCommerceStorage */
       storage
     )

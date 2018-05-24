@@ -1,8 +1,8 @@
 'use strict'
 const assert = require('assert')
-const BigCommerceCart = require('../../../../../lib/bigcommerce/Cart')
-const BigCommerceCartLineItemPhysical = require('../../../../../lib/bigcommerce/cart/line_item/Physical')
-const BigCommerceCartLineItemDigital = require('../../../../../lib/bigcommerce/cart/line_item/Digital')
+const BigCommerceCart = require('../../../lib/bigcommerce/Cart')
+const BigCommerceCartLineItemPhysical = require('../../../lib/bigcommerce/cart/line_item/Physical')
+const BigCommerceCartLineItemDigital = require('../../../lib/bigcommerce/cart/line_item/Digital')
 
 describe('Cart - unit', function () {
   let subjectUnderTest

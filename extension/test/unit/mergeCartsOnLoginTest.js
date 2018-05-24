@@ -3,8 +3,8 @@ const sinon = require('sinon')
 const Logger = require('bunyan')
 const chai = require('chai')
 const {describe, it, beforeEach, afterEach} = require('mocha')
-const ShopgateCartPipeline = require('../../../../lib/shopgate/CartExtensionPipeline')
-const mergeCartsOnLogin = require('../../../../lib/mergeCartsOnLogin')
+const ShopgateCartPipeline = require('../../lib/shopgate/CartExtensionPipeline')
+const mergeCartsOnLogin = require('../../lib/mergeCartsOnLogin')
 
 chai.use(require('chai-subset'))
 chai.use(require('chai-as-promised')).should()
@@ -30,9 +30,16 @@ describe('mergeCartsOnLogin', () => {
       requestTimeout: '15000'
     }
   }
+  let anonymousPipelineStub
+  let loggedInPipelineStub
 
   beforeEach(() => {
     context.log = sandbox.createStubInstance(Logger)
+
+    anonymousPipelineStub = sandbox.createStubInstance(ShopgateCartPipeline)
+    loggedInPipelineStub = sandbox.createStubInstance(ShopgateCartPipeline)
+    sandbox.stub(ShopgateCartPipeline, 'createForDevice').returns(anonymousPipelineStub)
+    sandbox.stub(ShopgateCartPipeline, 'createForUser').returns(loggedInPipelineStub)
   })
 
   afterEach(() => {
@@ -115,11 +122,6 @@ describe('mergeCartsOnLogin', () => {
       }
     }
 
-    const anonymousPipelineStub = sandbox.createStubInstance(ShopgateCartPipeline)
-    const loggedInPipelineStub = sandbox.createStubInstance(ShopgateCartPipeline)
-    sandbox.stub(ShopgateCartPipeline, 'createForDevice').returns(anonymousPipelineStub)
-    sandbox.stub(ShopgateCartPipeline, 'createForUser').returns(loggedInPipelineStub)
-
     anonymousPipelineStub.get.returns(getCartResponse)
 
     anonymousPipelineStub.getCartId.returns('my_cart_id')
@@ -137,12 +139,6 @@ describe('mergeCartsOnLogin', () => {
   })
 
   it('should move the cart to loggedin pipeline when cart there does not exist', async () => {
-    const anonymousPipelineStub = sandbox.createStubInstance(ShopgateCartPipeline)
-    const loggedInPipelineStub = sandbox.createStubInstance(ShopgateCartPipeline)
-
-    sandbox.stub(ShopgateCartPipeline, 'createForDevice').returns(anonymousPipelineStub)
-    sandbox.stub(ShopgateCartPipeline, 'createForUser').returns(loggedInPipelineStub)
-
     anonymousPipelineStub.getCartId.returns('my_cart_id')
     loggedInPipelineStub.getCartId.returns(null)
 
@@ -154,9 +150,16 @@ describe('mergeCartsOnLogin', () => {
     sinon.assert.notCalled(anonymousPipelineStub.destroyCart)
   })
 
+  it('should not fail if there is neither an anonymous, nor a logged in cartId', async () => {
+    anonymousPipelineStub.getCartId.returns(null)
+    loggedInPipelineStub.getCartId.returns(null)
+
+    await mergeCartsOnLogin(context, {})
+  })
+
   it('should log errors', async () => {
     const error = new TypeError('wat')
-    sandbox.stub(ShopgateCartPipeline, 'createForDevice').throws(error)
+    anonymousPipelineStub.getCartId.throws(error)
     return mergeCartsOnLogin(context, {}).should.eventually.be.rejectedWith(error)
   })
 })
