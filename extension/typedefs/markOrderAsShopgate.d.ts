@@ -1,0 +1,3 @@
+interface markOrderAsShopgateInput {
+  orderId: string
+}

@@ -4,7 +4,7 @@ const BigCommerceFactory = require('./bigcommerce/Factory')
 
 /**
  * @param {PipelineContext} context
- * @param {Object} input
+ * @param {markOrderAsShopgateInput} input
  * @returns {Promise<void>}
  */
 module.exports = async (context, input) => {

@@ -25,7 +25,7 @@ describe('markOrderAsShopgate', () => {
     sandbox.verifyAndRestore()
   })
 
-  it('should do something', async () => {
+  it('should send (only) a PUT request to the Bigcommerce API', async () => {
     const input = {
       orderId: '101'
     }
@@ -43,13 +43,14 @@ describe('markOrderAsShopgate', () => {
     sinon.assert.calledWith(apiClientStub.put, '/orders/101', { staff_notes: sinon.match.string })
   })
 
-  it('should catch and log errors', () => {
+  it('should catch and log errors', async () => {
     const input = {
       orderId: '101'
     }
     apiClientStub.put
       .rejects(new Error())
 
-    return markOrderAsShopgate(context, input).should.eventually.be.rejected
+    await markOrderAsShopgate(context, input).should.eventually.be.rejected
+    sinon.assert.called(context.log.error)
   })
 })
