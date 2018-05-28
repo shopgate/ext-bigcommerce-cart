@@ -25,7 +25,7 @@ describe('markOrderAsShopgate', () => {
     sandbox.verifyAndRestore()
   })
 
-  it('should do something', async () => {
+  it('should send (only) a PUT request to the Bigcommerce API', async () => {
     const input = {
       orderId: '101'
     }
