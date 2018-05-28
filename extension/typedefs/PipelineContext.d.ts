@@ -38,6 +38,10 @@ interface PipelineStorageContainer {
 }
 
 interface PipelineConfiguration {
+  clientId: string
+  accessToken: string
+  storeHash: string
+  clientSecret: string
 }
 
 interface PipelineContextMeta {
