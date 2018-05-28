@@ -6,6 +6,14 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## [Unreleased]
 
+## [1.1.0] - 2018-05-28
+### Added
+- new pipeline "markOrderAsShopgate" that adds a staff note to a Bigcommerce order
+
+## [1.0.1] - 2018-05-23
+### Fixed
+- fixed case when user has no cart and there is no anonymous cart
+
 ## [1.0.0] - 2018-05-16
 ### Added
 - product variants can now be added to the cart
@@ -42,7 +50,9 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 - functionality to add simple products to the cart
 - functionality to return BigCommerce checkout url
 
-[Unreleased]: https://github.com/shopgate/cloud-ext-bigcommerce-cart/compare/v1.0.0...HEAD
+[Unreleased]: https://github.com/shopgate/cloud-ext-bigcommerce-cart/compare/v1.1.0...HEAD
+[1.1.0]: https://github.com/shopgate/cloud-ext-bigcommerce-cart/compare/v1.0.1...v1.1.0
+[1.0.1]: https://github.com/shopgate/cloud-ext-bigcommerce-cart/compare/v1.0.0...v1.0.1
 [1.0.0]: https://github.com/shopgate/cloud-ext-bigcommerce-cart/compare/v0.2.0...v1.0.0
 [0.2.0]: https://github.com/shopgate/cloud-ext-bigcommerce-cart/compare/v0.1.5...v0.2.0
 [0.1.5]: https://github.com/shopgate/cloud-ext-bigcommerce-cart/compare/v0.1.4...v0.1.5
