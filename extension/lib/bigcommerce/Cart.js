@@ -75,13 +75,6 @@ class BigCommerceCart {
    * @returns {number}
    */
   get cartAmount () {
-    return this._cartAmount
-  }
-
-  /**
-   * @returns {number}
-   */
-  get netCartAmount () {
     return this.productsSubTotal - this.discountAmount
   }
 
