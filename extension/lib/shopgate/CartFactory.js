@@ -17,7 +17,7 @@ class ShopgateCartFactory {
     )
 
     cart.addTotal('discount', 'Discount', bigCommerceCart.discountAmount)
-    cart.addTotal('grandTotal', 'Total', bigCommerceCart.cartAmount)
+    cart.addTotal('grandTotal', 'Total', bigCommerceCart.netCartAmount)
 
     for (const lineItem of bigCommerceCart.lineItems.physical) {
       const listPrice = lineItem.listPrice !== 0 ? lineItem.listPrice : lineItem.salePrice

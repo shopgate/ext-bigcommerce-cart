@@ -79,6 +79,13 @@ class BigCommerceCart {
   }
 
   /**
+   * @returns {number}
+   */
+  get netCartAmount () {
+    return this.productsSubTotal - this.discountAmount
+  }
+
+  /**
    * @returns {boolean}
    */
   get taxIncluded () {
