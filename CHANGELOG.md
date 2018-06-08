@@ -8,6 +8,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 ### Added
 - invocation of "markOrderAsShopgate" pipeline from frontend code by subscribing to the checkoutSuccess event
 
+### Changed
+- changed the way the bigcommerce cart calculates and returns its cart amount
 
 ## [1.1.0] - 2018-05-28
 ### Added
