@@ -45,10 +45,8 @@ export default function checkout(subscribe) {
         return;
       }
 
-      const orderNumber = data.order.number;
-
       new PipelineRequest(MARK_SHOPGATE_ORDER)
-        .setInput({ orderId: orderNumber })
+        .setInput({ orderId: data.order.number })
         .dispatch()
         .catch(err => logger.error(err));
     });
