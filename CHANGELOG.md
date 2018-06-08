@@ -5,6 +5,8 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+### Changed
+- changed the way the bigcommerce cart calculates and returns its cart amount
 
 ## [1.1.0] - 2018-05-28
 ### Added
