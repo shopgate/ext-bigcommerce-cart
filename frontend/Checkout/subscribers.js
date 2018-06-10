@@ -7,9 +7,12 @@ import fetchCheckoutUrl from '@shopgate/pwa-common-commerce/checkout/actions/fet
 import { appDidStart$ } from '@shopgate/pwa-common/streams/app';
 import PipelineRequest from '@shopgate/pwa-core/classes/PipelineRequest';
 import { logger } from '@shopgate/pwa-core/helpers';
+import { ERROR_HANDLE_SUPPRESS } from '@shopgate/pwa-core/constants/ErrorHandleTypes';
 import event from '@shopgate/pwa-core/classes/Event';
-
-const MARK_SHOPGATE_ORDER = 'bigcommerce.checkout.markOrderAsShopgate'
+import {
+  MARK_SHOPGATE_ORDER_PIPELINE,
+  CHECKOUT_SUCCESS_EVENT,
+} from '../constants';
 
 /**
  * Checkout subscriptions.
@@ -19,8 +22,7 @@ export default function checkout(subscribe) {
   /**
    * Gets triggered when the user enters the checkout.
    */
-  subscribe(openedCheckoutLink$, ({ dispatch, getState }) => {
-
+  subscribe(openedCheckoutLink$, ({ dispatch }) => {
     dispatch(fetchCheckoutUrl())
       .then((url) => {
         /**
@@ -40,15 +42,16 @@ export default function checkout(subscribe) {
   });
 
   subscribe(appDidStart$, () => {
-    event.addCallback('checkoutSuccess', (data = {}) => {
+    event.addCallback(CHECKOUT_SUCCESS_EVENT, (data = {}) => {
       if (typeof data.order === 'undefined') {
         return;
       }
 
-      new PipelineRequest(MARK_SHOPGATE_ORDER)
+      new PipelineRequest(MARK_SHOPGATE_ORDER_PIPELINE)
+        .setHandleErrors(ERROR_HANDLE_SUPPRESS)
         .setInput({ orderId: data.order.number })
         .dispatch()
         .catch(err => logger.error(err));
     });
   });
-};
+}
