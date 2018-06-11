@@ -1,14 +1,11 @@
 .DS_Store
 build
 coverage
-extension/coverage
-extension/node_modules
+node_modules
 .idea/
 npm-debug.log
 .vscode
-extension/config.json
-frontend/config.json
-/extension/.nyc_output
+config.json
 .nyc_output
 .integration-credentials.js
 package-lock.json
