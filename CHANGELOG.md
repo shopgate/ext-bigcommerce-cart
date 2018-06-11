@@ -5,6 +5,9 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+### Added
+- invocation of "markOrderAsShopgate" pipeline from frontend code by subscribing to the checkoutSuccess event
+
 ### Changed
 - changed the way the bigcommerce cart calculates and returns its cart amount
 

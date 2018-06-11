@@ -1,10 +1,18 @@
 import goBackHistory from '@shopgate/pwa-common/actions/history/goBackHistory';
-import { isUserLoggedIn } from '@shopgate/pwa-common/selectors/user';
 import ParsedLink from '@shopgate/pwa-common/components/Router/helpers/parsed-link';
 import trackingCore from '@shopgate/tracking-core/core/Core';
 import { LEGACY_URL } from '@shopgate/pwa-common-commerce/checkout/constants';
 import { openedCheckoutLink$ } from '@shopgate/pwa-common-commerce/checkout/streams';
 import fetchCheckoutUrl from '@shopgate/pwa-common-commerce/checkout/actions/fetchCheckoutUrl';
+import { appDidStart$ } from '@shopgate/pwa-common/streams/app';
+import PipelineRequest from '@shopgate/pwa-core/classes/PipelineRequest';
+import { logger } from '@shopgate/pwa-core/helpers';
+import { ERROR_HANDLE_SUPPRESS } from '@shopgate/pwa-core/constants/ErrorHandleTypes';
+import event from '@shopgate/pwa-core/classes/Event';
+import {
+  MARK_SHOPGATE_ORDER_PIPELINE,
+  CHECKOUT_SUCCESS_EVENT,
+} from '../constants';
 
 /**
  * Checkout subscriptions.
@@ -14,12 +22,7 @@ export default function checkout(subscribe) {
   /**
    * Gets triggered when the user enters the checkout.
    */
-  subscribe(openedCheckoutLink$, ({ dispatch, getState }) => {
-    // Check if user is logged in.
-    if (!isUserLoggedIn(getState())) {
-      return;
-    }
-
+  subscribe(openedCheckoutLink$, ({ dispatch }) => {
     dispatch(fetchCheckoutUrl())
       .then((url) => {
         /**
@@ -36,5 +39,19 @@ export default function checkout(subscribe) {
       .catch(e => e);
 
     dispatch(goBackHistory(1));
+  });
+
+  subscribe(appDidStart$, () => {
+    event.addCallback(CHECKOUT_SUCCESS_EVENT, (data = {}) => {
+      if (typeof data.order === 'undefined') {
+        return;
+      }
+
+      new PipelineRequest(MARK_SHOPGATE_ORDER_PIPELINE)
+        .setHandleErrors(ERROR_HANDLE_SUPPRESS)
+        .setInput({ orderId: data.order.number })
+        .dispatch()
+        .catch(err => logger.error(err));
+    });
   });
 }
