@@ -2,6 +2,7 @@ language: node_js
 
 install:
 - cd extension; npm install; cd ..
+- cd frontend; npm install; cd ..
 
 env: # important! Without the top-level env, no job will be allowed to fail.
   - JOB_DEFAULT=test
