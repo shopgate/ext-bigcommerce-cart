@@ -57,7 +57,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 - functionality to add simple products to the cart
 - functionality to return BigCommerce checkout url
 
-[Unreleased]: https://github.com/shopgate/cloud-ext-bigcommerce-cart/compare/v1.1.0...HEAD
+[Unreleased]: https://github.com/shopgate/cloud-ext-bigcommerce-cart/compare/v1.1.1...HEAD
+[1.1.1]: https://github.com/shopgate/cloud-ext-bigcommerce-cart/compare/v1.1.0...v1.1.1
 [1.1.0]: https://github.com/shopgate/cloud-ext-bigcommerce-cart/compare/v1.0.1...v1.1.0
 [1.0.1]: https://github.com/shopgate/cloud-ext-bigcommerce-cart/compare/v1.0.0...v1.0.1
 [1.0.0]: https://github.com/shopgate/cloud-ext-bigcommerce-cart/compare/v0.2.0...v1.0.0
