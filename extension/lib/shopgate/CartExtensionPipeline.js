@@ -133,10 +133,10 @@ class ShopgateCartExtensionPipeline {
   }
 
   /**
-   * @param {string} cartId
+   * @param {string|null} cartId
    */
   async setCartId (cartId) {
-    if (!this._context.meta.userId) {
+    if (cartId === null || !this._context.meta.userId) {
       await this._bigCommerceCartRepository.useId(cartId)
       return
     }
