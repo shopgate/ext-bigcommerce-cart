@@ -9,10 +9,12 @@ class BigCommerceCartRepository {
   /**
    * @param {BigCommerce} client Api V3 client
    * @param {BigCommerceStorage} storage
+   * @param {number} customerId
    */
-  constructor (client, storage) {
+  constructor (client, storage, customerId) {
     this._client = client
     this._storage = storage
+    this._customerId = customerId
   }
 
   /**
@@ -40,6 +42,18 @@ class BigCommerceCartRepository {
    */
   async useId (cartId) {
     await this._storage.set(CART_ID, cartId)
+  }
+
+  /**
+   * @param {number} customerId
+   * @param {string} cartId
+   */
+  async assignCustomer (customerId, cartId) {
+    await this._client.put(`/carts/${cartId}`, {
+      customer_id: customerId
+    })
+
+    await this.useId(cartId)
   }
 
   async destroy () {
@@ -89,7 +103,10 @@ class BigCommerceCartRepository {
     const cartId = await this._storage.get(CART_ID)
 
     if (!cartId) {
-      const bigCommerceResponse = await this._client.post('/carts', {'line_items': items.map(this._toApiLineItem)})
+      const bigCommerceResponse = await this._client.post('/carts', {
+        'line_items': items.map(this._toApiLineItem),
+        'customer_id': this._customerId
+      })
       await this.useId(bigCommerceResponse.data.id)
 
       return

@@ -11,6 +11,7 @@
  * @property {number} base_amount
  * @property {number} discount_amount
  * @property {number} cart_amount
+ * @property {number} customer_id
  * @property {BigCommerceApiCartAppliedCoupon[]} coupons
  * @property {BigCommerceApiCartAppliedDiscount[]} discounts
  * @property {string} created_time

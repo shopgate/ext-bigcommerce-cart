@@ -10,6 +10,8 @@ const BigCommerceCartLineItemRequest = require('../../../lib/bigcommerce/cart/Li
 chai.use(require('chai-subset'))
 chai.use(require('chai-as-promised')).should()
 
+const CUSTOMER_ID_MOCK = 192
+
 describe('BigCommerceCartRepository - unit', function () {
   let bigCommerceMock
   let storageMock
@@ -23,7 +25,8 @@ describe('BigCommerceCartRepository - unit', function () {
     subjectUnderTest = new BigCommerceCartRepository(
       bigCommerce,
       /** @type BigCommerceStorage */
-      storage
+      storage,
+      CUSTOMER_ID_MOCK
     )
   })
 
@@ -93,7 +96,8 @@ describe('BigCommerceCartRepository - unit', function () {
             product_id: 42,
             quantity: 1
           }
-        ]
+        ],
+        customer_id: CUSTOMER_ID_MOCK
       }
     ).returns({data: { id: '0000-0000-0000-0000' }})
 
@@ -195,7 +199,7 @@ describe('BigCommerceCartRepository - unit', function () {
         quantity: 1
       }
     ]
-    storageMock.expects('get').once().returns()
+    storageMock.expects('get').once()
     const updateFailureNotifier = sinon.spy()
     await subjectUnderTest.updateItems(cartItems, updateFailureNotifier).should.eventually.be.rejectedWith(Error)
     assert(updateFailureNotifier.notCalled)

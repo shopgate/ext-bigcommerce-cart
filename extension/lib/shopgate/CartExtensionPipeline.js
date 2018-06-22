@@ -136,7 +136,12 @@ class ShopgateCartExtensionPipeline {
    * @param {string} cartId
    */
   async setCartId (cartId) {
-    await this._bigCommerceCartRepository.useId(cartId)
+    if (!this._context.meta.userId) {
+      await this._bigCommerceCartRepository.useId(cartId)
+      return
+    }
+
+    await this._bigCommerceCartRepository.assignCustomer(parseInt(this._context.meta.userId), cartId)
   }
 
   /**
@@ -186,7 +191,8 @@ const create = (context, storage) => {
       context.config.storeHash
     ),
     /** @type BigCommerceStorage */
-    new ShopgateExtensionStorage(storage)
+    new ShopgateExtensionStorage(storage),
+    parseInt(context.meta.userId)
   )
 
   return new ShopgateCartExtensionPipeline(bigCommerceCartRepository, new ShopgateCartFactory(), new IdentifierConverter(), context)
