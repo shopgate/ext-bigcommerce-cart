@@ -6,6 +6,11 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## [Unreleased]
 
+## [1.3.0] - 2018-06-22
+### Added
+- support for cart level customer discounts.
+
+
 ## [1.2.0] - 2018-06-11
 ### Added
 - invocation of "markOrderAsShopgate" pipeline from frontend code by subscribing to the checkoutSuccess event

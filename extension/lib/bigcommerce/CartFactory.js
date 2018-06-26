@@ -19,7 +19,8 @@ class BigCommerceCartFactory {
       bigCommerceResponse.tax_included,
       bigCommerceResponse.base_amount,
       bigCommerceResponse.discount_amount,
-      bigCommerceResponse.cart_amount
+      bigCommerceResponse.cart_amount,
+      bigCommerceResponse.customer_id || null
     )
 
     for (const physicalItem of this._getPhysicalItems(bigCommerceResponse.line_items)) {

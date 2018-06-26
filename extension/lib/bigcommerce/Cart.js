@@ -8,8 +8,9 @@ class BigCommerceCart {
    * @param {number} baseAmount
    * @param {number} discountAmount
    * @param {number} cartAmount
+   * @param {number|null} [customerId=null]
    */
-  constructor (id, currency, isTaxIncluded, baseAmount, discountAmount, cartAmount) {
+  constructor (id, currency, isTaxIncluded, baseAmount, discountAmount, cartAmount, customerId = null) {
     this._id = id
     this._currency = currency
     this._isTaxIncluded = isTaxIncluded
@@ -17,6 +18,7 @@ class BigCommerceCart {
     this._discountAmount = discountAmount
     this._cartAmount = cartAmount
     this._lineItems = new BigCommerceCartLineItems()
+    this._customerId = customerId
   }
 
   /**
@@ -26,6 +28,13 @@ class BigCommerceCart {
    */
   get id () {
     return this._id
+  }
+
+  /**
+   * @return {number|null}
+   */
+  get customerId () {
+    return this._customerId
   }
 
   /**
