@@ -9,12 +9,10 @@ class ShopgateConcurrencyLock {
   /**
    * @param {string} name
    * @param {string} owner
-   * @param {number} ttl Time to live in milliseconds
    */
-  constructor (name, owner, ttl) {
+  constructor (name, owner) {
     this._name = name
     this._owner = owner
-    this._ttl = ttl
   }
 
   /**
@@ -39,7 +37,7 @@ class ShopgateConcurrencyLock {
       ttl
     })
 
-    const lock = new ShopgateConcurrencyLock(name, owner, ttl)
+    const lock = new ShopgateConcurrencyLock(name, owner)
     if (!await elect(lock, maxWaitTime)) {
       return null
     }
