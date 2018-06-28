@@ -1,5 +1,7 @@
 const ShopgateCart = require('./Cart')
 
+const CART_LEVEL_MESSAGES = 'cartMessages'
+
 class ShopgateCartFactory {
   /**
    * @param {BigCommerceCart|null} bigCommerceCart
@@ -40,6 +42,16 @@ class ShopgateCartFactory {
 
     return cart
   }
+
+
+}
+
+/**
+ * @param {string} cartId
+ * @return {string}
+ */
+function getCartMessagesKey (cartId) {
+  return `${CART_LEVEL_MESSAGES}_${cartId}`
 }
 
 module.exports = ShopgateCartFactory

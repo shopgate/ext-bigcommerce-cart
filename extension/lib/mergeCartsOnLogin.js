@@ -1,6 +1,7 @@
 'use strict'
 
 const ShopgateCartPipeline = require('./shopgate/CartExtensionPipeline')
+const { decorateError } = require('./shopgate/logDecorator')
 
 /**
  * @param {PipelineContext} context
@@ -33,7 +34,7 @@ module.exports = async (context, input) => {
     await loggedInPipeline.addProducts(itemsToAdd)
     await anonymousPipeline.destroyCart()
   } catch (error) {
-    context.log.error(error)
+    context.log.error(decorateError(error), 'Failed merging carts on login')
     throw error
   }
 }

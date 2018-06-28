@@ -1,4 +1,7 @@
+'use strict'
+
 const ShopgateCartPipeline = require('./shopgate/CartExtensionPipeline')
+const { decorateError } = require('./shopgate/logDecorator')
 
 /**
  * @param {PipelineContext} context
@@ -9,7 +12,7 @@ module.exports = async (context, input) => {
   try {
     await ShopgateCartPipeline.create(context).deleteProductFromCart(input.CartItemIds)
   } catch (error) {
-    context.log.error(error)
+    context.log.error(decorateError(error), 'Failed deleting from cart')
     throw error
   }
 }

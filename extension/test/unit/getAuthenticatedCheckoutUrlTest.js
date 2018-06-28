@@ -57,7 +57,7 @@ describe('getAuthenticatedCheckoutUrl - unit', () => {
     const logSpy = sinon.spy(context.log, 'error')
 
     getAuthenticatedCheckoutUrl({...context, meta}, input).should.eventually.be.rejectedWith(error)
-    assert(logSpy.calledWith(error))
+    assert(logSpy.called)
 
     authRepositoryFactoryStub.restore()
   })

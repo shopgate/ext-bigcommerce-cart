@@ -6,10 +6,13 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## [Unreleased]
 
+## [1.4.0] - 2018-06-28
+### Added
+- showing update cart errors with cart level messages.
+
 ## [1.3.0] - 2018-06-22
 ### Added
 - support for cart level customer discounts.
-
 
 ## [1.2.0] - 2018-06-11
 ### Added

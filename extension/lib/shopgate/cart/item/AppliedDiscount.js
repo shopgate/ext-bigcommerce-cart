@@ -6,7 +6,7 @@ class ShopgateCartItemProductAppliedDiscount {
    * @param {ShopgateCartItemSavedPrice} savedPrice
    */
   constructor (code, description, label, savedPrice) {
-    this._code = code
+    this._cartItemId = code
     this._description = description
     this._label = label
     this._savedPrice = savedPrice
@@ -16,7 +16,7 @@ class ShopgateCartItemProductAppliedDiscount {
    *  @return {string}
    */
   get code () {
-    return this._code
+    return this._cartItemId
   }
 
   /**
