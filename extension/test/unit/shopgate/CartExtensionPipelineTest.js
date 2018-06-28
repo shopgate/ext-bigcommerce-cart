@@ -9,7 +9,7 @@ const IdentifierConverter = require('../../../lib/shopgate/IdentifierConverter')
 const ShopgateCartFactory = require('../../../lib/shopgate/CartFactory')
 const BigCommerceCartRepository = require('../../../lib/bigcommerce/CartRepository')
 const ShopgateCartMessagesRepository = require('../../../lib/shopgate/CartMessageRepository')
-const ShopgateConcurrency = require('../../../lib/shopgate/concurrency')
+const ShopgateConcurrency = require('../../../lib/shopgate/Concurrency')
 
 const proxyquire = require('proxyquire')
 
