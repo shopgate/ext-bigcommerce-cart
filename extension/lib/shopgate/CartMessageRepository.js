@@ -1,4 +1,3 @@
-const ShopgateCartMessage = require('./cart/Message')
 const { decorateError } = require('./logDecorator')
 
 const CART_LEVEL_MESSAGES = 'cartMessages'
