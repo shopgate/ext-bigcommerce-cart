@@ -13,15 +13,15 @@ describe('CartExtensionPipeline - unit', () => {
 
   describe('extractProductIds', () => {
     it('should extract a variantId', function () {
-      return assert.deepEqual(subjectUnderTest.extractProductIds('123-321'), {productId: 123, variantId: 321})
+      return assert.deepStrictEqual(subjectUnderTest.extractProductIds('123-321'), {productId: 123, variantId: 321})
     })
 
     it('should be able to handle productId only', function () {
-      return assert.deepEqual(subjectUnderTest.extractProductIds('123'), {productId: 123, variantId: null})
+      return assert.deepStrictEqual(subjectUnderTest.extractProductIds('123'), {productId: 123, variantId: null})
     })
 
     it('should be able to handle productId number as well', function () {
-      return assert.deepEqual(subjectUnderTest.extractProductIds(123), {productId: 123, variantId: null})
+      return assert.deepStrictEqual(subjectUnderTest.extractProductIds(123), {productId: 123, variantId: null})
     })
   })
 })

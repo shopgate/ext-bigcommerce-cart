@@ -4,10 +4,14 @@ const sinon = require('sinon')
 const assert = require('assert')
 const chai = require('chai')
 const {describe, it, beforeEach, afterEach} = require('mocha')
-const ShopgateCartExtensionPipeline = require('../../../lib/shopgate/CartExtensionPipeline')
+let ShopgateCartExtensionPipeline = require('../../../lib/shopgate/CartExtensionPipeline')
 const IdentifierConverter = require('../../../lib/shopgate/IdentifierConverter')
 const ShopgateCartFactory = require('../../../lib/shopgate/CartFactory')
 const BigCommerceCartRepository = require('../../../lib/bigcommerce/CartRepository')
+const ShopgateCartMessagesRepository = require('../../../lib/shopgate/CartMessageRepository')
+const ShopgateConcurrency = require('../../../lib/shopgate/Concurrency')
+
+const proxyquire = require('proxyquire')
 
 chai.use(require('chai-subset'))
 chai.use(require('chai-as-promised')).should()
@@ -16,28 +20,48 @@ describe('CartExtensionPipeline - unit', () => {
   /** @type ShopgateCartExtensionPipeline */
   let subjectUnderTest
 
-  let bigCommerceCartRepositoryMock
+  const sandbox = sinon.createSandbox()
 
+  let bigCommerceCartRepositoryMock
   let createLineItemSpy
 
   let storageMock
   const storage = {get: () => {}, set: () => {}}
-  const context = {log: {error: () => {}}}
+  const context = {
+    log: {error: () => {}},
+    storage: {
+      extension: storageMock
+    }
+  }
+
+  let shopgateConcurrencyStub, shopgateConcurrencyCreateStub
 
   beforeEach(() => {
-    createLineItemSpy = sinon.spy(BigCommerceCartRepository, 'createLineItem')
-    storageMock = sinon.mock(storage)
+    createLineItemSpy = sandbox.spy(BigCommerceCartRepository, 'createLineItem')
+    storageMock = sandbox.mock(storage)
     const bigCommerceCartRepository = new BigCommerceCartRepository(sinon.createStubInstance(BigCommerce), /** @type BigCommerceStorage */ storage)
-    bigCommerceCartRepositoryMock = sinon.mock(bigCommerceCartRepository)
-    subjectUnderTest = new ShopgateCartExtensionPipeline(bigCommerceCartRepository, new ShopgateCartFactory(), new IdentifierConverter(), /** @type PipelineContext */ context)
+    bigCommerceCartRepositoryMock = sandbox.mock(bigCommerceCartRepository)
+
+    shopgateConcurrencyStub = sandbox.createStubInstance(ShopgateConcurrency)
+    shopgateConcurrencyCreateStub = sandbox.stub(ShopgateConcurrency, 'create').returns(shopgateConcurrencyStub)
+
+    ShopgateCartExtensionPipeline = proxyquire('../../../lib/shopgate/CartExtensionPipeline', {
+      './Concurrency': {
+        create: shopgateConcurrencyCreateStub
+      }
+    })
+
+    subjectUnderTest = new ShopgateCartExtensionPipeline(
+      bigCommerceCartRepository,
+      new ShopgateCartFactory(),
+      new IdentifierConverter(),
+      /** @type PipelineContext */ context,
+      new ShopgateCartMessagesRepository(storageMock, context.log)
+    )
   })
 
   afterEach(() => {
-    bigCommerceCartRepositoryMock.verify()
-    bigCommerceCartRepositoryMock.restore()
-    storageMock.verify()
-    storageMock.restore()
-    BigCommerceCartRepository.createLineItem.restore()
+    sandbox.verifyAndRestore()
   })
 
   it('should return empty cart when bigcommerce cart repository returns null', () => {
@@ -87,7 +111,8 @@ describe('CartExtensionPipeline - unit', () => {
 
   it('should return true when update product runs without error', async () => {
     bigCommerceCartRepositoryMock.expects('updateItems').once().withArgs([BigCommerceCartRepository.createLineItemUpdate('1', 1)])
-    const errorLogSpy = sinon.spy(subjectUnderTest._context.log, 'error')
+    shopgateConcurrencyStub.lock.returns(null)
+    const errorLogSpy = sandbox.spy(subjectUnderTest._context.log, 'error')
 
     await subjectUnderTest.updateProducts([{CartItemId: '1', quantity: 1}]).should.eventually.equal(true)
     assert(errorLogSpy.notCalled)
@@ -95,8 +120,8 @@ describe('CartExtensionPipeline - unit', () => {
   })
 
   it('should return false when update product encounters a non-breaking error', async () => {
-    bigCommerceCartRepositoryMock.expects('updateItems').once().withArgs([BigCommerceCartRepository.createLineItemUpdate('1', 1)]).callsFake((items, notify) => {
-      notify({
+    bigCommerceCartRepositoryMock.expects('updateItems').once().withArgs([BigCommerceCartRepository.createLineItemUpdate('1', 1)]).callsFake(async (items, notify) => {
+      await notify({
         reason: 'reason test message',
         item: {
           itemId: '1',
@@ -104,15 +129,12 @@ describe('CartExtensionPipeline - unit', () => {
         }
       })
     })
+    shopgateConcurrencyStub.lock.returns(null)
+
     const errorLogSpy = sinon.spy(subjectUnderTest._context.log, 'error')
 
     await subjectUnderTest.updateProducts([{CartItemId: '1', quantity: 1}]).should.eventually.equal(false)
-    assert(errorLogSpy.calledWith({
-      msg: 'Failed updating product',
-      reason: 'reason test message',
-      cartItemId: '1',
-      quantity: 1
-    }))
+    assert(errorLogSpy.called)
     subjectUnderTest._context.log.error.restore()
   })
 })

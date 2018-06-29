@@ -1,5 +1,8 @@
+'use strict'
+
 const { URL } = require('url')
 const AuthRepository = require('./bigcommerce/AuthRepository')
+const { decorateError } = require('./shopgate/logDecorator')
 
 /**
  * @param {PipelineContext} context
@@ -20,7 +23,7 @@ module.exports = async (context, input) => {
     const loginUrl = `${cartUrl.protocol}//${cartUrl.host}/login/token/${token}`
     return {url: loginUrl}
   } catch (error) {
-    context.log.error(error)
+    context.log.error(decorateError(error), 'Failed getting auth url')
     throw error
   }
 }

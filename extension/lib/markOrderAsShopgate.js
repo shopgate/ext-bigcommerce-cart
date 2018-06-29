@@ -1,6 +1,7 @@
 'use strict'
 
 const BigCommerceFactory = require('./bigcommerce/Factory')
+const { decorateError } = require('./shopgate/logDecorator')
 
 /**
  * @param {PipelineContext} context
@@ -19,7 +20,7 @@ module.exports = async (context, input) => {
       staff_notes: 'Order placed via Shopgate App'
     })
   } catch (error) {
-    context.log.error(error.message)
+    context.log.error(decorateError(error), 'Failed marking the order as placed by Shopgate')
     throw error
   }
 }

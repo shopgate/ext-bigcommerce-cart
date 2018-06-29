@@ -1,4 +1,7 @@
+'use strict'
+
 const ShopgateCartPipeline = require('./shopgate/CartExtensionPipeline')
+const { decorateError } = require('./shopgate/logDecorator')
 
 /**
  * @param {PipelineContext} context
@@ -9,7 +12,7 @@ module.exports = async (context) => {
   try {
     return await cartPipeline.get()
   } catch (error) {
-    context.log.error(error)
+    context.log.error(decorateError(error), 'Failed getting the cart')
     throw error
   }
 }

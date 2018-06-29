@@ -1,4 +1,7 @@
+'use strict'
+
 const ShopgateCartPipeline = require('./shopgate/CartExtensionPipeline')
+const { decorateError } = require('./shopgate/logDecorator')
 
 /**
  * @param {PipelineContext} context
@@ -7,19 +10,11 @@ const ShopgateCartPipeline = require('./shopgate/CartExtensionPipeline')
  */
 module.exports = async (context, input) => {
   try {
-    const updateSuccess = await ShopgateCartPipeline.create(context).updateProducts(input.CartItem)
-    const messages = []
-    if (!updateSuccess) {
-      messages.push({
-        code: 'EUNKNOWN',
-        message: 'It was not possible to update all of the items.',
-        type: 'error'
-      })
-    }
+    await ShopgateCartPipeline.create(context).updateProducts(input.CartItem)
 
-    return { messages }
+    // there is no benefit of providing messages as they get shown in a popup
+    return { messages: [] }
   } catch (error) {
-    context.log.error(error)
-    throw error
+    context.log.error(decorateError(error), 'Failed updating cart')
   }
 }
