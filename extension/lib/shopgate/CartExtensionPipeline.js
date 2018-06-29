@@ -126,6 +126,7 @@ class ShopgateCartExtensionPipeline {
     const cartId = await this.getCartId()
 
     // try to create a cart level lock as some other calls will depend on our result
+    /** @var {ShopgateConcurrencyLock} */
     const lock = await ShopgateConcurrency.create(this._context.storage.extension)
       .lock(getCartLockName(cartId), 10000)
 
