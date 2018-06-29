@@ -153,7 +153,7 @@ class BigCommerceCartRepository {
       const lineItem = cart.findItem(item.itemId)
 
       if (lineItem === null) {
-        updateFailureNotifier({
+        await updateFailureNotifier({
           item: item,
           reason: 'Item not found in BigCommerce cart'
         })

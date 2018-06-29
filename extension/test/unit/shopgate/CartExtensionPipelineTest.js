@@ -120,8 +120,8 @@ describe('CartExtensionPipeline - unit', () => {
   })
 
   it('should return false when update product encounters a non-breaking error', async () => {
-    bigCommerceCartRepositoryMock.expects('updateItems').once().withArgs([BigCommerceCartRepository.createLineItemUpdate('1', 1)]).callsFake((items, notify) => {
-      notify({
+    bigCommerceCartRepositoryMock.expects('updateItems').once().withArgs([BigCommerceCartRepository.createLineItemUpdate('1', 1)]).callsFake(async (items, notify) => {
+      await notify({
         reason: 'reason test message',
         item: {
           itemId: '1',

@@ -135,14 +135,14 @@ class ShopgateCartExtensionPipeline {
         cartItems.map((item) => {
           return BigCommerceCartRepository.createLineItemUpdate(item.CartItemId, item.quantity)
         }),
-        (failureEvent) => {
+        async (failureEvent) => {
           this._context.log.error(decorateDebug({
             reason: failureEvent.reason,
             cartItemId: failureEvent.item.itemId,
             quantity: failureEvent.item.quantity
           }), 'Failed updating product')
 
-          this._messagesRepository.push(cartId, failureEvent.reason, failureEvent.item.itemId)
+          await this._messagesRepository.push(cartId, failureEvent.reason, failureEvent.item.itemId)
 
           updateSuccess = false
         }

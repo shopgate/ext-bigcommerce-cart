@@ -38,7 +38,7 @@ class ShopgateConcurrencyLock {
     })
 
     const lock = new ShopgateConcurrencyLock(name, owner)
-    if (!await elect(lock, maxWaitTime)) {
+    if (!await lock._isLockSuccessful(maxWaitTime)) {
       return null
     }
 
@@ -74,6 +74,28 @@ class ShopgateConcurrencyLock {
 
     await storage.set(getKey(this._name), null)
   }
+
+  /**
+   * Determines if a lock was successful.
+   *
+   * @param {number} maxWaitTime
+   * @returns {boolean}
+   * @private
+   */
+  async _isLockSuccessful (maxWaitTime) {
+    let time = new Date().getTime()
+    const maxTime = time + maxWaitTime
+    while (time <= maxTime) {
+      if (await this.isApplied() && !await this.isExpired()) {
+        return true
+      }
+
+      await sleep(Math.floor(Math.random() * 50))
+      time = new Date().getTime()
+    }
+
+    return false
+  }
 }
 
 /**
@@ -88,34 +110,19 @@ async function isValid (name) {
   return value.ttl > new Date().getTime()
 }
 
+/**
+ * @param {string} name
+ * @return {string}
+ */
 function getKey (name) {
   return `${LOCK_PREFIX}-${name}`
 }
 
+/**
+ * @param {PipelineStorage} storageInstance
+ */
 function useStorage (storageInstance) {
   storage = storageInstance
-}
-
-/**
- * Determines if a lock was successful.
- *
- * @param {ShopgateConcurrencyLock} lockInstance
- * @param {number} maxWaitTime
- * @returns {boolean}
- */
-async function elect (lockInstance, maxWaitTime) {
-  let time = new Date().getTime()
-  const maxTime = time + maxWaitTime
-  while (time <= maxTime) {
-    if (await lockInstance.isApplied() && !await lockInstance.isExpired()) {
-      return true
-    }
-
-    await sleep(Math.floor(Math.random() * 50))
-    time = new Date().getTime()
-  }
-
-  return false
 }
 
 module.exports = {
