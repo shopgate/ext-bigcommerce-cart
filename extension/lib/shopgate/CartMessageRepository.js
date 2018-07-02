@@ -19,10 +19,10 @@ class ShopgateCartMessageRepository {
   async flush (cartId) {
     let cartMessages = []
     try {
-      cartMessages = await this._storage.get(getCartMessagesKey(cartId)) || []
+      const cartMessagesContainer = await this._storage.map.get(getCartMessagesKey(cartId)) || {}
+      cartMessages = cartMessagesContainer.messages ? cartMessagesContainer.messages : []
     } catch (err) {
       this._logger.error(decorateError(err), 'Unable to get cart messages')
-
       return { cartLevelMessages: [], cartItemMessages: [] }
     }
 
@@ -40,7 +40,7 @@ class ShopgateCartMessageRepository {
       }))
 
     try {
-      await this._storage.del(getCartMessagesKey(cartId))
+      await this._storage.map.del(getCartMessagesKey(cartId))
     } catch (err) {
       this._logger.error(decorateError(err), 'Unable to release cart messages')
     }
@@ -69,7 +69,8 @@ class ShopgateCartMessageRepository {
 
     let messages = []
     try {
-      messages = await this._storage.get(getCartMessagesKey(cartId)) || []
+      const messagesContainer = await this._storage.map.get(getCartMessagesKey(cartId)) || {}
+      messages = messagesContainer.messages ? messagesContainer.messages : []
     } catch (err) {
       this._logger.error(decorateError(err), 'Unable to read cart messages from extension storage')
     }
@@ -77,7 +78,7 @@ class ShopgateCartMessageRepository {
     messages.push(cartMessage)
 
     try {
-      await this._storage.set(getCartMessagesKey(cartId), messages)
+      await this._storage.map.set(getCartMessagesKey(cartId), { messages })
     } catch (err) {
       this._logger.error(decorateError(err), 'Unable to store cart messages to extension storage')
     }
