@@ -59,6 +59,12 @@
       "id": "CheckoutSubscription",
       "path": "frontend/Checkout/subscribers.js",
       "type": "subscribers"
+    },
+    {
+      "id": "Loader",
+      "type": "portals",
+      "path": "frontend/portals/Loader",
+      "target": "cart.item-list.before"
     }
   ]
 }
