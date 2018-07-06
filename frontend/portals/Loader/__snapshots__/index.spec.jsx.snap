@@ -21,7 +21,7 @@ exports[`<Loader /> should only render when page is loading 1`] = `
       <div
         className={
           Object {
-            "data-css-wkmi9o": "",
+            "data-css-aaq11g": "",
           }
         }
       />
