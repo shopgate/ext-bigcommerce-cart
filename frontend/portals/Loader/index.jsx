@@ -6,10 +6,11 @@ import style from './styles';
 /**
  * The Loader component.
  * @param {Object} props The component props.
+ * @param {boolean} props.showLoadLoader Indicates is loader should be shown.
  * @return {JSX}
  */
-const Loader = props => (
-  props.showLoadLoader ? <div className={style} /> : null
+const Loader = ({ showLoadLoader }) => (
+  showLoadLoader ? <div className={style} /> : null
 );
 
 Loader.propTypes = {
