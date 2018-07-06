@@ -70,7 +70,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 - functionality to return BigCommerce checkout url
 
 [Unreleased]: https://github.com/shopgate/cloud-ext-bigcommerce-cart/compare/v1.4.0...HEAD
-[1.4.0]: https://github.com/shopgate/cloud-ext-bigcommerce-cart/compare/v1.4.0...v1.4.1
+[1.4.1]: https://github.com/shopgate/cloud-ext-bigcommerce-cart/compare/v1.4.0...v1.4.1
 [1.4.0]: https://github.com/shopgate/cloud-ext-bigcommerce-cart/compare/v1.3.0...v1.4.0
 [1.3.0]: https://github.com/shopgate/cloud-ext-bigcommerce-cart/compare/v1.2.0...v1.3.0
 [1.2.0]: https://github.com/shopgate/cloud-ext-bigcommerce-cart/compare/v1.1.0...v1.2.0
