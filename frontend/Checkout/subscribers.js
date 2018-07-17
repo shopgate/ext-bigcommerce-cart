@@ -23,8 +23,13 @@ export default function checkout(subscribe) {
    * Gets triggered when the user enters the checkout.
    */
   subscribe(openedCheckoutLink$, ({ dispatch }) => {
+    const started = Date.now();
     dispatch(fetchCheckoutUrl())
       .then((url) => {
+        // Forget if it took more than 20 seconds. User is already back.
+        if (Date.now() - started > 20000) {
+          return;
+        }
         /**
          * Build the complete checkout url. Fallback to the
          * legacy url if the Pipeline returns an invalid url.
@@ -35,10 +40,11 @@ export default function checkout(subscribe) {
         // Open the checkout.
         const link = new ParsedLink(checkoutUrl);
         link.open();
+        dispatch(goBackHistory(1));
       })
-      .catch(e => e);
-
-    dispatch(goBackHistory(1));
+      .catch(() => {
+        dispatch(goBackHistory(1));
+      });
   });
 
   subscribe(appDidStart$, () => {
