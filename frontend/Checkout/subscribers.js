@@ -42,9 +42,7 @@ export default function checkout(subscribe) {
         link.open();
         dispatch(goBackHistory(1));
       })
-      .catch(() => {
-        dispatch(goBackHistory(1));
-      });
+      .catch(() => dispatch(goBackHistory(1)));
   });
 
   subscribe(appDidStart$, () => {
