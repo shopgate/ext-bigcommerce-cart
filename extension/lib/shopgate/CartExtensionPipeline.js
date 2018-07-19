@@ -40,7 +40,7 @@ class ShopgateCartExtensionPipeline {
         found = bigCommerceCart.lineItems._items.find(bcItem => bcItem._productId === productId)
       }
       if (found) {
-        itemsToUpdate.push(BigCommerceCartRepository.createLineItemUpdate(found._id, parseInt(product._quantity) + parseInt(found._quantity)))
+        itemsToUpdate.push(BigCommerceCartRepository.createLineItemUpdate(found._id, parseInt(product.quantity) + parseInt(found._quantity)))
       } else {
         itemsToAdd.push(BigCommerceCartRepository.createLineItem(productId, product.quantity, variantId))
       }
