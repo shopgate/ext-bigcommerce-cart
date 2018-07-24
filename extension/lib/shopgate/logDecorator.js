@@ -7,7 +7,7 @@ module.exports = {
    */
   decorateError (err) {
     return {
-      err: err,
+      err: err.message,
       extension: EXTENSION
     }
   },
