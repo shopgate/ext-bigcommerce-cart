@@ -18,7 +18,7 @@ module.exports = async (context, input) => {
    * and then we UPDATE the products which are already present
    * instead of ADDING them.
    *
-   * This whole process can take a while and we don't wanna let the user wait for it,
+   * This whole process can take a while and we don't want to let the user wait for it,
    * so we don't "await" here and optimistically report "success" to the user right away.
    */
 
