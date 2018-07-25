@@ -6,6 +6,11 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## [Unreleased]
 
+## [1.4.2] - 2018-07-25
+### Changed
+- changed use of storage.map logging method to better utilize it.
+- changed how items are added to cart so that when adding another of the same product its quantity is updated.
+
 ## [1.4.1] - 2018-07-06
 ### Changed
 - changed error handling so as not to lock update cart requests on the backend in favor of frontend solution.
@@ -69,7 +74,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 - functionality to add simple products to the cart
 - functionality to return BigCommerce checkout url
 
-[Unreleased]: https://github.com/shopgate/cloud-ext-bigcommerce-cart/compare/v1.4.0...HEAD
+[Unreleased]: https://github.com/shopgate/cloud-ext-bigcommerce-cart/compare/v1.4.2...HEAD
+[1.4.2]: https://github.com/shopgate/cloud-ext-bigcommerce-cart/compare/v1.4.1...v1.4.2
 [1.4.1]: https://github.com/shopgate/cloud-ext-bigcommerce-cart/compare/v1.4.0...v1.4.1
 [1.4.0]: https://github.com/shopgate/cloud-ext-bigcommerce-cart/compare/v1.3.0...v1.4.0
 [1.3.0]: https://github.com/shopgate/cloud-ext-bigcommerce-cart/compare/v1.2.0...v1.3.0
