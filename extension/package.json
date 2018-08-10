@@ -1,6 +1,6 @@
 {
   "name": "@shopgate/bigcommerce-cart",
-  "version": "1.4.3",
+  "version": "1.5.0",
   "description": "Shopgate Cloud BigCommerce Cart",
   "scripts": {
     "precommit": "npm run test && npm run lint-staged",
