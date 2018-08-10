@@ -17,30 +17,27 @@ class ShopgateCartMessageRepository {
    * @return {Promise<{cartLevelMessages: Array, cartItemMessages: Array}>}
    */
   async flush (cartId) {
-    let cartMessages = []
+    let cartMessages = {}
     try {
-      cartMessages = await this._storage.get(getCartMessagesKey(cartId)) || []
+      cartMessages = await this._storage.map.get(getCartMessagesKey(cartId)) || {}
     } catch (err) {
       this._logger.error(decorateError(err), 'Unable to get cart messages')
-
       return { cartLevelMessages: [], cartItemMessages: [] }
     }
 
-    const cartItemMessages = cartMessages.filter(message => message.hasOwnProperty('cartItemId'))
-      .map(message => ({
-        cartItemId: message.cartItemId,
-        type: message.type,
-        message: message.message
-      }))
+    const cartItemMessages = []
+    const cartLevelMessages = []
 
-    const cartLevelMessages = cartMessages.filter(message => !message.hasOwnProperty('cartItemId'))
-      .map(message => ({
-        type: message.type,
-        message: message.message
-      }))
+    for (let key in cartMessages) {
+      if (cartMessages[key].hasOwnProperty('cartItemId')) {
+        cartItemMessages.push({ ...cartMessages[key] })
+      } else {
+        cartLevelMessages.push({ ...cartMessages[key] })
+      }
+    }
 
     try {
-      await this._storage.del(getCartMessagesKey(cartId))
+      await this._storage.map.del(getCartMessagesKey(cartId))
     } catch (err) {
       this._logger.error(decorateError(err), 'Unable to release cart messages')
     }
@@ -67,17 +64,22 @@ class ShopgateCartMessageRepository {
       cartMessage.cartItemId = cartItemId
     }
 
-    let messages = []
+    let messages = {}
     try {
-      messages = await this._storage.get(getCartMessagesKey(cartId)) || []
+      messages = await this._storage.map.get(getCartMessagesKey(cartId)) || {}
     } catch (err) {
       this._logger.error(decorateError(err), 'Unable to read cart messages from extension storage')
     }
 
-    messages.push(cartMessage)
+    const messageKey = Object.keys(messages).length ? Object.keys(messages).length : 0
 
     try {
-      await this._storage.set(getCartMessagesKey(cartId), messages)
+      if (messageKey < 1) {
+        messages[messageKey] = cartMessage
+        await this._storage.map.set(getCartMessagesKey(cartId), messages)
+      } else {
+        await this._storage.map.setItem(cartId, messageKey, cartMessage)
+      }
     } catch (err) {
       this._logger.error(decorateError(err), 'Unable to store cart messages to extension storage')
     }

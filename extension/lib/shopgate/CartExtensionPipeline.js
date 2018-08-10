@@ -3,11 +3,8 @@ const BigCommerceCartRepository = require('../bigcommerce/CartRepository')
 const ShopgateExtensionStorage = require('./ExtensionStorage')
 const IdentifierConverter = require('./IdentifierConverter')
 const ShopgateCartFactory = require('./CartFactory')
-const ShopgateConcurrency = require('./Concurrency')
 const { decorateError, decorateDebug } = require('./logDecorator')
 const ShopgateCartMessageRepository = require('./CartMessageRepository')
-
-const CART_LEVEL_LOCK = 'cart'
 
 class ShopgateCartExtensionPipeline {
   /**
@@ -30,13 +27,31 @@ class ShopgateCartExtensionPipeline {
    * @returns {Promise<void>}
    */
   async addProducts (products) {
-    const bigCommerceLineItems = products.map((product) => {
+    const bigCommerceCart = await this._bigCommerceCartRepository.load()
+
+    const itemsToAdd = []
+    const itemsToUpdate = []
+
+    await Promise.all(products.map(async (product) => {
       const {productId, variantId} = this._identifierConverter.extractProductIds(product.productId)
 
-      return BigCommerceCartRepository.createLineItem(productId, product.quantity, variantId)
-    })
+      let found = null
+      if (bigCommerceCart && bigCommerceCart.lineItems) {
+        found = bigCommerceCart.lineItems._items.find(bcItem => bcItem._productId === productId)
+      }
+      if (found) {
+        itemsToUpdate.push(BigCommerceCartRepository.createLineItemUpdate(found._id, parseInt(product.quantity) + parseInt(found._quantity)))
+      } else {
+        itemsToAdd.push(BigCommerceCartRepository.createLineItem(productId, product.quantity, variantId))
+      }
+    }))
 
-    await this._bigCommerceCartRepository.addItems(bigCommerceLineItems)
+    if (itemsToAdd.length) {
+      await this._bigCommerceCartRepository.addItems(itemsToAdd)
+    }
+    if (itemsToUpdate.length) {
+      await this._bigCommerceCartRepository.updateItems(itemsToUpdate, () => {})
+    }
   }
 
   /**
@@ -48,12 +63,6 @@ class ShopgateCartExtensionPipeline {
 
     // if there is a cart level lock in place, we try to wait for it to finish before delivering
     const cartId = await this._bigCommerceCartRepository.id
-    const concurrency = ShopgateConcurrency.create(this._context.storage.extension)
-    if (cartId && await concurrency.isLockValid(getCartLockName(cartId))) {
-      await concurrency.wait(2000, async () => {
-        return !await concurrency.isLockValid(getCartLockName(cartId))
-      })
-    }
 
     const cartMessages = await this._messagesRepository.flush(cartId)
 
@@ -125,11 +134,6 @@ class ShopgateCartExtensionPipeline {
   async updateProducts (cartItems) {
     const cartId = await this.getCartId()
 
-    // try to create a cart level lock as some other calls will depend on our result
-    /** @var {ShopgateConcurrencyLock} */
-    const lock = await ShopgateConcurrency.create(this._context.storage.extension)
-      .lock(getCartLockName(cartId), 10000)
-
     let updateSuccess = true
     try {
       await this._bigCommerceCartRepository.updateItems(
@@ -166,8 +170,6 @@ class ShopgateCartExtensionPipeline {
       }
 
       await this._messagesRepository.push(cartId, errorMessage)
-    } finally {
-      if (lock) lock.release()
     }
 
     return updateSuccess
@@ -258,14 +260,6 @@ const create = (context, storage) => {
     context,
     new ShopgateCartMessageRepository(context.storage.extension, context.log)
   )
-}
-
-/**
- * @param {string} cartId
- * @return {string}
- */
-function getCartLockName (cartId) {
-  return `${CART_LEVEL_LOCK}_${cartId}`
 }
 
 module.exports = ShopgateCartExtensionPipeline

@@ -1,6 +1,7 @@
 language: node_js
 
 install:
+- npm i -g npm@6
 - cd extension; npm install; cd ..
 - cd frontend; npm install; cd ..
 
@@ -16,7 +17,7 @@ matrix:
       - cd extension
       - npm run test:unit
       - npm run lint
-      - npm run check
+      - npm audit
       - cd ../frontend
       - npm run lint
       - npm run test

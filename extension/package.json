@@ -1,6 +1,6 @@
 {
   "name": "@shopgate/bigcommerce-cart",
-  "version": "1.4.0",
+  "version": "1.4.3",
   "description": "Shopgate Cloud BigCommerce Cart",
   "scripts": {
     "precommit": "npm run test && npm run lint-staged",
@@ -9,7 +9,6 @@
     "test:integration": "mocha --use_strict --timeout 4000 --recursive ./test/integration",
     "lint": "standard",
     "lint-staged": "lint-staged",
-    "check": "nsp check",
     "cover": "nyc mocha --use_strict --timeout 4000 --recursive test",
     "cover:unit": "nyc mocha --recursive ./test/unit",
     "cover:integration": "nyc npm mocha --use_strict --timeout 4000 --recursive ./test/integration"
@@ -49,7 +48,6 @@
     "lint-staged": "^7.2.0",
     "mocha": "^5.2.0",
     "nock": "^9.3.3",
-    "nsp": "^3.1.0",
     "nyc": "^11.9.0",
     "proxyquire": "^2.0.1",
     "request": "^2.87.0",

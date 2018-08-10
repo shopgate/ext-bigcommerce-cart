@@ -9,9 +9,6 @@ const IdentifierConverter = require('../../../lib/shopgate/IdentifierConverter')
 const ShopgateCartFactory = require('../../../lib/shopgate/CartFactory')
 const BigCommerceCartRepository = require('../../../lib/bigcommerce/CartRepository')
 const ShopgateCartMessagesRepository = require('../../../lib/shopgate/CartMessageRepository')
-const ShopgateConcurrency = require('../../../lib/shopgate/Concurrency')
-
-const proxyquire = require('proxyquire')
 
 chai.use(require('chai-subset'))
 chai.use(require('chai-as-promised')).should()
@@ -34,22 +31,11 @@ describe('CartExtensionPipeline - unit', () => {
     }
   }
 
-  let shopgateConcurrencyStub, shopgateConcurrencyCreateStub
-
   beforeEach(() => {
     createLineItemSpy = sandbox.spy(BigCommerceCartRepository, 'createLineItem')
     storageMock = sandbox.mock(storage)
     const bigCommerceCartRepository = new BigCommerceCartRepository(sinon.createStubInstance(BigCommerce), /** @type BigCommerceStorage */ storage)
     bigCommerceCartRepositoryMock = sandbox.mock(bigCommerceCartRepository)
-
-    shopgateConcurrencyStub = sandbox.createStubInstance(ShopgateConcurrency)
-    shopgateConcurrencyCreateStub = sandbox.stub(ShopgateConcurrency, 'create').returns(shopgateConcurrencyStub)
-
-    ShopgateCartExtensionPipeline = proxyquire('../../../lib/shopgate/CartExtensionPipeline', {
-      './Concurrency': {
-        create: shopgateConcurrencyCreateStub
-      }
-    })
 
     subjectUnderTest = new ShopgateCartExtensionPipeline(
       bigCommerceCartRepository,
@@ -111,7 +97,6 @@ describe('CartExtensionPipeline - unit', () => {
 
   it('should return true when update product runs without error', async () => {
     bigCommerceCartRepositoryMock.expects('updateItems').once().withArgs([BigCommerceCartRepository.createLineItemUpdate('1', 1)])
-    shopgateConcurrencyStub.lock.returns(null)
     const errorLogSpy = sandbox.spy(subjectUnderTest._context.log, 'error')
 
     await subjectUnderTest.updateProducts([{CartItemId: '1', quantity: 1}]).should.eventually.equal(true)
@@ -129,7 +114,6 @@ describe('CartExtensionPipeline - unit', () => {
         }
       })
     })
-    shopgateConcurrencyStub.lock.returns(null)
 
     const errorLogSpy = sinon.spy(subjectUnderTest._context.log, 'error')
 
