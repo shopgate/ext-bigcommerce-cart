@@ -4,7 +4,8 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## [Unreleased]
+## [1.5.0] - 2018-08-10
+- dispatch goBack action after checkout url is fetched.
 
 ## [1.4.3] - 2018-07-26
 ### Changed
@@ -78,7 +79,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 - functionality to add simple products to the cart
 - functionality to return BigCommerce checkout url
 
-[Unreleased]: https://github.com/shopgate/cloud-ext-bigcommerce-cart/compare/v1.4.3...HEAD
+[Unreleased]: https://github.com/shopgate/cloud-ext-bigcommerce-cart/compare/v1.5.0...HEAD
+[1.5.0]: https://github.com/shopgate/cloud-ext-bigcommerce-cart/compare/v1.4.3...v1.5.0
 [1.4.3]: https://github.com/shopgate/cloud-ext-bigcommerce-cart/compare/v1.4.2...v1.4.3
 [1.4.2]: https://github.com/shopgate/cloud-ext-bigcommerce-cart/compare/v1.4.1...v1.4.2
 [1.4.1]: https://github.com/shopgate/cloud-ext-bigcommerce-cart/compare/v1.4.0...v1.4.1
