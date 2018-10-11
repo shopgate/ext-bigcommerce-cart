@@ -28,7 +28,6 @@ class ShopgateCartExtensionPipeline {
    */
   async addProducts (products) {
     const bigCommerceCart = await this._bigCommerceCartRepository.load()
-
     const itemsToAdd = []
     const itemsToUpdate = []
 
@@ -37,7 +36,11 @@ class ShopgateCartExtensionPipeline {
 
       let found = null
       if (bigCommerceCart && bigCommerceCart.lineItems) {
-        found = bigCommerceCart.lineItems._items.find(bcItem => bcItem._productId === productId)
+        if (variantId) {
+          found = bigCommerceCart.lineItems._items.find((bcItem => bcItem._productId === productId) && (bcItem => bcItem._variantId === variantId))
+        } else {
+          found = bigCommerceCart.lineItems._items.find(bcItem => bcItem._productId === productId)
+        }
       }
       if (found) {
         itemsToUpdate.push(BigCommerceCartRepository.createLineItemUpdate(found._id, parseInt(product.quantity) + parseInt(found._quantity)))
