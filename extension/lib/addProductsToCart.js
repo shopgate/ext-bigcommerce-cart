@@ -18,12 +18,15 @@ module.exports = async (context, input) => {
    * and then we UPDATE the products which are already present
    * instead of ADDING them.
    *
-   * This whole process can take a while and we don't want to let the user wait for it,
-   * so we don't "await" here and optimistically report "success" to the user right away.
+   * Originally, we didn't "await" here in order to not make the user wait for our system talking to Bigcommcerce.
+   * But that lead to the first add-to-cart call on an empty cart not working.
    */
 
-  ShopgateCartPipeline.create(context).addProducts(input.products).catch(error => {
+  let shopgateCartPipeline = ShopgateCartPipeline.create(context)
+  try {
+    await shopgateCartPipeline.addProducts(input.products)
+  } catch (error) {
     context.log.error(decorateError(error), 'Failed adding products to cart')
-  })
+  }
   return {}
 }
