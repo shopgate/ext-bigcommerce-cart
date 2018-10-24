@@ -11,13 +11,13 @@ class ShopgateCartItemProduct {
    * @param {ShopgateCartItemProductAppliedDiscount[]} appliedDiscounts
    */
   constructor ({id, name, additionalInfo, featuredImageUrl, properties, price, appliedDiscounts}) {
-    this._id = id
-    this._name = name
-    this._additionalInfo = additionalInfo
-    this._featuredImageUrl = featuredImageUrl
-    this._properties = properties
-    this._price = price
-    this._appliedDiscounts = appliedDiscounts
+    this.id = id
+    this.name = name
+    this.additionalInfo = additionalInfo
+    this.featuredImageUrl = featuredImageUrl
+    this.properties = properties
+    this.price = price
+    this.appliedDiscounts = appliedDiscounts
   }
 
   /**
@@ -32,55 +32,6 @@ class ShopgateCartItemProduct {
       defaultPrice: defaultPrice,
       special: special
     })
-  }
-
-  /**
-   * @return {string}
-   */
-  get id () {
-    return this._id
-  }
-
-  /**
-   * @return {string}
-   */
-  get name () {
-    return this._name
-  }
-
-  /**
-   * @return {ShopgateCartAdditionalInfo[]}
-   */
-  get additionalInfo () {
-    return this._additionalInfo
-  }
-
-  /**
-   * @return {string}
-   */
-  get featuredImageUrl () {
-    return this._featuredImageUrl
-  }
-
-  /**
-   * @return {ShopgateCartItemProductProperty[]}
-   */
-  get properties () {
-    return this._properties
-  }
-
-  /**
-   * @return {ShopgateCartItemProductPrice}
-   */
-  get price () {
-    return this._price
-  }
-
-  /**
-   * @return {ShopgateCartItemProductAppliedDiscount[]}
-   */
-  get appliedDiscounts () {
-    return this._appliedDiscounts
   }
 }
 

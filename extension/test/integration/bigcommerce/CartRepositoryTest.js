@@ -103,25 +103,25 @@ describe('BigCommerceCartRepository - integration', () => {
     const shopgateCart = shopgateCartFactory.createFromBigCommerce(bigCommerceCart)
 
     shopgateCart.totals.should.containSubset([{
-      _type: 'grandTotal',
-      _label: 'Total',
-      _amount: 42.25,
-      _subTotals: []
+      type: 'grandTotal',
+      label: 'Total',
+      amount: 42.25,
+      subTotals: []
     }])
 
     // subtotal will be 50 because discount reduces the subtotal in BigCommerce
     shopgateCart.totals.should.containSubset([{
-      _type: 'subTotal',
-      _label: 'SubTotal',
-      _amount: 50,
-      _subTotals: []
+      type: 'subTotal',
+      label: 'SubTotal',
+      amount: 50,
+      subTotals: []
     }])
 
     shopgateCart.totals.should.containSubset([{
-      _type: 'discount',
-      _label: 'Discount',
-      _amount: 7.75,
-      _subTotals: []
+      type: 'discount',
+      label: 'Discount',
+      amount: 7.75,
+      subTotals: []
     }])
   })
 })

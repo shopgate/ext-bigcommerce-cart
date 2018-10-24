@@ -63,60 +63,13 @@ class ShopgateCartExtensionPipeline {
 
     // if there is a cart level lock in place, we try to wait for it to finish before delivering
     const cartId = await this._bigCommerceCartRepository.id
-
     const cartMessages = await this._messagesRepository.flush(cartId)
 
-    const pipelineCartItems = shopgateCart.items.map((shopgateCartItem) => {
-      const messages = cartMessages.cartItemMessages.filter(message => message.cartItemId === shopgateCartItem.id)
-        .map(message => ({
-          type: message.type,
-          message: message.message
-        }))
-
-      return {
-        id: shopgateCartItem.id,
-        quantity: shopgateCartItem.quantity,
-        type: shopgateCartItem.type,
-        coupon: {},
-        product: {
-          id: shopgateCartItem.product.id,
-          name: shopgateCartItem.product.name,
-          additionalInfo: shopgateCartItem.product.additionalInfo,
-          featuredImageUrl: shopgateCartItem.product.featuredImageUrl,
-          properties: shopgateCartItem.product.properties,
-          price: {
-            unit: shopgateCartItem.product.price.unit,
-            default: shopgateCartItem.product.price.default,
-            special: shopgateCartItem.product.price.special
-          },
-          appliedDiscounts: []
-        },
-        messages
-      }
-    })
-    const pipelineCartTotals = shopgateCart.totals.map((shopgateCartTotal) => {
-      return {
-        type: shopgateCartTotal.type,
-        label: shopgateCartTotal.label,
-        amount: shopgateCartTotal.amount,
-        subTotals: []
-      }
-    })
-    const pipelineCartFlags = {
-      taxIncluded: shopgateCart.flags.taxIncluded,
-      orderable: shopgateCart.flags.orderable,
-      coupons: shopgateCart.flags.supportsCoupons
-    }
-
     return {
+      ...shopgateCart,
       isOrderable: shopgateCart.flags.orderable,
       isTaxIncluded: shopgateCart.flags.taxIncluded,
-      currency: shopgateCart.currency,
-      messages: cartMessages.cartLevelMessages,
-      text: shopgateCart.text,
-      cartItems: pipelineCartItems,
-      totals: pipelineCartTotals,
-      flags: pipelineCartFlags
+      messages: cartMessages.cartLevelMessages
     }
   }
 

@@ -9,12 +9,12 @@ class ShopgateCart {
    * @param {boolean} [isTaxIncluded=false]
    */
   constructor (currency = '', isOrderable = true, isTaxIncluded = false) {
-    this._currency = currency
-    this._messages = []
-    this._text = []
-    this._cartItems = []
-    this._totals = []
-    this._flags = new ShopgateCartFlags(isTaxIncluded, isOrderable, false)
+    this.currency = currency
+    this.messages = []
+    this.text = []
+    this.cartItems = []
+    this.totals = []
+    this.flags = new ShopgateCartFlags(isTaxIncluded, isOrderable, false)
   }
 
   /**
@@ -23,14 +23,14 @@ class ShopgateCart {
    * @param {number} amount
    */
   addTotal (type, label, amount) {
-    this._totals.push(new ShopgateCartTotal(type, label, amount, []))
+    this.totals.push(new ShopgateCartTotal(type, label, amount, []))
   }
 
   /**
    * @param {ShopgateCartItem} item
    */
   addItem (item) {
-    this._cartItems.push(item)
+    this.cartItems.push(item)
   }
 
   /**
@@ -40,48 +40,6 @@ class ShopgateCart {
    */
   createItemBuilder (id, quantity) {
     return new ShopgateCartItemBuilder(id, quantity)
-  }
-
-  /**
-   * @return {ShopgateCartFlags}
-   */
-  get flags () {
-    return this._flags
-  }
-
-  /**
-   * @return {ShopgateCartTotal[]}
-   */
-  get totals () {
-    return this._totals
-  }
-
-  /**
-   * @return {string}
-   */
-  get currency () {
-    return this._currency
-  }
-
-  /**
-   * @returns {ShopgateCartItem[]}
-   */
-  get items () {
-    return this._cartItems
-  }
-
-  /**
-   * @return {ShopgateCartMessage[]}
-   */
-  get messages () {
-    return this._messages
-  }
-
-  /**
-   * @return {ShopgateCartText[]}
-   */
-  get text () {
-    return this._text
   }
 }
 
