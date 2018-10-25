@@ -27,7 +27,7 @@ module.exports = async (context, input) => {
     }
 
     const itemsToAdd = (await anonymousPipeline.get()).cartItems.map(item => ({
-      productId: item.product.id,
+      productId: item.product.variantId ? `${item.product.id}-${item.product.variantId}` : item.product.id,
       quantity: item.quantity
     }))
 
