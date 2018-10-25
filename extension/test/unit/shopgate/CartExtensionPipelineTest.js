@@ -5,7 +5,6 @@ const assert = require('assert')
 const chai = require('chai')
 const {describe, it, beforeEach, afterEach} = require('mocha')
 let ShopgateCartExtensionPipeline = require('../../../lib/shopgate/CartExtensionPipeline')
-const IdentifierConverter = require('../../../lib/shopgate/IdentifierConverter')
 const ShopgateCartFactory = require('../../../lib/shopgate/CartFactory')
 const BigCommerceCartRepository = require('../../../lib/bigcommerce/CartRepository')
 const ShopgateCartMessagesRepository = require('../../../lib/shopgate/CartMessageRepository')
@@ -40,7 +39,6 @@ describe('CartExtensionPipeline - unit', () => {
     subjectUnderTest = new ShopgateCartExtensionPipeline(
       bigCommerceCartRepository,
       new ShopgateCartFactory(),
-      new IdentifierConverter(),
       /** @type PipelineContext */ context,
       new ShopgateCartMessagesRepository(storageMock, context.log)
     )

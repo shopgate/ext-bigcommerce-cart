@@ -10,14 +10,12 @@ class ShopgateCartExtensionPipeline {
   /**
    * @param {BigCommerceCartRepository} bigCommerceCartRepository
    * @param {ShopgateCartFactory} shopgateCartFactory
-   * @param {IdentifierConverter} identifierConverter
    * @param {PipelineContext} context
    * @param {ShopgateCartMessageRepository} messagesRepository
    */
-  constructor (bigCommerceCartRepository, shopgateCartFactory, identifierConverter, context, messagesRepository) {
+  constructor (bigCommerceCartRepository, shopgateCartFactory, context, messagesRepository) {
     this._bigCommerceCartRepository = bigCommerceCartRepository
     this._shopgateCartFactory = shopgateCartFactory
-    this._identifierConverter = identifierConverter
     this._context = context
     this._messagesRepository = messagesRepository
   }
@@ -33,7 +31,7 @@ class ShopgateCartExtensionPipeline {
     const itemsToUpdate = []
 
     await Promise.all(products.map(async (product) => {
-      const {productId, variantId} = this._identifierConverter.extractProductIds(product.productId)
+      const {productId, variantId} = IdentifierConverter.extractProductIds(product.productId)
 
       let found = null
       if (bigCommerceCart && bigCommerceCart.lineItems) {
@@ -209,7 +207,6 @@ const create = (context, storage) => {
   return new ShopgateCartExtensionPipeline(
     bigCommerceCartRepository,
     new ShopgateCartFactory(),
-    new IdentifierConverter(),
     context,
     new ShopgateCartMessageRepository(context.storage.extension, context.log)
   )
