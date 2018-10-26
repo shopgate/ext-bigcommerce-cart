@@ -157,9 +157,9 @@ describe('mergeCartsOnLogin', () => {
     await mergeCartsOnLogin(context, {})
   })
 
-  it('should log errors', async () => {
+  it('should catch and log errors', async () => {
     const error = new TypeError('wat')
     anonymousPipelineStub.getCartId.throws(error)
-    return mergeCartsOnLogin(context, {}).should.eventually.be.rejectedWith(error)
+    return mergeCartsOnLogin(context, {}).should.eventually.be.fulfilled
   })
 })

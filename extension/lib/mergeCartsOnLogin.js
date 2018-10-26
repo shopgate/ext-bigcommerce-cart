@@ -34,7 +34,7 @@ module.exports = async (context, input) => {
     await loggedInPipeline.addProducts(itemsToAdd)
     await anonymousPipeline.destroyCart()
   } catch (error) {
+    // if this fails, it shouldn't break the login
     context.log.error(decorateError(error), 'Failed merging carts on login')
-    throw error
   }
 }
