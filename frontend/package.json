@@ -1,6 +1,6 @@
 {
   "name": "@shopgate/bigcommerce-cart",
-  "version": "1.5.0",
+  "version": "1.5.1",
   "description": "Shopgate Cloud BigCommerce Cart",
   "scripts": {
     "lint": "eslint --ignore-path ../.gitignore --ext .js --ext .jsx .",

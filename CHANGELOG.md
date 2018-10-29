@@ -4,6 +4,8 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
+
+## [1.5.1] - 2018-10-29
 ### Fixed
 - add to cart that was failing on first run.
 - merge of carts during login process when anonymous cart had variants.
@@ -84,7 +86,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 - functionality to add simple products to the cart
 - functionality to return BigCommerce checkout url
 
-[Unreleased]: https://github.com/shopgate/cloud-ext-bigcommerce-cart/compare/v1.5.0...HEAD
+[Unreleased]: https://github.com/shopgate/cloud-ext-bigcommerce-cart/compare/v1.5.1...HEAD
+[1.5.1]: https://github.com/shopgate/cloud-ext-bigcommerce-cart/compare/v1.5.0...v1.5.1
 [1.5.0]: https://github.com/shopgate/cloud-ext-bigcommerce-cart/compare/v1.4.3...v1.5.0
 [1.4.3]: https://github.com/shopgate/cloud-ext-bigcommerce-cart/compare/v1.4.2...v1.4.3
 [1.4.2]: https://github.com/shopgate/cloud-ext-bigcommerce-cart/compare/v1.4.1...v1.4.2
