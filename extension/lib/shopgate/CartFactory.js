@@ -25,6 +25,7 @@ class ShopgateCartFactory {
 
       const cartItem = cart.createItemBuilder(lineItem.id, lineItem.quantity)
         .withProductId(lineItem.productId)
+        .withVariantId(lineItem.variantId)
         .withProductName(lineItem.name)
         .withProductPrice(listPrice, listPrice * lineItem.quantity, salePrice * lineItem.quantity)
         .withFeaturedImageUrl(lineItem.imageUrl)

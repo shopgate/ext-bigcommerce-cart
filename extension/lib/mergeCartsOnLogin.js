@@ -1,6 +1,7 @@
 'use strict'
 
 const ShopgateCartPipeline = require('./shopgate/CartExtensionPipeline')
+const IdentifierConverter = require('./shopgate/IdentifierConverter')
 const { decorateError } = require('./shopgate/logDecorator')
 
 /**
@@ -27,7 +28,7 @@ module.exports = async (context, input) => {
     }
 
     const itemsToAdd = (await anonymousPipeline.get()).cartItems.map(item => ({
-      productId: item.product.id,
+      productId: IdentifierConverter.joinProductIds(item.product.id, item.product.variantId),
       quantity: item.quantity
     }))
 

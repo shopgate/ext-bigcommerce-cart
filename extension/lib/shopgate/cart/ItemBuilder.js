@@ -25,6 +25,15 @@ class ShopgateCartItemBuilder {
   }
 
   /**
+   * @param {number} id
+   * @return {ShopgateCartItemBuilder}
+   */
+  withVariantId (id) {
+    this._variantId = id
+    return this
+  }
+
+  /**
    * @param {string} name
    * @return {ShopgateCartItemBuilder}
    */
@@ -98,6 +107,7 @@ class ShopgateCartItemBuilder {
     if (this._productId) {
       product = new ShopgateCartItemProduct({
         id: this._productId,
+        variantId: this._variantId,
         name: this._productName,
         additionalInfo: this._additionalInfo,
         featuredImageUrl: this._featuredImageUrl,

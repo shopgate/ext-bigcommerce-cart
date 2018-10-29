@@ -3,6 +3,7 @@ const ShopgateCartProductPrice = require('./ProductPrice')
 class ShopgateCartItemProduct {
   /**
    * @param {string} id
+   * @param {string} variantId
    * @param {string} name
    * @param {ShopgateCartAdditionalInfo[]} additionalInfo
    * @param {string} featuredImageUrl
@@ -10,8 +11,9 @@ class ShopgateCartItemProduct {
    * @param {ShopgateCartItemProductPrice} price
    * @param {ShopgateCartItemProductAppliedDiscount[]} appliedDiscounts
    */
-  constructor ({id, name, additionalInfo, featuredImageUrl, properties, price, appliedDiscounts}) {
+  constructor ({id, variantId, name, additionalInfo, featuredImageUrl, properties, price, appliedDiscounts}) {
     this._id = id
+    this._variantId = variantId
     this._name = name
     this._additionalInfo = additionalInfo
     this._featuredImageUrl = featuredImageUrl
@@ -39,6 +41,13 @@ class ShopgateCartItemProduct {
    */
   get id () {
     return this._id
+  }
+
+  /**
+   * @return {string}
+   */
+  get variantId () {
+    return this._variantId
   }
 
   /**
