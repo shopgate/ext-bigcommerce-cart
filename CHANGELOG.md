@@ -4,7 +4,10 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
-- fixed add to cart that was failing on first run.
+### Fixed
+- add to cart that was failing on first run.
+- merge of carts during login process when anonymous cart had variants.
+- breaking the login process when cart merge fails.
 
 ## [1.5.0] - 2018-08-10
 - dispatch goBack action after checkout url is fetched.

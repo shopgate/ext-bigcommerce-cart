@@ -24,6 +24,10 @@ class ShopgateCartItemBuilder {
     return this
   }
 
+  /**
+   * @param {number} id
+   * @return {ShopgateCartItemBuilder}
+   */
   withVariantId (id) {
     this._variantId = id
     return this
