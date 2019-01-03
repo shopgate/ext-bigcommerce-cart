@@ -13,6 +13,6 @@ module.exports = async (context) => {
     return {url: checkoutUrl}
   } catch (error) {
     context.log.error(decorateError(error), 'Failed getting checkout url')
-    throw error
+    throw new Error()
   }
 }

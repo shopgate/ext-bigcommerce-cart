@@ -13,6 +13,6 @@ module.exports = async (context) => {
     return await cartPipeline.get()
   } catch (error) {
     context.log.error(decorateError(error), 'Failed getting the cart')
-    throw error
+    throw new Error()
   }
 }
