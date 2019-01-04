@@ -16,5 +16,6 @@ module.exports = async (context, input) => {
     return { messages: [] }
   } catch (error) {
     context.log.error(decorateError(error), 'Failed updating cart')
+    throw new Error()
   }
 }

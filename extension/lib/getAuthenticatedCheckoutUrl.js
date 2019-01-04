@@ -24,6 +24,6 @@ module.exports = async (context, input) => {
     return {url: loginUrl}
   } catch (error) {
     context.log.error(decorateError(error), 'Failed getting auth url')
-    throw error
+    throw new Error()
   }
 }

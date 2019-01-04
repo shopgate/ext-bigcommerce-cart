@@ -4,6 +4,8 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
+## Fixed
+- providing feedback when add to cart fails and ensuring unknown error are sent out.
 
 ## [1.5.1] - 2018-10-29
 ### Fixed

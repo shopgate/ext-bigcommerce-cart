@@ -21,6 +21,6 @@ module.exports = async (context, input) => {
     })
   } catch (error) {
     context.log.error(decorateError(error), 'Failed marking the order as placed by Shopgate')
-    throw error
+    throw new Error()
   }
 }

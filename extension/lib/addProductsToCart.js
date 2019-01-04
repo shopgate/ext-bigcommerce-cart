@@ -27,6 +27,7 @@ module.exports = async (context, input) => {
     await shopgateCartPipeline.addProducts(input.products)
   } catch (error) {
     context.log.error(decorateError(error), 'Failed adding products to cart')
+    throw new Error()
   }
   return {}
 }

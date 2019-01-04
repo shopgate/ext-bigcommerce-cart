@@ -13,6 +13,6 @@ module.exports = async (context, input) => {
     await ShopgateCartPipeline.create(context).deleteProductFromCart(input.CartItemIds)
   } catch (error) {
     context.log.error(decorateError(error), 'Failed deleting from cart')
-    throw error
+    throw new Error()
   }
 }
