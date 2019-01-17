@@ -12,6 +12,7 @@ class BigCommerceCartLineItemFactory {
       bigCommerceItem.product_id,
       bigCommerceItem.variant_id,
       bigCommerceItem.name,
+      bigCommerceItem.sku,
       bigCommerceItem.url,
       bigCommerceItem.quantity,
       bigCommerceItem.taxable,

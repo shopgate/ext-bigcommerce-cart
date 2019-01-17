@@ -32,6 +32,8 @@
  * @property {number} product_id
  * @property {number} variant_id
  * @property {string} name
+ * @property {string} sku
+ * @property {BigCommerceApiCartLineItemPhysical[]} options
  * @property {number} quantity
  * @property {boolean} taxable
  * @property {string} image_url
@@ -47,6 +49,14 @@
  * @property {number} extended_sale_price
  * @property {string} url
  *
+ */
+
+/**
+ * @typedef {Object} BigCommerceApiCartLineItemPhysical
+ * @property {number} name_id
+ * @property {string} name
+ * @property {number} value_id
+ * @property {string} value
  */
 
 /**

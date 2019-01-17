@@ -184,7 +184,7 @@ class BigCommerceCartRepository {
     }
 
     try {
-      const response = await this._client.get('/carts/' + cartId)
+      const response = await this._client.get(`/carts/${cartId}?include=line_items.physical_items.options`)
 
       return response.data
     } catch (error) {

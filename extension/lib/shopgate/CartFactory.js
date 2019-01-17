@@ -23,18 +23,23 @@ class ShopgateCartFactory {
       const listPrice = lineItem.listPrice !== 0 ? lineItem.listPrice : lineItem.salePrice
       const salePrice = (lineItem.listPrice !== 0 && lineItem.listPrice !== lineItem.salePrice) ? lineItem.salePrice : null
 
-      const cartItem = cart.createItemBuilder(lineItem.id, lineItem.quantity)
+      const cartItemBuilder = cart.createItemBuilder(lineItem.id, lineItem.quantity)
         .withProductId(lineItem.productId)
         .withVariantId(lineItem.variantId)
         .withProductName(lineItem.name)
         .withProductPrice(listPrice, listPrice * lineItem.quantity, salePrice * lineItem.quantity)
         .withFeaturedImageUrl(lineItem.imageUrl)
-        .withAdditionalInfo()
-        .withProperties()
         .withAppliedDiscounts()
-        .build()
 
-      cart.addItem(cartItem)
+      if (lineItem.sku) {
+        cartItemBuilder.withProperty('SKU', lineItem.sku)
+      }
+
+      for (const option of lineItem.options) {
+        cartItemBuilder.withProperty(option.name, option.value)
+      }
+
+      cart.addItem(cartItemBuilder.build())
     }
 
     cart.addTotal('subTotal', 'SubTotal', bigCommerceCart.productsSubTotal)

@@ -4,6 +4,7 @@ class BigCommerceCartLineItemAbstract {
    * @param {number} productId
    * @param {number} variantId
    * @param {string} name
+   * @param {string} sku
    * @param {string} url
    * @param {number} quantity
    * @param {boolean} isTaxable
@@ -11,11 +12,12 @@ class BigCommerceCartLineItemAbstract {
    * @param {number} listPrice
    * @param {number} salePrice
    */
-  constructor (id, productId, variantId, name, url, quantity, isTaxable, imageUrl, listPrice, salePrice) {
+  constructor (id, productId, variantId, name, sku, url, quantity, isTaxable, imageUrl, listPrice, salePrice) {
     this._id = id
     this._productId = productId
     this._variantId = variantId
     this._name = name
+    this._sku = sku
     this._url = url
     this._quantity = quantity
     this._isTaxable = isTaxable
@@ -57,6 +59,13 @@ class BigCommerceCartLineItemAbstract {
    */
   get name () {
     return this._name
+  }
+
+  /**
+   * @return {string}
+   */
+  get sku () {
+    return this._sku
   }
 
   /**
