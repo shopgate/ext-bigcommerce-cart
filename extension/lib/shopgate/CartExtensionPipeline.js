@@ -35,7 +35,7 @@ class ShopgateCartExtensionPipeline {
 
       let found = null
       if (bigCommerceCart && bigCommerceCart.lineItems) {
-        found = bigCommerceCart.lineItems._items.find(bcItem => bcItem._productId === productId)
+        found = bigCommerceCart.lineItems._items.find(bcItem => bcItem._productId === productId && (!variantId || bcItem._variantId === variantId))
       }
       if (found) {
         itemsToUpdate.push(BigCommerceCartRepository.createLineItemUpdate(found._id, parseInt(product.quantity) + parseInt(found._quantity)))

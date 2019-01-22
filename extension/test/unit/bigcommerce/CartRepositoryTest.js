@@ -55,7 +55,7 @@ describe('BigCommerceCartRepository - unit', function () {
       }
     }
     storageMock.expects('get').once().returns('0000-0000-0000-0000')
-    bigCommerceMock.expects('get').withArgs('/carts/0000-0000-0000-0000').returns(responseFixture)
+    bigCommerceMock.expects('get').withArgs('/carts/0000-0000-0000-0000?include=line_items.physical_items.options').returns(responseFixture)
 
     return subjectUnderTest.load().should.eventually.deep.equal(new BigCommerceCart(
       '0000-0000-0000-0000',
@@ -126,7 +126,7 @@ describe('BigCommerceCartRepository - unit', function () {
     ]
     storageMock.expects('get').once().returns('0000-0000-0000-0000')
 
-    bigCommerceMock.expects('get').withArgs('/carts/0000-0000-0000-0000').returns({
+    bigCommerceMock.expects('get').withArgs('/carts/0000-0000-0000-0000?include=line_items.physical_items.options').returns({
       data: {
         id: '0000-0000-0000-0000',
         currency: {
@@ -137,7 +137,8 @@ describe('BigCommerceCartRepository - unit', function () {
             {
               id: 'abc-def-ghi-jkl-mno',
               product_id: 42,
-              quantity: 1
+              quantity: 1,
+              options: []
             }
           ]
         }
@@ -170,7 +171,7 @@ describe('BigCommerceCartRepository - unit', function () {
     ]
     storageMock.expects('get').once().returns('0000-0000-0000-0000')
 
-    bigCommerceMock.expects('get').withArgs('/carts/0000-0000-0000-0000').returns({
+    bigCommerceMock.expects('get').withArgs('/carts/0000-0000-0000-0000?include=line_items.physical_items.options').returns({
       data: {
         id: '0000-0000-0000-0000',
         currency: {
@@ -181,7 +182,8 @@ describe('BigCommerceCartRepository - unit', function () {
             {
               id: 'qrs-tuz-wxy-zzz',
               product_id: 42,
-              quantity: 1
+              quantity: 1,
+              options: []
             }
           ]
         }

@@ -13,6 +13,8 @@ class ShopgateCartItemBuilder {
     this._itemId = itemId
     this._quantity = quantity
     this._type = ShopgateCartItemType.PRODUCT
+    this._additionalInfo = []
+    this._productProperties = []
   }
 
   /**
@@ -69,16 +71,8 @@ class ShopgateCartItemBuilder {
   /**
    * @return {ShopgateCartItemBuilder}
    */
-  withAdditionalInfo () {
-    this._additionalInfo = []
-    return this
-  }
-
-  /**
-   * @return {ShopgateCartItemBuilder}
-   */
-  withProperties () {
-    this._productProperties = []
+  withProperty (label, value) {
+    this._productProperties.push({ label, value })
     return this
   }
 

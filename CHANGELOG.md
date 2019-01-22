@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
+## Fixed
+- adding variant products in cart were assigning main product
+##Added
+- showing sku and product options in the cart
 
 ## [1.5.2] - 2019-01-04
 ## Fixed

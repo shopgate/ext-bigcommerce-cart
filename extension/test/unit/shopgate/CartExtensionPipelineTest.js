@@ -107,7 +107,15 @@ describe('CartExtensionPipeline - unit', () => {
             'sale_price': 50,
             'extended_list_price': 50,
             'extended_sale_price': 50,
-            'is_require_shipping': true
+            'is_require_shipping': true,
+            'options': [
+              {
+                'name_id': 1234,
+                'name': 'Color',
+                'value_id': 321,
+                'value': 'Black'
+              }
+            ]
           },
           {
             'id': 'ef5e2a3d-48c3-4c11-bd1c-d681986d25f9',
@@ -164,7 +172,12 @@ describe('CartExtensionPipeline - unit', () => {
             'name': 'A friend for Betty',
             'additionalInfo': [],
             'featuredImageUrl': 'https://cdn7.bigcommerce.com/s-r5s844ad/products/122/images/366/bettysfriend__49469.1516206916.195.195.jpg?c=2',
-            'properties': [],
+            'properties': [
+              {
+                label: 'Color',
+                value: 'Black'
+              }
+            ],
             'price': {
               'unit': 50,
               'default': 50,
@@ -185,7 +198,12 @@ describe('CartExtensionPipeline - unit', () => {
             'name': '[Sample] Daventry Meers, dark denim shirt',
             'additionalInfo': [],
             'featuredImageUrl': 'https://cdn7.bigcommerce.com/s-r5s844ad/products/46/images/160/ms_iss45_89209__03012.1348364434.195.195.jpg?c=2',
-            'properties': [],
+            'properties': [
+              {
+                'label': 'SKU',
+                'value': 'DMDDS-SILVER-XS-27071489'
+              }
+            ],
             'price': {
               'unit': 69,
               'default': 69,
