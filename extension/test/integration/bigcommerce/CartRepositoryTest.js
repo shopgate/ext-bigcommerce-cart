@@ -114,7 +114,7 @@ describe('BigCommerceCartRepository - integration', () => {
     shopgateCart.totals.should.containSubset([{
       _type: 'grandTotal',
       _label: 'Total',
-      _amount: 42.25,
+      _amount: 52.25,
       _subTotals: []
     }])
 
@@ -122,7 +122,7 @@ describe('BigCommerceCartRepository - integration', () => {
     shopgateCart.totals.should.containSubset([{
       _type: 'subTotal',
       _label: 'SubTotal',
-      _amount: 50,
+      _amount: 60,
       _subTotals: []
     }])
 

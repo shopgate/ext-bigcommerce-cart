@@ -3,6 +3,7 @@
   "version": "1.5.2",
   "description": "Shopgate Cloud BigCommerce Cart",
   "scripts": {
+    "precommit": "npm run test && npm run lint-staged",
     "test": "mocha --use_strict --recursive test",
     "test:unit": "mocha --use_strict --recursive ./test/unit",
     "test:integration": "mocha --use_strict --timeout 4000 --recursive ./test/integration",

@@ -38,7 +38,7 @@ class BigCommerceRequestRepository {
     console.log('request') // TODO remove
     console.log(request) // TODO remove
     console.log('response') // TODO remove
-    console.log(response) // TODO remove
+    console.log(JSON.stringify(response)) // TODO remove
     logRequest.log(request, response, elapsedTime)
     return response
   }
