@@ -30,17 +30,20 @@ class BigCommerceRequestRepository {
    * @return {BigCommerceRedirectUrlsResponse}
    */
   async request (type, path, data) {
+    const request = { type, path, data }
     const logRequest = new Logger(this.logger)
     const start = new Date()
-    const response = await this.client.request(type, path, data)
-    const elapsedTime = new Date() - start
-    const request = { type, path, data }
-    console.log('request') // TODO remove
-    console.log(request) // TODO remove
-    console.log('response') // TODO remove
-    console.log(JSON.stringify(response)) // TODO remove
-    logRequest.log(request, response, elapsedTime)
-    return response
+
+    try {
+      const response = await this.client.request(type, path, data)
+      logRequest.log(request, response, new Date() - start, 1)
+
+      return response
+    } catch (e) {
+      logRequest.log(request, e.toString(), new Date() - start, 0)
+
+      return e
+    }
   }
 }
 

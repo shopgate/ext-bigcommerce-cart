@@ -10,30 +10,21 @@ class BigCommerceLogger {
    * @param {Object} requestOptions
    * @param {Object} response A response object of the "request" module
    * @param {number} elapsedTime
+   * @param {number} success
    */
-  log (requestOptions, response = {}, elapsedTime) {
+  log (requestOptions, response = '', elapsedTime = 0, success = 0) {
     const logRequest = Object.assign({}, requestOptions)
-    const logResponse = response === null ? {} : Object.assign({}, response)
+    const logResponse = JSON.stringify(response)
 
-    if (logResponse.data && typeof logResponse.data !== 'string') {
-      logResponse.data = JSON.stringify(logResponse.data, null, 2)
-    }
-
-    if (logRequest.data && typeof logRequest.data !== 'string') {
-      logRequest.data = JSON.stringify(logRequest.data, null, 2)
-    }
-
-    this.logger.debug({
-      duration: elapsedTime || 0,
-      statusCode: logResponse.statusCode || 0,
-      bigCommerceRequest: {
+    this.logger.debug(
+      {
+        duration: elapsedTime,
+        success: success,
         request: logRequest,
-        response: {
-          headers: logResponse.headers ? JSON.stringify(logResponse.headers, null, 2) : '',
-          body: logResponse.data
-        }
-      }
-    }, 'Request to BigCommerce')
+        response: logResponse
+      },
+      'Request to the BigCommerce API'
+    )
   }
 }
 
