@@ -1,5 +1,4 @@
 'use strict'
-const BigCommerce = require('node-bigcommerce')
 const sinon = require('sinon')
 const assert = require('assert')
 const chai = require('chai')
@@ -19,7 +18,6 @@ describe('BigCommerceCartRepository - unit', function () {
   let subjectUnderTest
   const requestRepository = {get: () => {}, post: () => {}, put: () => {}, del: () => {}}
   const storage = { get: () => {}, set: () => {} }
-  const bigCommerce = new BigCommerce({})
   beforeEach(() => {
     storageMock = sinon.mock(storage)
     requestRepositoryMock = sinon.mock(requestRepository)

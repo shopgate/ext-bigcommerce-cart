@@ -1,5 +1,6 @@
 const BigCommerceFactory = require('../bigcommerce/Factory')
 const BigCommerceCartRepository = require('../bigcommerce/CartRepository')
+const BigCommerceRequestRepository = require('../bigcommerce/RequestRepository')
 const ShopgateExtensionStorage = require('./ExtensionStorage')
 const IdentifierConverter = require('./IdentifierConverter')
 const ShopgateCartFactory = require('./CartFactory')
