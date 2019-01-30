@@ -2,6 +2,7 @@
 const sinon = require('sinon')
 const assert = require('assert')
 const chai = require('chai')
+const BigCommerceRequestRepository = require('../../../lib/bigcommerce/RequestRepository')
 const BigCommerceCartRepository = require('../../../lib/bigcommerce/CartRepository')
 const BigCommerceFactory = require('../../../lib/bigcommerce/Factory')
 const integrationCredentials = require('../../../.integration-credentials')
@@ -23,10 +24,16 @@ describe('BigCommerceCartRepository - integration', () => {
   beforeEach(() => {
     storageMock = sinon.mock(storage)
     subjectUnderTest = new BigCommerceCartRepository(
-      BigCommerceFactory.createV3(integrationCredentials.clientId, integrationCredentials.accessToken, integrationCredentials.storeHash),
+      new BigCommerceRequestRepository(
+        BigCommerceFactory.createV3(
+          integrationCredentials.clientId,
+          integrationCredentials.accessToken,
+          integrationCredentials.storeHash
+        ),
+        logger
+      ),
       /** @type BigCommerceStorage */
-      storage,
-      logger
+      storage
     )
   })
 

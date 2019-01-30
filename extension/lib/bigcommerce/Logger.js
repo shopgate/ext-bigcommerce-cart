@@ -1,4 +1,4 @@
-module.exports = class {
+class BigCommerceLogger {
   /**
    * @param {context.log} logger The extension's context.log object.
    */
@@ -9,8 +9,9 @@ module.exports = class {
   /**
    * @param {Object} requestOptions
    * @param {Object} response A response object of the "request" module
+   * @param {number} elapsedTime
    */
-  log (requestOptions, response = {}) {
+  log (requestOptions, response = {}, elapsedTime) {
     const logRequest = Object.assign({}, requestOptions)
     const logResponse = response === null ? {} : Object.assign({}, response)
 
@@ -23,7 +24,7 @@ module.exports = class {
     }
 
     this.logger.debug({
-      duration: logResponse.elapsedTime || 0,
+      duration: elapsedTime || 0,
       statusCode: logResponse.statusCode || 0,
       bigCommerceRequest: {
         request: logRequest,
@@ -35,3 +36,5 @@ module.exports = class {
     }, 'Request to BigCommerce')
   }
 }
+
+module.exports = BigCommerceLogger
