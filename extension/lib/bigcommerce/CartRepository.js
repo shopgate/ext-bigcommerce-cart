@@ -10,14 +10,14 @@ class BigCommerceCartRepository {
   /**
    * @param {BigCommerce} client Api V3 client
    * @param {BigCommerceStorage} storage
-   * @param {number} customerId
    * @param {context.log} logger
+   * @param {number} customerId
    */
-  constructor (client, storage, customerId, logger) {
+  constructor (client, storage, logger, customerId) {
     this._client = client
     this._storage = storage
-    this._customerId = customerId
     this.logger = logger
+    this._customerId = customerId
   }
 
   /**

@@ -10,6 +10,7 @@ const BigCommerceCartLineItemRequest = require('../../../lib/bigcommerce/cart/Li
 chai.use(require('chai-subset'))
 chai.use(require('chai-as-promised')).should()
 
+const logger = {debug: () => {}}
 const CUSTOMER_ID_MOCK = 192
 
 describe('BigCommerceCartRepository - unit', function () {
@@ -26,6 +27,7 @@ describe('BigCommerceCartRepository - unit', function () {
       bigCommerce,
       /** @type BigCommerceStorage */
       storage,
+      logger,
       CUSTOMER_ID_MOCK
     )
   })

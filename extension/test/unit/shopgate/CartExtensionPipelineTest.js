@@ -23,6 +23,7 @@ describe('CartExtensionPipeline - unit', () => {
 
   let storageMock
   const storage = {get: () => {}, set: () => {}}
+  const logger = {debug: () => {}}
   const context = {
     log: {error: () => {}},
     storage: {
@@ -33,7 +34,7 @@ describe('CartExtensionPipeline - unit', () => {
   beforeEach(() => {
     createLineItemSpy = sandbox.spy(BigCommerceCartRepository, 'createLineItem')
     storageMock = sandbox.mock(storage)
-    const bigCommerceCartRepository = new BigCommerceCartRepository(sinon.createStubInstance(BigCommerce), /** @type BigCommerceStorage */ storage)
+    const bigCommerceCartRepository = new BigCommerceCartRepository(sinon.createStubInstance(BigCommerce), /** @type BigCommerceStorage */ storage, logger)
     bigCommerceCartRepositoryMock = sandbox.mock(bigCommerceCartRepository)
 
     subjectUnderTest = new ShopgateCartExtensionPipeline(

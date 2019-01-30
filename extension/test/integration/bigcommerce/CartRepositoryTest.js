@@ -15,6 +15,7 @@ describe('BigCommerceCartRepository - integration', () => {
   /** @type BigCommerceCartRepository */
   let subjectUnderTest
   const storage = {get: () => {}, set: () => {}, delete: () => {}}
+  const logger = {debug: () => {}}
   const shopgateCartFactory = new ShopgateCartFactory()
 
   let cartId
@@ -24,7 +25,8 @@ describe('BigCommerceCartRepository - integration', () => {
     subjectUnderTest = new BigCommerceCartRepository(
       BigCommerceFactory.createV3(integrationCredentials.clientId, integrationCredentials.accessToken, integrationCredentials.storeHash),
       /** @type BigCommerceStorage */
-      storage
+      storage,
+      logger
     )
   })
 
