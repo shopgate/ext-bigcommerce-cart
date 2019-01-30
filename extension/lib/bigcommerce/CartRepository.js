@@ -2,7 +2,7 @@ const BigCommerceCartFactory = require('./CartFactory')
 const BigCommerceCartLineItemFactory = require('./cart/LineItemFactory')
 const BigCommerceCartLineItemRequest = require('./cart/LineItemRequest')
 const BigCommerceCartLineItemUpdateRequest = require('./cart/LineItemUpdateRequest')
-const Logger = require('./logger')
+const Logger = require('./Logger')
 
 const CART_ID = 'cartId'
 
@@ -238,30 +238,30 @@ class BigCommerceCartRepository {
     await Promise.all(deletePromises)
   }
 
-  async get(path) {
-    return await this.request('get', path);
+  async get (path) {
+    return this.request('get', path)
   }
 
-  async post(path, data) {
-    return await this.request('post', path, data);
+  async post (path, data) {
+    return this.request('post', path, data)
   }
 
-  async put(path, data) {
-    return await this.request('put', path, data);
+  async put (path, data) {
+    return this.request('put', path, data)
   }
 
-  async del(path) {
-    return await this.request('delete', path);
+  async del (path) {
+    return this.request('delete', path)
   }
 
   /**
    * @return {BigCommerceRedirectUrlsResponse}
    */
-  async request(type, path, data) {
+  async request (type, path, data) {
     const logRequest = new Logger(this.logger)
-    const start = new Date();
-    const response = await this._client.request(type, path, data);
-    response.elapsedTime = new Date() - start;
+    const start = new Date()
+    const response = await this._client.request(type, path, data)
+    response.elapsedTime = new Date() - start
     const request = { type, path, data }
     console.log('request') // TODO remove
     console.log(request) // TODO remove
