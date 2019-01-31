@@ -10,19 +10,19 @@ class BigCommerceRequestRepository {
     this.logger = logger
   }
 
-  async get (path) {
+  get (path) {
     return this.request('get', path)
   }
 
-  async post (path, data) {
+  post (path, data) {
     return this.request('post', path, data)
   }
 
-  async put (path, data) {
+  put (path, data) {
     return this.request('put', path, data)
   }
 
-  async del (path) {
+  del (path) {
     return this.request('delete', path)
   }
 
@@ -42,7 +42,7 @@ class BigCommerceRequestRepository {
     } catch (e) {
       logRequest.log(request, e.toString(), new Date() - start, 0)
 
-      return e
+      throw e
     }
   }
 }
