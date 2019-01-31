@@ -50,8 +50,8 @@ class BigCommerceRequestRepository {
    * @param {Object} [data]
    * @return {BigCommerceRedirectUrlsResponse}
    */
-  async request (type, path, data) {
-    const request = { type, path, data }
+  async request (type, path, data = null) {
+    const request = data === null ? { type, path } : { type, path, data }
     const logRequest = new BigCommerceLogger(this.logger)
     const start = new Date()
 
