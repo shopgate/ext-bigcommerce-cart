@@ -1,4 +1,4 @@
-const Logger = require('./Logger')
+const BigCommerceLogger = require('./Logger')
 
 class BigCommerceRequestRepository {
   /**
@@ -52,7 +52,7 @@ class BigCommerceRequestRepository {
    */
   async request (type, path, data) {
     const request = { type, path, data }
-    const logRequest = new Logger(this.logger)
+    const logRequest = new BigCommerceLogger(this.logger)
     const start = new Date()
 
     try {
