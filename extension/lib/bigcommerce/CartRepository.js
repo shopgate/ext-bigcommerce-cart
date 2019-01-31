@@ -11,7 +11,7 @@ class BigCommerceCartRepository {
    * @param {BigCommerceStorage} storage
    * @param {number} customerId
    */
-  constructor (request, storage, customerId) {
+  constructor (request, storage, customerId = 0) {
     this._request = request
     this._storage = storage
     this._customerId = customerId
