@@ -3,30 +3,51 @@ const Logger = require('./Logger')
 class BigCommerceRequestRepository {
   /**
    * @param {BigCommerce} client Api V3 client
-   * @param {context.log} logger
+   * @param {Logger} logger context.log
    */
   constructor (client, logger) {
     this.client = client
     this.logger = logger
   }
 
+  /**
+   * @param {string} path
+   * @return {BigCommerceRedirectUrlsResponse}
+   */
   get (path) {
     return this.request('get', path)
   }
 
+  /**
+   * @param {string} path
+   * @param {Object} data
+   * @return {BigCommerceRedirectUrlsResponse}
+   */
   post (path, data) {
     return this.request('post', path, data)
   }
 
+  /**
+   * @param {string} path
+   * @param {Object} data
+   * @return {BigCommerceRedirectUrlsResponse}
+   */
   put (path, data) {
     return this.request('put', path, data)
   }
 
+  /**
+   * @param {string} path
+   * @return {BigCommerceRedirectUrlsResponse}
+   */
   del (path) {
     return this.request('delete', path)
   }
 
   /**
+   * @param {string} type
+   * @param {string} path
+   * @param {Object} data
    * @return {BigCommerceRedirectUrlsResponse}
    */
   async request (type, path, data) {

@@ -8,7 +8,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 - showing sku and product options in the cart
 - logging for all API calls
 ## Fixed
-- adding variant products in cart were assigning main product
+- issue when adding variant products to the cart
 
 ## [1.5.2] - 2019-01-04
 ## Fixed

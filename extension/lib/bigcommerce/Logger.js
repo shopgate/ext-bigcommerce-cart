@@ -1,6 +1,6 @@
 class BigCommerceLogger {
   /**
-   * @param {context.log} logger The extension's context.log object.
+   * @param {Logger} logger The extension's context.log object.
    */
   constructor (logger) {
     this.logger = logger
