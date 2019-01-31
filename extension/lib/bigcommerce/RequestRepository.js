@@ -47,7 +47,7 @@ class BigCommerceRequestRepository {
   /**
    * @param {string} type
    * @param {string} path
-   * @param {Object} data
+   * @param {Object} [data]
    * @return {BigCommerceRedirectUrlsResponse}
    */
   async request (type, path, data) {
