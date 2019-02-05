@@ -7,6 +7,7 @@ const {describe, it, beforeEach, afterEach} = require('mocha')
 let ShopgateCartExtensionPipeline = require('../../../lib/shopgate/CartExtensionPipeline')
 const ShopgateCartFactory = require('../../../lib/shopgate/CartFactory')
 const BigCommerceCartRepository = require('../../../lib/bigcommerce/CartRepository')
+const BigCommerceRequestRepository = require('../../../lib/bigcommerce/RequestRepository')
 const ShopgateCartMessagesRepository = require('../../../lib/shopgate/CartMessageRepository')
 
 chai.use(require('chai-subset'))
@@ -23,6 +24,7 @@ describe('CartExtensionPipeline - unit', () => {
 
   let storageMock
   const storage = {get: () => {}, set: () => {}}
+  const logger = {debug: () => {}}
   const context = {
     log: {error: () => {}},
     storage: {
@@ -33,7 +35,8 @@ describe('CartExtensionPipeline - unit', () => {
   beforeEach(() => {
     createLineItemSpy = sandbox.spy(BigCommerceCartRepository, 'createLineItem')
     storageMock = sandbox.mock(storage)
-    const bigCommerceCartRepository = new BigCommerceCartRepository(sinon.createStubInstance(BigCommerce), /** @type BigCommerceStorage */ storage)
+    const bigCommerceRequestRepository = new BigCommerceRequestRepository(sinon.createStubInstance(BigCommerce), logger)
+    const bigCommerceCartRepository = new BigCommerceCartRepository(bigCommerceRequestRepository, /** @type BigCommerceStorage */ storage)
     bigCommerceCartRepositoryMock = sandbox.mock(bigCommerceCartRepository)
 
     subjectUnderTest = new ShopgateCartExtensionPipeline(

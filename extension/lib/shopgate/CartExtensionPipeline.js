@@ -1,5 +1,6 @@
 const BigCommerceFactory = require('../bigcommerce/Factory')
 const BigCommerceCartRepository = require('../bigcommerce/CartRepository')
+const BigCommerceRequestRepository = require('../bigcommerce/RequestRepository')
 const ShopgateExtensionStorage = require('./ExtensionStorage')
 const IdentifierConverter = require('./IdentifierConverter')
 const ShopgateCartFactory = require('./CartFactory')
@@ -242,10 +243,13 @@ class ShopgateCartExtensionPipeline {
  */
 const create = (context, storage) => {
   const bigCommerceCartRepository = new BigCommerceCartRepository(
-    BigCommerceFactory.createV3(
-      context.config.clientId,
-      context.config.accessToken,
-      context.config.storeHash
+    new BigCommerceRequestRepository(
+      BigCommerceFactory.createV3(
+        context.config.clientId,
+        context.config.accessToken,
+        context.config.storeHash
+      ),
+      context.log
     ),
     /** @type BigCommerceStorage */
     new ShopgateExtensionStorage(storage),

@@ -7,12 +7,12 @@ const CART_ID = 'cartId'
 
 class BigCommerceCartRepository {
   /**
-   * @param {BigCommerce} client Api V3 client
+   * @param {BigCommerceRequestRepository} request Api V3 client
    * @param {BigCommerceStorage} storage
    * @param {number} customerId
    */
-  constructor (client, storage, customerId) {
-    this._client = client
+  constructor (request, storage, customerId = 0) {
+    this._request = request
     this._storage = storage
     this._customerId = customerId
   }
@@ -49,7 +49,7 @@ class BigCommerceCartRepository {
    * @param {string} cartId
    */
   async assignCustomer (customerId, cartId) {
-    await this._client.put(`/carts/${cartId}`, {
+    await this._request.put(`/carts/${cartId}`, {
       customer_id: customerId
     })
 
@@ -62,7 +62,7 @@ class BigCommerceCartRepository {
       return
     }
 
-    await this._client.delete('/carts/' + cartId)
+    await this._request.del('/carts/' + cartId)
     await this._storage.delete(CART_ID)
   }
 
@@ -103,7 +103,7 @@ class BigCommerceCartRepository {
     const cartId = await this._storage.get(CART_ID)
 
     if (!cartId) {
-      const bigCommerceResponse = await this._client.post('/carts', {
+      const bigCommerceResponse = await this._request.post('/carts', {
         'line_items': items.map(this._toApiLineItem),
         'customer_id': this._customerId
       })
@@ -112,7 +112,7 @@ class BigCommerceCartRepository {
       return
     }
 
-    await this._client.post('/carts/' + cartId + '/items', {
+    await this._request.post('/carts/' + cartId + '/items', {
       'cartId': cartId,
       'line_items': items.map(this._toApiLineItem)
     })
@@ -161,7 +161,7 @@ class BigCommerceCartRepository {
       }
 
       updatePromises.push(
-        this._client.put('/carts/' + cart.id + '/items/' + lineItem.id, {
+        this._request.put('/carts/' + cart.id + '/items/' + lineItem.id, {
           'cart_id': cart.id,
           'item_id': lineItem.id,
           'line_item': this._toApiLineItem(BigCommerceCartRepository.createLineItem(lineItem.productId, item.quantity))
@@ -184,7 +184,7 @@ class BigCommerceCartRepository {
     }
 
     try {
-      const response = await this._client.get(`/carts/${cartId}?include=line_items.physical_items.options`)
+      const response = await this._request.get(`/carts/${cartId}?include=line_items.physical_items.options`)
 
       return response.data
     } catch (error) {
@@ -209,7 +209,7 @@ class BigCommerceCartRepository {
     }
 
     /** @type BigCommerceRedirectUrlsResponse */
-    const response = await this._client.post('/carts/' + cartId + '/redirect_urls')
+    const response = await this._request.post('/carts/' + cartId + '/redirect_urls')
 
     if (!response.data || !response.data.hasOwnProperty('checkout_url')) {
       throw new Error('could not create webcheckout url')
@@ -229,7 +229,7 @@ class BigCommerceCartRepository {
     }
     const deletePromises = []
     for (let cartItemId of cartItemIds) {
-      deletePromises.push(this._client.delete('/carts/' + cartId + '/items/' + cartItemId))
+      deletePromises.push(this._request.del('/carts/' + cartId + '/items/' + cartItemId))
     }
 
     await Promise.all(deletePromises)

@@ -2,6 +2,7 @@
 const sinon = require('sinon')
 const assert = require('assert')
 const chai = require('chai')
+const BigCommerceRequestRepository = require('../../../lib/bigcommerce/RequestRepository')
 const BigCommerceCartRepository = require('../../../lib/bigcommerce/CartRepository')
 const BigCommerceFactory = require('../../../lib/bigcommerce/Factory')
 const integrationCredentials = require('../../../.integration-credentials')
@@ -15,6 +16,7 @@ describe('BigCommerceCartRepository - integration', () => {
   /** @type BigCommerceCartRepository */
   let subjectUnderTest
   const storage = {get: () => {}, set: () => {}, delete: () => {}}
+  const logger = {debug: () => {}}
   const shopgateCartFactory = new ShopgateCartFactory()
 
   let cartId
@@ -22,7 +24,14 @@ describe('BigCommerceCartRepository - integration', () => {
   beforeEach(() => {
     storageMock = sinon.mock(storage)
     subjectUnderTest = new BigCommerceCartRepository(
-      BigCommerceFactory.createV3(integrationCredentials.clientId, integrationCredentials.accessToken, integrationCredentials.storeHash),
+      new BigCommerceRequestRepository(
+        BigCommerceFactory.createV3(
+          integrationCredentials.clientId,
+          integrationCredentials.accessToken,
+          integrationCredentials.storeHash
+        ),
+        logger
+      ),
       /** @type BigCommerceStorage */
       storage
     )
@@ -105,7 +114,7 @@ describe('BigCommerceCartRepository - integration', () => {
     shopgateCart.totals.should.containSubset([{
       _type: 'grandTotal',
       _label: 'Total',
-      _amount: 42.25,
+      _amount: 52.25,
       _subTotals: []
     }])
 
@@ -113,7 +122,7 @@ describe('BigCommerceCartRepository - integration', () => {
     shopgateCart.totals.should.containSubset([{
       _type: 'subTotal',
       _label: 'SubTotal',
-      _amount: 50,
+      _amount: 60,
       _subTotals: []
     }])
 
