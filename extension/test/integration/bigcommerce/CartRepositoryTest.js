@@ -104,6 +104,14 @@ describe('BigCommerceCartRepository - integration', () => {
   })
 
   it('should calculate the grand total of the cart correctly', async () => {
+    /**
+     * Let's have an expected sample here:
+     * - we're adding 2x product 112 (Nutella integration test) that costs 30$ each
+     * - we're getting fixed discount 7.75$ applied on order over 50$ for the same item
+     * - for the sample case there is no shipping involved
+     * - there is 9% tax setup - applies to amount minus discounts (60 - 7.75) * 0.09 = 4.70$
+     * - grand total is in the end (60 - 7.75) + 4.7 = 56.95$ (taxes included regardless of taxes_included from API response being false!)
+     */
     storageMock.expects('set').once().callsFake((cartIdKey, cartIdValue) => { cartId = cartIdValue })
     await subjectUnderTest.addItems([BigCommerceCartRepository.createLineItem(112, 2)]).should.eventually.be.fulfilled
 
@@ -114,7 +122,7 @@ describe('BigCommerceCartRepository - integration', () => {
     shopgateCart.totals.should.containSubset([{
       _type: 'grandTotal',
       _label: 'Total',
-      _amount: 52.25,
+      _amount: 56.95,
       _subTotals: []
     }])
 
