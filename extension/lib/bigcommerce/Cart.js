@@ -84,7 +84,7 @@ class BigCommerceCart {
    * @returns {number}
    */
   get cartAmount () {
-    return this.productsSubTotal - this.discountAmount
+    return this._cartAmount
   }
 
   /**
