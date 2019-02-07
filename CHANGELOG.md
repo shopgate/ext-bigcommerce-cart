@@ -9,6 +9,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 - logging for all API calls
 ## Fixed
 - issue when adding variant products to the cart
+- aligned handling of get cart response to the information available
 
 ## [1.5.2] - 2019-01-04
 ## Fixed
