@@ -10,7 +10,7 @@ const { decorateError } = require('./shopgate/logDecorator')
  */
 module.exports = async (context, input) => {
   try {
-    await ShopgateCartPipeline.create(context).deleteProductFromCart(input.CartItemIds)
+    await ShopgateCartPipeline.create(context).deleteProductFromCart(input.cartItemIds)
   } catch (error) {
     context.log.error(decorateError(error), 'Failed deleting from cart')
     throw new Error()

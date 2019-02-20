@@ -138,7 +138,7 @@ class ShopgateCartExtensionPipeline {
     try {
       await this._bigCommerceCartRepository.updateItems(
         cartItems.map((item) => {
-          return BigCommerceCartRepository.createLineItemUpdate(item.CartItemId, item.quantity)
+          return BigCommerceCartRepository.createLineItemUpdate(item.cartItemId, item.quantity)
         }),
         async (failureEvent) => {
           this._context.log.error(decorateDebug({

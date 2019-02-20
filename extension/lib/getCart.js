@@ -10,7 +10,9 @@ const { decorateError } = require('./shopgate/logDecorator')
 module.exports = async (context) => {
   const cartPipeline = ShopgateCartPipeline.create(context)
   try {
-    return await cartPipeline.get()
+    const result = await cartPipeline.get()
+
+    return result;
   } catch (error) {
     context.log.error(decorateError(error), 'Failed getting the cart')
     throw new Error()
