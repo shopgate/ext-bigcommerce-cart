@@ -25,7 +25,10 @@ class BigCommerceAuthRepository {
   preAuthToken (customerId, redirectLink) {
     const payload = {
       iss: this._clientId,
-      iat: Math.round((new Date()).getTime() / 1000),
+      // Danger! BigCommerce checks iat also if it's in the future. If servers are not entirely in sync, token would be invalid.
+      // Time spent finding this out: 6h
+      // Related link: https://github.com/jpadilla/pyjwt/issues/190
+      iat: Math.round((new Date()).getTime() / 1000) - 20,
       jti: crypto.randomBytes(32).toString('hex'),
       operation: 'customer_login',
       store_hash: this._storeHash,
