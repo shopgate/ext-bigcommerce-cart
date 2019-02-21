@@ -184,7 +184,7 @@ describe('CartExtensionPipeline - unit', () => {
             price: {
               unit: 50,
               default: 50,
-              special: 0
+              special: null
             },
             appliedDiscounts: []
           },
@@ -210,7 +210,7 @@ describe('CartExtensionPipeline - unit', () => {
             price: {
               unit: 69,
               default: 69,
-              special: 0
+              special: null
             },
             appliedDiscounts: []
           },
@@ -278,7 +278,7 @@ describe('CartExtensionPipeline - unit', () => {
     bigCommerceCartRepositoryMock.expects('updateItems').once().withArgs([BigCommerceCartRepository.createLineItemUpdate('1', 1)])
     const errorLogSpy = sandbox.spy(subjectUnderTest._context.log, 'error')
 
-    await subjectUnderTest.updateProducts([{CartItemId: '1', quantity: 1}]).should.eventually.equal(true)
+    await subjectUnderTest.updateProducts([{cartItemId: '1', quantity: 1}]).should.eventually.equal(true)
     assert(errorLogSpy.notCalled)
     subjectUnderTest._context.log.error.restore()
   })
@@ -296,7 +296,7 @@ describe('CartExtensionPipeline - unit', () => {
 
     const errorLogSpy = sinon.spy(subjectUnderTest._context.log, 'error')
 
-    await subjectUnderTest.updateProducts([{CartItemId: '1', quantity: 1}]).should.eventually.equal(false)
+    await subjectUnderTest.updateProducts([{cartItemId: '1', quantity: 1}]).should.eventually.equal(false)
     assert(errorLogSpy.called)
     subjectUnderTest._context.log.error.restore()
   })
