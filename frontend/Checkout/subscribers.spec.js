@@ -2,7 +2,7 @@ import { mockedPipelineRequestFactory } from '@shopgate/pwa-core/classes/Pipelin
 import subscribe from './subscribers';
 
 jest.mock('@shopgate/pwa-common/streams/app', () => ({
-  appWillStart$: 'APP_WILL_START_MOCK'
+  appWillStart$: 'APP_WILL_START_MOCK',
 }));
 /**
  * Mocked resolver.
@@ -19,13 +19,13 @@ jest.mock('@shopgate/pwa-common/collections', () => ({
   redirects: {
     set: (...args) => {
       mockedRedirectsSetSpy(...args);
-    }
-  }
+    },
+  },
 }));
 
 const mockedAddCallbackSpy = jest.fn();
 jest.mock('@shopgate/pwa-core/classes/Event', () => ({
-  addCallback: (...args) => mockedAddCallbackSpy(...args)
+  addCallback: (...args) => mockedAddCallbackSpy(...args),
 }));
 
 let mockedUserIsLoggedIn = false;
@@ -33,27 +33,29 @@ jest.mock('@shopgate/pwa-common/selectors/user', () => ({
   isUserLoggedIn: () => mockedUserIsLoggedIn,
 }));
 
-jest.mock('@shopgate/pwa-common-commerce/checkout/actions/fetchCheckoutUrl', () => async () => {
-  return 'https://example.com';
-});
+jest.mock('@shopgate/pwa-common-commerce/checkout/actions/fetchCheckoutUrl', () => async () => 'https://example.com');
 
 const mockedCrossDomainTrackingSpy = jest.fn();
 jest.mock('@shopgate/tracking-core/core/Core', () => ({
   crossDomainTracking: (url) => {
     mockedCrossDomainTrackingSpy(url);
     return url;
-  }
+  },
 }));
 
 describe('Subscribers', () => {
-  let mockedSubscribe = jest.fn();
-  let stream, callback, redirectHandler, successCallback;
+  const mockedSubscribe = jest.fn();
+  let stream;
+  let callback;
+  let redirectHandler;
+  let successCallback;
 
   it('should subscribe to appWillStart$', () => {
     subscribe(mockedSubscribe);
     expect(mockedSubscribe).toHaveBeenCalled();
 
-    [ stream, callback ] = mockedSubscribe.mock.calls[0];
+    // eslint-disable-next-line prefer-destructuring
+    [stream, callback] = mockedSubscribe.mock.calls[0];
     expect(stream).toBe('APP_WILL_START_MOCK');
     expect(typeof callback).toBe('function');
   });
@@ -63,12 +65,12 @@ describe('Subscribers', () => {
     expect(mockedRedirectsSetSpy).toHaveBeenCalled();
     expect(mockedAddCallbackSpy).toHaveBeenCalled();
 
-    const [ path, handler, force ] = mockedRedirectsSetSpy.mock.calls[0];
+    const [path, handler, force] = mockedRedirectsSetSpy.mock.calls[0];
     expect(path).toBe('/checkout');
     expect(typeof handler).toBe('function');
     expect(force).toBe(true);
 
-    const [ successEvent, successCb ] = mockedAddCallbackSpy.mock.calls[0];
+    const [successEvent, successCb] = mockedAddCallbackSpy.mock.calls[0];
 
     expect(successEvent).toBe('checkoutSuccess');
     expect(typeof successCb).toBe('function');
@@ -80,15 +82,18 @@ describe('Subscribers', () => {
   describe('redirectHandler', () => {
     it('should return empty string if user is logged out', async () => {
       mockedUserIsLoggedIn = false;
-      expect(await redirectHandler({ getState: () => {}})).toBe('')
+      expect(await redirectHandler({ getState: () => {} })).toBe('');
     });
 
     it('should return decorated string if user can do a checkout', async () => {
       mockedUserIsLoggedIn = true;
-      expect(await redirectHandler({ getState: () => {}, dispatch: (a) => a}))
+      expect(await redirectHandler({
+        getState: () => {},
+        dispatch: a => a,
+      }))
         .toBe('https://example.com');
       expect(mockedCrossDomainTrackingSpy).toHaveBeenCalledWith('https://example.com');
-    })
+    });
   });
 
   describe('Checkout success event callback', () => {
@@ -97,13 +102,15 @@ describe('Subscribers', () => {
     });
     it('should call pipeline to mark shop order', (done) => {
       mockedResolver = (mockedInstance, resolve) => {
-        expect(mockedInstance.input).toEqual({ orderId: 'ORDER_NUMBER'});
+        expect(mockedInstance.input).toEqual({ orderId: 'ORDER_NUMBER' });
         resolve();
         done();
       };
-      successCallback({ order: {
-        number: 'ORDER_NUMBER'
-      }});
+      successCallback({
+        order: {
+          number: 'ORDER_NUMBER',
+        },
+      });
     });
   });
 });

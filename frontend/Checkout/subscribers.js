@@ -1,8 +1,6 @@
 import { isUserLoggedIn } from '@shopgate/pwa-common/selectors/user';
 import trackingCore from '@shopgate/tracking-core/core/Core';
-import {
-  FETCH_CHECKOUT_URL_TIMEOUT,
-} from '@shopgate/pwa-common-commerce/checkout/constants';
+import { FETCH_CHECKOUT_URL_TIMEOUT } from '@shopgate/pwa-common-commerce/checkout/constants';
 import { redirects } from '@shopgate/pwa-common/collections';
 import { CHECKOUT_PATH } from '@shopgate/pwa-common/constants/RoutePaths';
 import fetchCheckoutUrl from '@shopgate/pwa-common-commerce/checkout/actions/fetchCheckoutUrl';
@@ -23,24 +21,24 @@ import {
  * @return {Promise<string>}
  */
 const redirectHandler = async ({ getState, dispatch }) => {
-    if (!isUserLoggedIn(getState())) {
-        return '';
-    }
+  if (!isUserLoggedIn(getState())) {
+    return '';
+  }
 
-    const started = Date.now();
-    const url = await dispatch(fetchCheckoutUrl());
+  const started = Date.now();
+  const url = await dispatch(fetchCheckoutUrl());
 
-    // Check if it took more than PWA allows. User is already back.
-    if (Date.now() - started > FETCH_CHECKOUT_URL_TIMEOUT) {
-        return '';
-    }
+  // Check if it took more than PWA allows. User is already back.
+  if (Date.now() - started > FETCH_CHECKOUT_URL_TIMEOUT) {
+    return '';
+  }
 
-    /**
+  /**
      * Build the complete checkout url. Fallback to the
      * legacy url if the Pipeline returns an invalid url.
      * Add some tracking params for cross domain tracking.
      */
-    return trackingCore.crossDomainTracking(url);
+  return trackingCore.crossDomainTracking(url);
 };
 
 /**
