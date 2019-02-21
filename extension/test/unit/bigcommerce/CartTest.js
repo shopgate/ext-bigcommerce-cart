@@ -26,7 +26,7 @@ describe('Cart - unit', function () {
   it('should result in find returning null when no product matches', function () {
     subjectUnderTest.addItem(genericExampleItem)
 
-    assert.equal(subjectUnderTest.findItem('bbb-bbb-bbb-bbb'), null)
+    assert.strict.equal(subjectUnderTest.findItem('bbb-bbb-bbb-bbb'), null)
   })
 
   it('should return the total of physical and digital cartLineItems\'s salePrice times quantity', function () {
@@ -36,6 +36,6 @@ describe('Cart - unit', function () {
     subjectUnderTest.addItem(genericExampleItem)
     subjectUnderTest.addItem(exampleDigitalItem)
 
-    assert.equal(subjectUnderTest.productsSubTotal, 238)
+    assert.strict.equal(subjectUnderTest.productsSubTotal, 238)
   })
 })

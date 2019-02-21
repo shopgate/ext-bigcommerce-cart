@@ -16,7 +16,7 @@ describe('BigCommerceCartRepository - unit', function () {
   let storageMock
   /** @type BigCommerceCartRepository */
   let subjectUnderTest
-  const requestRepository = {get: () => {}, post: () => {}, put: () => {}, del: () => {}}
+  const requestRepository = { get: () => {}, post: () => {}, put: () => {}, del: () => {} }
   const storage = { get: () => {}, set: () => {} }
   beforeEach(() => {
     storageMock = sinon.mock(storage)
@@ -99,7 +99,7 @@ describe('BigCommerceCartRepository - unit', function () {
         ],
         customer_id: CUSTOMER_ID_MOCK
       }
-    ).returns({data: { id: '0000-0000-0000-0000' }})
+    ).returns({ data: { id: '0000-0000-0000-0000' } })
 
     return subjectUnderTest.addItems([ new BigCommerceCartLineItemRequest(42, 1) ]).should.eventually.be.fulfilled
   })
@@ -155,7 +155,7 @@ describe('BigCommerceCartRepository - unit', function () {
           quantity: 1
         }
       }
-    ).returns({data: {id: '0000-0000-0000-0000'}})
+    ).returns({ data: { id: '0000-0000-0000-0000' } })
     const updateFailureNotifier = sinon.spy()
 
     await subjectUnderTest.updateItems(cartItems, updateFailureNotifier).should.eventually.be.fulfilled
@@ -191,7 +191,7 @@ describe('BigCommerceCartRepository - unit', function () {
     })
     const updateFailureNotifier = sinon.spy()
     await subjectUnderTest.updateItems(cartItems, updateFailureNotifier).should.eventually.be.fulfilled
-    assert(updateFailureNotifier.calledWith({item: cartItems[0], reason: 'Item not found in BigCommerce cart'}))
+    assert(updateFailureNotifier.calledWith({ item: cartItems[0], reason: 'Item not found in BigCommerce cart' }))
   })
 
   it('should throw an error when no cart is found during updateItems', async () => {

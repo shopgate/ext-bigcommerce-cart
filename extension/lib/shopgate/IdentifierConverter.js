@@ -9,7 +9,7 @@ class IdentifierConverter {
     const resultProductId = splitResult.length > 0 ? parseInt(splitResult[0]) : null
     const resultVariantId = splitResult.length > 1 ? parseInt(splitResult[1]) : null
 
-    return {productId: resultProductId, variantId: resultVariantId}
+    return { productId: resultProductId, variantId: resultVariantId }
   }
 
   /**

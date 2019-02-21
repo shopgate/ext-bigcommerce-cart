@@ -15,8 +15,8 @@ describe('BigCommerceCartRepository - integration', () => {
   let storageMock
   /** @type BigCommerceCartRepository */
   let subjectUnderTest
-  const storage = {get: () => {}, set: () => {}, delete: () => {}}
-  const logger = {debug: () => {}}
+  const storage = { get: () => {}, set: () => {}, delete: () => {} }
+  const logger = { debug: () => {} }
   const shopgateCartFactory = new ShopgateCartFactory()
 
   let cartId
@@ -71,8 +71,8 @@ describe('BigCommerceCartRepository - integration', () => {
     const reportWarnings = sinon.spy()
 
     await subjectUnderTest.updateItems([BigCommerceCartRepository.createLineItemUpdate('000-000-000', 2)], reportWarnings).should.eventually.be.fulfilled
-    assert.equal(reportWarnings.called, true, 'An warning should have been reported.')
-    assert.equal(reportWarnings.args[0][0].item.itemId, '000-000-000')
+    assert.strict.equal(reportWarnings.called, true, 'An warning should have been reported.')
+    assert.strict.equal(reportWarnings.args[0][0].item.itemId, '000-000-000')
   })
 
   it('should provide checkout url', function (done) {
@@ -83,7 +83,7 @@ describe('BigCommerceCartRepository - integration', () => {
     setTimeout(async () => {
       try {
         const checkoutUrl = await subjectUnderTest.getCheckoutUrl()
-        assert.equal(typeof checkoutUrl, 'string')
+        assert.strict.equal(typeof checkoutUrl, 'string')
         done()
       } catch (error) {
         done(error)

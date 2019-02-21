@@ -4,7 +4,7 @@ class ShopgateCartItemProductPrice {
    * @param {number} defaultPrice
    * @param {number} special
    */
-  constructor ({unit, defaultPrice, special}) {
+  constructor ({ unit, defaultPrice, special }) {
     this._unit = unit
     this._default = defaultPrice
     this._special = special

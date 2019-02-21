@@ -6,15 +6,15 @@ const IdentifierConverter = require('../../../lib/shopgate/IdentifierConverter')
 describe('CartExtensionPipeline - unit', () => {
   describe('extractProductIds', () => {
     it('should extract a variantId', () => {
-      chai.assert.deepStrictEqual(IdentifierConverter.extractProductIds('123-321'), {productId: 123, variantId: 321})
+      chai.assert.deepStrictEqual(IdentifierConverter.extractProductIds('123-321'), { productId: 123, variantId: 321 })
     })
 
     it('should be able to handle productId only', () => {
-      chai.assert.deepStrictEqual(IdentifierConverter.extractProductIds('123'), {productId: 123, variantId: null})
+      chai.assert.deepStrictEqual(IdentifierConverter.extractProductIds('123'), { productId: 123, variantId: null })
     })
 
     it('should be able to handle productId number as well', () => {
-      chai.assert.deepStrictEqual(IdentifierConverter.extractProductIds(123), {productId: 123, variantId: null})
+      chai.assert.deepStrictEqual(IdentifierConverter.extractProductIds(123), { productId: 123, variantId: null })
     })
   })
 

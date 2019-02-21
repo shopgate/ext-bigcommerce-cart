@@ -4,7 +4,7 @@ class ShopgateCartItemProductProperty {
    * @param {string} label
    * @param {string} value
    */
-  constructor ({type, label, value}) {
+  constructor ({ type, label, value }) {
     this._type = type
     this._label = label
     this._value = value

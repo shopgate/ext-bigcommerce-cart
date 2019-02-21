@@ -32,7 +32,7 @@ class ShopgateCartExtensionPipeline {
     const itemsToUpdate = []
 
     await Promise.all(products.map(async (product) => {
-      const {productId, variantId} = IdentifierConverter.extractProductIds(product.productId)
+      const { productId, variantId } = IdentifierConverter.extractProductIds(product.productId)
 
       let found = null
       if (bigCommerceCart && bigCommerceCart.lineItems) {

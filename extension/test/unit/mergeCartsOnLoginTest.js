@@ -2,7 +2,7 @@
 const sinon = require('sinon')
 const Logger = require('bunyan')
 const chai = require('chai')
-const {describe, it, beforeEach, afterEach} = require('mocha')
+const { describe, it, beforeEach, afterEach } = require('mocha')
 const ShopgateCartPipeline = require('../../lib/shopgate/CartExtensionPipeline')
 const mergeCartsOnLogin = require('../../lib/mergeCartsOnLogin')
 
@@ -130,8 +130,8 @@ describe('mergeCartsOnLogin', () => {
     await mergeCartsOnLogin(context, {})
 
     sinon.assert.calledWith(loggedInPipelineStub.addProducts, [
-      {productId: 120, quantity: 1},
-      {productId: 121, quantity: 2}
+      { productId: 120, quantity: 1 },
+      { productId: 121, quantity: 2 }
     ])
 
     sinon.assert.calledOnce(anonymousPipelineStub.destroyCart)

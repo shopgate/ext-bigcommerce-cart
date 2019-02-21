@@ -3,7 +3,7 @@ const BigCommerce = require('node-bigcommerce')
 const sinon = require('sinon')
 const assert = require('assert')
 const chai = require('chai')
-const {describe, it, beforeEach, afterEach} = require('mocha')
+const { describe, it, beforeEach, afterEach } = require('mocha')
 let ShopgateCartExtensionPipeline = require('../../../lib/shopgate/CartExtensionPipeline')
 const ShopgateCartFactory = require('../../../lib/shopgate/CartFactory')
 const BigCommerceCartRepository = require('../../../lib/bigcommerce/CartRepository')
@@ -23,10 +23,10 @@ describe('CartExtensionPipeline - unit', () => {
   let createLineItemSpy
 
   let storageMock
-  const storage = {get: () => {}, set: () => {}}
-  const logger = {debug: () => {}}
+  const storage = { get: () => {}, set: () => {} }
+  const logger = { debug: () => {} }
   const context = {
-    log: {error: () => {}},
+    log: { error: () => {} },
     storage: {
       extension: storageMock
     }
@@ -278,7 +278,7 @@ describe('CartExtensionPipeline - unit', () => {
     bigCommerceCartRepositoryMock.expects('updateItems').once().withArgs([BigCommerceCartRepository.createLineItemUpdate('1', 1)])
     const errorLogSpy = sandbox.spy(subjectUnderTest._context.log, 'error')
 
-    await subjectUnderTest.updateProducts([{cartItemId: '1', quantity: 1}]).should.eventually.equal(true)
+    await subjectUnderTest.updateProducts([{ cartItemId: '1', quantity: 1 }]).should.eventually.equal(true)
     assert(errorLogSpy.notCalled)
     subjectUnderTest._context.log.error.restore()
   })
@@ -296,7 +296,7 @@ describe('CartExtensionPipeline - unit', () => {
 
     const errorLogSpy = sinon.spy(subjectUnderTest._context.log, 'error')
 
-    await subjectUnderTest.updateProducts([{cartItemId: '1', quantity: 1}]).should.eventually.equal(false)
+    await subjectUnderTest.updateProducts([{ cartItemId: '1', quantity: 1 }]).should.eventually.equal(false)
     assert(errorLogSpy.called)
     subjectUnderTest._context.log.error.restore()
   })
