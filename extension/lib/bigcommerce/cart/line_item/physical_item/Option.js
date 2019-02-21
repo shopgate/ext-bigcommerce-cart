@@ -5,7 +5,7 @@ class BigCommerceCartLineItemPhysicalOption {
    * @param {string} value
    * @param {number} valueId
    */
-  constructor ({id, name, value, valueId}) {
+  constructor ({ id, name, value, valueId }) {
     this._id = id
     this._name = name
     this._value = value

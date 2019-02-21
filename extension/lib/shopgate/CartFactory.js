@@ -23,11 +23,14 @@ class ShopgateCartFactory {
       const listPrice = lineItem.listPrice !== 0 ? lineItem.listPrice : lineItem.salePrice
       const salePrice = (lineItem.listPrice !== 0 && lineItem.listPrice !== lineItem.salePrice) ? lineItem.salePrice : null
 
+      const defaultPrice = listPrice * lineItem.quantity
+      const special = salePrice === null ? null : salePrice * lineItem.quantity
+
       const cartItemBuilder = cart.createItemBuilder(lineItem.id, lineItem.quantity)
         .withProductId(lineItem.productId)
         .withVariantId(lineItem.variantId)
         .withProductName(lineItem.name)
-        .withProductPrice(listPrice, listPrice * lineItem.quantity, salePrice * lineItem.quantity)
+        .withProductPrice(listPrice, defaultPrice, special)
         .withFeaturedImageUrl(lineItem.imageUrl)
         .withAppliedDiscounts()
 

@@ -32,7 +32,7 @@ class BigCommerceCartLineItemPhysical extends BigCommerceCartLineItemAbstract {
    * @returns BigCommerceCartLineItemPhysical
    */
   addOption (id, name, value, valueId) {
-    this._options.push(new BigCommerceCartLineItemPhysicalOption({id, name, value, valueId}))
+    this._options.push(new BigCommerceCartLineItemPhysicalOption({ id, name, value, valueId }))
     return this
   }
 

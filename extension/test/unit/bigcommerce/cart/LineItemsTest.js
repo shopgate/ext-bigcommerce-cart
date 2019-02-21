@@ -41,7 +41,7 @@ describe('LineItems - unit', function () {
   })
 
   it('should return null in case line item can not be found', function () {
-    assert.equal(subjectUnderTest.find('sample id'), null)
+    assert.strict.equal(subjectUnderTest.find('sample id'), null)
   })
 
   it('should return line item in case it should be found', function () {

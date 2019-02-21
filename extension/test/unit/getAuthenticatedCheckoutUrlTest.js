@@ -37,9 +37,9 @@ describe('getAuthenticatedCheckoutUrl - unit', () => {
     authRepositoryStub.preAuthToken.returns(testToken)
     authRepositoryFactoryStub.returns(authRepositoryStub)
 
-    const response = await getAuthenticatedCheckoutUrl({...context, meta}, input)
+    const response = await getAuthenticatedCheckoutUrl({ ...context, meta }, input)
 
-    assert.equal(response.url, baseUrl + '/login/token/' + testToken)
+    assert.strict.equal(response.url, baseUrl + '/login/token/' + testToken)
 
     authRepositoryFactoryStub.restore()
   })
@@ -56,7 +56,7 @@ describe('getAuthenticatedCheckoutUrl - unit', () => {
     authRepositoryFactoryStub.returns(authRepositoryStub)
     const logSpy = sinon.spy(context.log, 'error')
 
-    getAuthenticatedCheckoutUrl({...context, meta}, input).should.eventually.be.rejectedWith(error)
+    getAuthenticatedCheckoutUrl({ ...context, meta }, input).should.eventually.be.rejectedWith(error)
     assert(logSpy.called)
 
     authRepositoryFactoryStub.restore()
@@ -66,29 +66,29 @@ describe('getAuthenticatedCheckoutUrl - unit', () => {
     const meta = {
       userId: null
     }
-    const response = await getAuthenticatedCheckoutUrl({...context, meta}, input)
-    assert.equal(response.url, input.url)
+    const response = await getAuthenticatedCheckoutUrl({ ...context, meta }, input)
+    assert.strict.equal(response.url, input.url)
   })
 
   it('should return link to cart because userId is undefined', async () => {
     const meta = {
       userId: undefined
     }
-    const response = await getAuthenticatedCheckoutUrl({...context, meta}, input)
-    assert.equal(response.url, input.url)
+    const response = await getAuthenticatedCheckoutUrl({ ...context, meta }, input)
+    assert.strict.equal(response.url, input.url)
   })
 
   it('should return link to cart because userId is empty string', async () => {
     const meta = {
       userId: ''
     }
-    const response = await getAuthenticatedCheckoutUrl({...context, meta}, input)
-    assert.equal(response.url, input.url)
+    const response = await getAuthenticatedCheckoutUrl({ ...context, meta }, input)
+    assert.strict.equal(response.url, input.url)
   })
 
   it('should return link to cart because userId is not defined', async () => {
     const meta = {}
-    const response = await getAuthenticatedCheckoutUrl({...context, meta}, input)
-    assert.equal(response.url, input.url)
+    const response = await getAuthenticatedCheckoutUrl({ ...context, meta }, input)
+    assert.strict.equal(response.url, input.url)
   })
 })

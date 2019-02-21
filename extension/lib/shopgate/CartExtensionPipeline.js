@@ -32,7 +32,7 @@ class ShopgateCartExtensionPipeline {
     const itemsToUpdate = []
 
     await Promise.all(products.map(async (product) => {
-      const {productId, variantId} = IdentifierConverter.extractProductIds(product.productId)
+      const { productId, variantId } = IdentifierConverter.extractProductIds(product.productId)
 
       let found = null
       if (bigCommerceCart && bigCommerceCart.lineItems) {
@@ -138,7 +138,7 @@ class ShopgateCartExtensionPipeline {
     try {
       await this._bigCommerceCartRepository.updateItems(
         cartItems.map((item) => {
-          return BigCommerceCartRepository.createLineItemUpdate(item.CartItemId, item.quantity)
+          return BigCommerceCartRepository.createLineItemUpdate(item.cartItemId, item.quantity)
         }),
         async (failureEvent) => {
           this._context.log.error(decorateDebug({

@@ -10,7 +10,7 @@ const { decorateError } = require('./shopgate/logDecorator')
  */
 module.exports = async (context, input) => {
   try {
-    await ShopgateCartPipeline.create(context).updateProducts(input.CartItem)
+    await ShopgateCartPipeline.create(context).updateProducts(input.cartItems)
 
     // there is no benefit of providing messages as they get shown in a popup
     return { messages: [] }
