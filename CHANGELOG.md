@@ -14,6 +14,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 ## [1.5.2] - 2019-01-04
 ## Fixed
 - providing feedback when add to cart fails and ensuring unknown errors are sent out.
+- show the right error message is product not available
 
 ## [1.5.1] - 2018-10-29
 ### Fixed
