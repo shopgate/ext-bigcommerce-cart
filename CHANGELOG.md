@@ -4,7 +4,8 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
-
+## Fixed
+- show the right error message is product not available
 ## [2.0.0] - 2019-02-21
 ## Added
 - showing sku and product options in the cart

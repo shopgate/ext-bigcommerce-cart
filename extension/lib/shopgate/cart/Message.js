@@ -30,6 +30,17 @@ class ShopgateCartMessage {
   get code () {
     return this._code
   }
+
+  /**
+   *@return {object}
+   */
+  toJson () {
+    return {
+      code: this._code,
+      message: this._message,
+      type: this._type
+    }
+  }
 }
 
 module.exports = ShopgateCartMessage
