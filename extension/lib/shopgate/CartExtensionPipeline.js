@@ -1,5 +1,6 @@
 const BigCommerceFactory = require('../bigcommerce/Factory')
 const BigCommerceCartRepository = require('../bigcommerce/CartRepository')
+const BigCommerceRequestRepository = require('../bigcommerce/RequestRepository')
 const ShopgateExtensionStorage = require('./ExtensionStorage')
 const IdentifierConverter = require('./IdentifierConverter')
 const ShopgateCartFactory = require('./CartFactory')
@@ -31,7 +32,7 @@ class ShopgateCartExtensionPipeline {
     const itemsToUpdate = []
 
     await Promise.all(products.map(async (product) => {
-      const {productId, variantId} = IdentifierConverter.extractProductIds(product.productId)
+      const { productId, variantId } = IdentifierConverter.extractProductIds(product.productId)
 
       let found = null
       if (bigCommerceCart && bigCommerceCart.lineItems) {
@@ -137,7 +138,7 @@ class ShopgateCartExtensionPipeline {
     try {
       await this._bigCommerceCartRepository.updateItems(
         cartItems.map((item) => {
-          return BigCommerceCartRepository.createLineItemUpdate(item.CartItemId, item.quantity)
+          return BigCommerceCartRepository.createLineItemUpdate(item.cartItemId, item.quantity)
         }),
         async (failureEvent) => {
           this._context.log.error(decorateDebug({
@@ -242,10 +243,13 @@ class ShopgateCartExtensionPipeline {
  */
 const create = (context, storage) => {
   const bigCommerceCartRepository = new BigCommerceCartRepository(
-    BigCommerceFactory.createV3(
-      context.config.clientId,
-      context.config.accessToken,
-      context.config.storeHash
+    new BigCommerceRequestRepository(
+      BigCommerceFactory.createV3(
+        context.config.clientId,
+        context.config.accessToken,
+        context.config.storeHash
+      ),
+      context.log
     ),
     /** @type BigCommerceStorage */
     new ShopgateExtensionStorage(storage),

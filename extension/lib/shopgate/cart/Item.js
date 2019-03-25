@@ -7,7 +7,7 @@ class ShopgateCartItem {
    * @param {ShopgateCartItemCoupon} coupon
    * @param {ShopgateCartItemProduct} product
    */
-  constructor ({id, quantity, type, coupon, product}) {
+  constructor ({ id, quantity, type, coupon, product }) {
     this._id = id
     this._quantity = quantity
     this._type = type

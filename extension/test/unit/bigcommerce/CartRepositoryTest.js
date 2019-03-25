@@ -1,5 +1,4 @@
 'use strict'
-const BigCommerce = require('node-bigcommerce')
 const sinon = require('sinon')
 const assert = require('assert')
 const chai = require('chai')
@@ -13,17 +12,18 @@ chai.use(require('chai-as-promised')).should()
 const CUSTOMER_ID_MOCK = 192
 
 describe('BigCommerceCartRepository - unit', function () {
-  let bigCommerceMock
+  let requestRepositoryMock
   let storageMock
   /** @type BigCommerceCartRepository */
   let subjectUnderTest
+  const requestRepository = { get: () => {}, post: () => {}, put: () => {}, del: () => {} }
   const storage = { get: () => {}, set: () => {} }
-  const bigCommerce = new BigCommerce({})
   beforeEach(() => {
-    bigCommerceMock = sinon.mock(bigCommerce)
     storageMock = sinon.mock(storage)
+    requestRepositoryMock = sinon.mock(requestRepository)
     subjectUnderTest = new BigCommerceCartRepository(
-      bigCommerce,
+      /** @type BigCommerceRequestRepository */
+      requestRepository,
       /** @type BigCommerceStorage */
       storage,
       CUSTOMER_ID_MOCK
@@ -31,8 +31,8 @@ describe('BigCommerceCartRepository - unit', function () {
   })
 
   afterEach(() => {
-    bigCommerceMock.verify()
-    bigCommerceMock.restore()
+    requestRepositoryMock.verify()
+    requestRepositoryMock.restore()
     storageMock.verify()
     storageMock.restore()
   })
@@ -55,7 +55,7 @@ describe('BigCommerceCartRepository - unit', function () {
       }
     }
     storageMock.expects('get').once().returns('0000-0000-0000-0000')
-    bigCommerceMock.expects('get').withArgs('/carts/0000-0000-0000-0000?include=line_items.physical_items.options').returns(responseFixture)
+    requestRepositoryMock.expects('get').withArgs('/carts/0000-0000-0000-0000?include=line_items.physical_items.options').returns(responseFixture)
 
     return subjectUnderTest.load().should.eventually.deep.equal(new BigCommerceCart(
       '0000-0000-0000-0000',
@@ -69,7 +69,7 @@ describe('BigCommerceCartRepository - unit', function () {
 
   it('should add items to the cart', function () {
     storageMock.expects('get').once().returns('0000-0000-0000-0000')
-    bigCommerceMock.expects('post').withArgs(
+    requestRepositoryMock.expects('post').withArgs(
       '/carts/0000-0000-0000-0000/items',
       {
         cartId: '0000-0000-0000-0000',
@@ -88,7 +88,7 @@ describe('BigCommerceCartRepository - unit', function () {
   it('should create the cart when addItems is called and the cart_id was previously not available', function () {
     storageMock.expects('get').once().returns(null)
 
-    bigCommerceMock.expects('post').withArgs(
+    requestRepositoryMock.expects('post').withArgs(
       '/carts',
       {
         line_items: [
@@ -99,7 +99,7 @@ describe('BigCommerceCartRepository - unit', function () {
         ],
         customer_id: CUSTOMER_ID_MOCK
       }
-    ).returns({data: { id: '0000-0000-0000-0000' }})
+    ).returns({ data: { id: '0000-0000-0000-0000' } })
 
     return subjectUnderTest.addItems([ new BigCommerceCartLineItemRequest(42, 1) ]).should.eventually.be.fulfilled
   })
@@ -112,7 +112,7 @@ describe('BigCommerceCartRepository - unit', function () {
 
   it('should fail getting the checkout url if the bigcommerce response doesn\'t provide checkout_url property', function () {
     storageMock.expects('get').once().returns('0000-0000-0000-0000')
-    bigCommerceMock.expects('post').once().withArgs('/carts/0000-0000-0000-0000/redirect_urls').returns(null)
+    requestRepositoryMock.expects('post').once().withArgs('/carts/0000-0000-0000-0000/redirect_urls').returns(null)
 
     return subjectUnderTest.getCheckoutUrl().should.eventually.be.rejectedWith(Error)
   })
@@ -126,7 +126,7 @@ describe('BigCommerceCartRepository - unit', function () {
     ]
     storageMock.expects('get').once().returns('0000-0000-0000-0000')
 
-    bigCommerceMock.expects('get').withArgs('/carts/0000-0000-0000-0000?include=line_items.physical_items.options').returns({
+    requestRepositoryMock.expects('get').withArgs('/carts/0000-0000-0000-0000?include=line_items.physical_items.options').returns({
       data: {
         id: '0000-0000-0000-0000',
         currency: {
@@ -145,7 +145,7 @@ describe('BigCommerceCartRepository - unit', function () {
       }
     })
 
-    bigCommerceMock.expects('put').withArgs(
+    requestRepositoryMock.expects('put').withArgs(
       '/carts/0000-0000-0000-0000/items/abc-def-ghi-jkl-mno',
       {
         cart_id: '0000-0000-0000-0000',
@@ -155,7 +155,7 @@ describe('BigCommerceCartRepository - unit', function () {
           quantity: 1
         }
       }
-    ).returns({data: {id: '0000-0000-0000-0000'}})
+    ).returns({ data: { id: '0000-0000-0000-0000' } })
     const updateFailureNotifier = sinon.spy()
 
     await subjectUnderTest.updateItems(cartItems, updateFailureNotifier).should.eventually.be.fulfilled
@@ -171,7 +171,7 @@ describe('BigCommerceCartRepository - unit', function () {
     ]
     storageMock.expects('get').once().returns('0000-0000-0000-0000')
 
-    bigCommerceMock.expects('get').withArgs('/carts/0000-0000-0000-0000?include=line_items.physical_items.options').returns({
+    requestRepositoryMock.expects('get').withArgs('/carts/0000-0000-0000-0000?include=line_items.physical_items.options').returns({
       data: {
         id: '0000-0000-0000-0000',
         currency: {
@@ -191,7 +191,7 @@ describe('BigCommerceCartRepository - unit', function () {
     })
     const updateFailureNotifier = sinon.spy()
     await subjectUnderTest.updateItems(cartItems, updateFailureNotifier).should.eventually.be.fulfilled
-    assert(updateFailureNotifier.calledWith({item: cartItems[0], reason: 'Item not found in BigCommerce cart'}))
+    assert(updateFailureNotifier.calledWith({ item: cartItems[0], reason: 'Item not found in BigCommerce cart' }))
   })
 
   it('should throw an error when no cart is found during updateItems', async () => {
@@ -210,8 +210,8 @@ describe('BigCommerceCartRepository - unit', function () {
   it('should properly call bigCommerce client delete method when doing a deleteProductsFromCart', function () {
     const cartItemIds = ['abc-def-ghi-jk', 'lmn-opq-rst-uvw']
     storageMock.expects('get').once().returns('0000-0000-0000-0000')
-    bigCommerceMock.expects('delete').withArgs('/carts/0000-0000-0000-0000/items/' + cartItemIds[0]).onCall(0)
-    bigCommerceMock.expects('delete').withArgs('/carts/0000-0000-0000-0000/items/' + cartItemIds[1]).onCall(1)
+    requestRepositoryMock.expects('del').withArgs('/carts/0000-0000-0000-0000/items/' + cartItemIds[0]).onCall(0)
+    requestRepositoryMock.expects('del').withArgs('/carts/0000-0000-0000-0000/items/' + cartItemIds[1]).onCall(1)
 
     return subjectUnderTest.deleteProductFromCart(cartItemIds).should.eventually.be.fulfilled
   })
@@ -219,7 +219,7 @@ describe('BigCommerceCartRepository - unit', function () {
   it('should fail to delete cart items when bigCommerce delete operation fails', function () {
     const cartItemIds = ['abc-def-ghi-jk']
     storageMock.expects('get').once().returns('0000-0000-0000-0000')
-    bigCommerceMock.expects('delete').withArgs('/carts/0000-0000-0000-0000/items/' + cartItemIds[0]).throws(Error)
+    requestRepositoryMock.expects('del').withArgs('/carts/0000-0000-0000-0000/items/' + cartItemIds[0]).throws(Error)
 
     return subjectUnderTest.deleteProductFromCart(cartItemIds).should.eventually.be.rejectedWith(Error)
   })
@@ -227,7 +227,7 @@ describe('BigCommerceCartRepository - unit', function () {
   it('should fail to delete cart items when no cart id is available', function () {
     const cartItemIds = ['abc-def-ghi-jk']
     storageMock.expects('get').once().returns()
-    bigCommerceMock.expects('delete').never()
+    requestRepositoryMock.expects('del').never()
 
     return subjectUnderTest.deleteProductFromCart(cartItemIds).should.eventually.be.rejectedWith(Error)
   })

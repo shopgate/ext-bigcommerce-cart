@@ -11,7 +11,7 @@ class ShopgateCartItemProduct {
    * @param {ShopgateCartItemProductPrice} price
    * @param {ShopgateCartItemProductAppliedDiscount[]} appliedDiscounts
    */
-  constructor ({id, variantId, name, additionalInfo, featuredImageUrl, properties, price, appliedDiscounts}) {
+  constructor ({ id, variantId, name, additionalInfo, featuredImageUrl, properties, price, appliedDiscounts }) {
     this._id = id
     this._variantId = variantId
     this._name = name

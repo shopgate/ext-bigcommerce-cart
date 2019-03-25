@@ -11,7 +11,7 @@ const { decorateError } = require('./shopgate/logDecorator')
  */
 module.exports = async (context, input) => {
   if (!context.meta.userId) {
-    return {url: input.url}
+    return { url: input.url }
   }
   try {
     const authRepository = AuthRepository.create(
@@ -21,7 +21,7 @@ module.exports = async (context, input) => {
     const cartUrl = new URL(input.url)
     const token = authRepository.preAuthToken(context.meta.userId, input.url)
     const loginUrl = `${cartUrl.protocol}//${cartUrl.host}/login/token/${token}`
-    return {url: loginUrl}
+    return { url: loginUrl }
   } catch (error) {
     context.log.error(decorateError(error), 'Failed getting auth url')
     throw new Error()

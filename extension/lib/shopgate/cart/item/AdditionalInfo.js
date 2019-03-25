@@ -3,7 +3,7 @@ class ShopgateCartAdditionalInfo {
    * @param {string} label
    * @param {string} value
    */
-  constructor ({label, value}) {
+  constructor ({ label, value }) {
     this._label = label
     this._value = value
   }

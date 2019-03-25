@@ -2,6 +2,7 @@
 const sinon = require('sinon')
 const assert = require('assert')
 const chai = require('chai')
+const BigCommerceRequestRepository = require('../../../lib/bigcommerce/RequestRepository')
 const BigCommerceCartRepository = require('../../../lib/bigcommerce/CartRepository')
 const BigCommerceFactory = require('../../../lib/bigcommerce/Factory')
 const integrationCredentials = require('../../../.integration-credentials')
@@ -14,7 +15,8 @@ describe('BigCommerceCartRepository - integration', () => {
   let storageMock
   /** @type BigCommerceCartRepository */
   let subjectUnderTest
-  const storage = {get: () => {}, set: () => {}, delete: () => {}}
+  const storage = { get: () => {}, set: () => {}, delete: () => {} }
+  const logger = { debug: () => {} }
   const shopgateCartFactory = new ShopgateCartFactory()
 
   let cartId
@@ -22,7 +24,14 @@ describe('BigCommerceCartRepository - integration', () => {
   beforeEach(() => {
     storageMock = sinon.mock(storage)
     subjectUnderTest = new BigCommerceCartRepository(
-      BigCommerceFactory.createV3(integrationCredentials.clientId, integrationCredentials.accessToken, integrationCredentials.storeHash),
+      new BigCommerceRequestRepository(
+        BigCommerceFactory.createV3(
+          integrationCredentials.clientId,
+          integrationCredentials.accessToken,
+          integrationCredentials.storeHash
+        ),
+        logger
+      ),
       /** @type BigCommerceStorage */
       storage
     )
@@ -62,8 +71,8 @@ describe('BigCommerceCartRepository - integration', () => {
     const reportWarnings = sinon.spy()
 
     await subjectUnderTest.updateItems([BigCommerceCartRepository.createLineItemUpdate('000-000-000', 2)], reportWarnings).should.eventually.be.fulfilled
-    assert.equal(reportWarnings.called, true, 'An warning should have been reported.')
-    assert.equal(reportWarnings.args[0][0].item.itemId, '000-000-000')
+    assert.strict.equal(reportWarnings.called, true, 'An warning should have been reported.')
+    assert.strict.equal(reportWarnings.args[0][0].item.itemId, '000-000-000')
   })
 
   it('should provide checkout url', function (done) {
@@ -74,7 +83,7 @@ describe('BigCommerceCartRepository - integration', () => {
     setTimeout(async () => {
       try {
         const checkoutUrl = await subjectUnderTest.getCheckoutUrl()
-        assert.equal(typeof checkoutUrl, 'string')
+        assert.strict.equal(typeof checkoutUrl, 'string')
         done()
       } catch (error) {
         done(error)
@@ -95,6 +104,14 @@ describe('BigCommerceCartRepository - integration', () => {
   })
 
   it('should calculate the grand total of the cart correctly', async () => {
+    /**
+     * Let's have an expected sample here:
+     * - we're adding 2x product 112 (Nutella integration test) that costs 30$ each
+     * - we're getting fixed discount 7.75$ applied on order over 50$ for the same item
+     * - for the sample case there is no shipping involved
+     * - there is 9% tax setup - applies to amount minus discounts (60 - 7.75) * 0.09 = 4.70$
+     * - grand total is in the end (60 - 7.75) + 4.7 = 56.95$ (taxes included regardless of taxes_included from API response being false!)
+     */
     storageMock.expects('set').once().callsFake((cartIdKey, cartIdValue) => { cartId = cartIdValue })
     await subjectUnderTest.addItems([BigCommerceCartRepository.createLineItem(112, 2)]).should.eventually.be.fulfilled
 
@@ -105,7 +122,7 @@ describe('BigCommerceCartRepository - integration', () => {
     shopgateCart.totals.should.containSubset([{
       _type: 'grandTotal',
       _label: 'Total',
-      _amount: 42.25,
+      _amount: 56.95,
       _subTotals: []
     }])
 
@@ -113,7 +130,7 @@ describe('BigCommerceCartRepository - integration', () => {
     shopgateCart.totals.should.containSubset([{
       _type: 'subTotal',
       _label: 'SubTotal',
-      _amount: 50,
+      _amount: 60,
       _subTotals: []
     }])
 

@@ -4,10 +4,16 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
-## Fixed
-- adding variant products in cart were assigning main product
-##Added
+
+## [2.0.0] - 2019-02-21
+## Added
 - showing sku and product options in the cart
+- logging for all API calls
+## Changed
+- migrated frontend to PWA6
+## Fixed
+- issue when adding variant products to the cart
+- aligned handling of get cart response to the information available
 
 ## [1.5.2] - 2019-01-04
 ## Fixed
@@ -94,7 +100,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 - functionality to add simple products to the cart
 - functionality to return BigCommerce checkout url
 
-[Unreleased]: https://github.com/shopgate/cloud-ext-bigcommerce-cart/compare/v1.5.2...HEAD
+[Unreleased]: https://github.com/shopgate/cloud-ext-bigcommerce-cart/compare/v2.0.0...HEAD
+[2.0.0]: https://github.com/shopgate/cloud-ext-bigcommerce-cart/compare/v1.5.2...v2.0.0
 [1.5.2]: https://github.com/shopgate/cloud-ext-bigcommerce-cart/compare/v1.5.1...v1.5.2
 [1.5.1]: https://github.com/shopgate/cloud-ext-bigcommerce-cart/compare/v1.5.0...v1.5.1
 [1.5.0]: https://github.com/shopgate/cloud-ext-bigcommerce-cart/compare/v1.4.3...v1.5.0
