@@ -3,10 +3,7 @@
   "pipeline": {
     "id": "shopgate.cart.updateProducts.v1",
     "input": [
-      {
-        "id": "1020",
-        "key": "cartItems"
-      }
+      {"id": "1020", "key": "cartItems"}
     ],
     "steps": [
       {
@@ -14,27 +11,49 @@
         "path": "@shopgate/bigcommerce-cart/lib/updateProductsInCart.js",
         "type": "extension",
         "input": [
-          {
-            "id": "1020",
-            "key": "cartItems"
-          }
+          {"id": "1020", "key": "cartItems"}
         ],
         "output": [
-          {
-            "id": "1030",
-            "key": "messages",
-            "optional": true
-          }
+          {"id": "1030", "key": "cartId"}
         ]
-      }
-    ],
-    "output": [
+      },
       {
-        "id": "1030",
-        "key": "messages",
-        "optional": true
+        "type": "extension",
+        "id": "@shopgate/bigcommerce-cart",
+        "path": "@shopgate/bigcommerce-cart/lib/bigapi/cartUpdatePayload.js",
+        "input": [
+          {"key": "cartId", "id": "1030"}
+        ],
+        "output": [
+          {"key": "service", "id": "10"},
+          {"key": "version", "id": "11"},
+          {"key": "path", "id": "12"},
+          {"key": "method", "id": "13"},
+          {"key": "body", "id": "14"}
+        ]
+      },
+      {
+        "type": "extension",
+        "id": "@shopgate/bigapi",
+        "path": "@shopgate/bigapi/big-api/getBigApiResult.js",
+        "input": [
+          {"key": "service", "id": "10"},
+          {"key": "version", "id": "11"},
+          {"key": "path", "id": "12"},
+          {"key": "method", "id": "13"},
+          {"key": "body", "id": "14"}
+        ],
+        "output": []
+      },
+      {
+        "type": "errorCatchExtension",
+        "id": "@shopgate/bigcommerce-cart",
+        "path": "@shopgate/bigcommerce-cart/lib/bigapi/errorCatcher.js",
+        "input": [],
+        "output": []
       }
     ],
-    "public": true
+    "public": true,
+    "output": []
   }
 }

@@ -6,16 +6,16 @@ const { decorateError } = require('./shopgate/logDecorator')
 /**
  * @param {PipelineContext} context
  * @param {UpdateProductsInput} input
- * @returns {Promise<Object>}
+ * @returns {Promise<UpdateProductsResponse>}
  */
 module.exports = async (context, input) => {
+  const shopgateCartPipeline = ShopgateCartPipeline.create(context)
   try {
-    await ShopgateCartPipeline.create(context).updateProducts(input.cartItems)
-
-    // there is no benefit of providing messages as they get shown in a popup
-    return { messages: [] }
+    await shopgateCartPipeline.updateProducts(input.cartItems)
   } catch (error) {
-    context.log.error(decorateError(error), 'Failed updating cart')
+    context.log.error(decorateError(error), 'Failed updating products in cart')
     throw new Error()
   }
+
+  return { cartId: await shopgateCartPipeline.getCartId() }
 }
