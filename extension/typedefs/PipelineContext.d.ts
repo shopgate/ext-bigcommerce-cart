@@ -4,7 +4,7 @@ interface PipelineContext {
   config: PipelineConfiguration
   log: Logger
   meta: PipelineContextMeta
-
+  device: PipelineContextDevice
   storage: PipelineStorageContainer
 }
 
@@ -47,4 +47,21 @@ interface PipelineConfiguration {
 interface PipelineContextMeta {
   userId?: string
   appId: string
+}
+
+interface PipelineContextDevice {
+  getInfo() : PipelineContextDeviceInfo
+}
+
+/**
+ * @see https://developer.shopgate.com/references/connect/extensions/steps/device-info
+ */
+interface PipelineContextDeviceInfo {
+  clientType: string
+  web : PipelineContextDeviceInfoWeb
+}
+
+interface PipelineContextDeviceInfoWeb {
+  userAgent: string
+  cookies: Object
 }

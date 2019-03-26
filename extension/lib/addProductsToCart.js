@@ -23,12 +23,13 @@ module.exports = async (context, input) => {
    * But that lead to the first add-to-cart call on an empty cart not working.
    */
 
-  let shopgateCartPipeline = ShopgateCartPipeline.create(context)
+  const shopgateCartPipeline = ShopgateCartPipeline.create(context)
   try {
-    return await shopgateCartPipeline.addProducts(input.products).catch((err) => {
+    await shopgateCartPipeline.addProducts(input.products).catch((err) => {
       if (err.code === 422) {
         const message = new ShopgateCartMessage('error', 'This product is not available anymore', 422)
         return {
+          cartId: '',
           messages: [message.toJson()]
         }
       }
@@ -38,4 +39,6 @@ module.exports = async (context, input) => {
     context.log.error(decorateError(error), 'Failed adding products to cart')
     throw new Error()
   }
+
+  return { cartId: await shopgateCartPipeline.getCartId() }
 }

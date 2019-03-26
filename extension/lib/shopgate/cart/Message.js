@@ -11,28 +11,28 @@ class ShopgateCartMessage {
   }
 
   /**
-   *@return {string} enum ShopgateCartItemMessageType
+   * @return {string} enum ShopgateCartItemMessageType
    */
   get type () {
     return this._type
   }
 
   /**
-   *@return {string}
+   * @return {string}
    */
   get message () {
     return this._message
   }
 
   /**
-   *@return {number}
+   * @return {number}
    */
   get code () {
     return this._code
   }
 
   /**
-   *@return {object}
+   * @return {Object}
    */
   toJson () {
     return {
