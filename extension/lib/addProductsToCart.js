@@ -25,19 +25,21 @@ module.exports = async (context, input) => {
 
   const shopgateCartPipeline = ShopgateCartPipeline.create(context)
   try {
-    await shopgateCartPipeline.addProducts(input.products).catch((err) => {
-      if (err.code === 422) {
-        const message = new ShopgateCartMessage('error', 'This product is not available anymore', 422)
-        return {
-          cartId: '',
-          messages: [message.toJson()]
-        }
-      }
-      return {}
-    })
-  } catch (error) {
-    context.log.error(decorateError(error), 'Failed adding products to cart')
-    throw new Error()
+    await shopgateCartPipeline.addProducts(input.products)
+  } catch (err) {
+    context.log.error(decorateError(err), 'Failed adding products to cart')
+    if (err.code === 422) {
+      let ecartError = new Error('Failed to add product to the cart')
+      ecartError.code = 'ECART'
+      ecartError.errors = [{
+        code: 'NOTAVAILABLE',
+        message: 'This product is not available anymore',
+        translated: true
+      }]
+
+      throw ecartError
+    }
+    throw err
   }
 
   return { cartId: await shopgateCartPipeline.getCartId() }
