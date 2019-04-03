@@ -27,17 +27,6 @@ module.exports = async (context, input) => {
     await shopgateCartPipeline.addProducts(input.products)
   } catch (err) {
     context.log.error(decorateError(err), 'Failed adding products to cart')
-    if (err.code === 422) {
-      let ecartError = new Error('Failed to add product to the cart')
-      ecartError.code = 'ECART'
-      ecartError.errors = [{
-        code: 'NOTAVAILABLE',
-        message: 'This product is not available anymore',
-        translated: true
-      }]
-
-      throw ecartError
-    }
     throw err
   }
 

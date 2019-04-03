@@ -49,7 +49,24 @@ class ShopgateCartExtensionPipeline {
       await this._bigCommerceCartRepository.addItems(itemsToAdd)
     }
     if (itemsToUpdate.length) {
-      await this._bigCommerceCartRepository.updateItems(itemsToUpdate, () => {})
+      try {
+        await this._bigCommerceCartRepository.updateItems(itemsToUpdate, () => { })
+      } catch (err) {
+        if (err.code === 422) {
+          const errorMessageMatch = err.message.match(/({.+})/)
+          let ecartError = new Error('Failed adding products to cart')
+          ecartError.code = 'ECART'
+          ecartError.errors = [{
+            code: 'NOTAVAILABLE',
+            message: errorMessageMatch[1]
+              ? JSON.parse(errorMessageMatch[1]).title
+              : 'This product is not available anymore',
+            translated: true
+          }]
+          throw ecartError
+        }
+        throw err
+      }
     }
   }
 
@@ -133,7 +150,6 @@ class ShopgateCartExtensionPipeline {
    */
   async updateProducts (cartItems) {
     const cartId = await this.getCartId()
-
     let updateSuccess = true
     try {
       await this._bigCommerceCartRepository.updateItems(
