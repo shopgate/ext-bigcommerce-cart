@@ -2,7 +2,6 @@
 
 const ShopgateCartPipeline = require('./shopgate/CartExtensionPipeline')
 const { decorateError } = require('./shopgate/logDecorator')
-const ShopgateCartMessage = require('./shopgate/cart/Message')
 
 /**
  * @param {PipelineContext} context
