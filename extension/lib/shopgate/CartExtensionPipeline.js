@@ -61,7 +61,7 @@ class ShopgateCartExtensionPipeline {
             message: errorMessageMatch[1]
               ? JSON.parse(errorMessageMatch[1]).title
               : 'This product is not available anymore',
-            translated: true
+            translated: false
           }]
           throw ecartError
         }
