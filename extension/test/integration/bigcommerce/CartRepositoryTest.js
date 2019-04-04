@@ -15,8 +15,8 @@ describe('BigCommerceCartRepository - integration', () => {
   let storageMock
   /** @type BigCommerceCartRepository */
   let subjectUnderTest
-  const storage = { get: () => {}, set: () => {}, delete: () => {} }
-  const logger = { debug: () => {} }
+  const storage = { get: () => { }, set: () => { }, delete: () => { } }
+  const logger = { debug: () => { } }
   const shopgateCartFactory = new ShopgateCartFactory()
 
   let cartId
@@ -140,5 +140,14 @@ describe('BigCommerceCartRepository - integration', () => {
       _amount: 7.75,
       _subTotals: []
     }])
+  })
+
+  it('should catch the correct error message if item not in stock', async () => {
+    storageMock.expects('set').once().callsFake((cartIdKey, cartIdValue) => { cartId = cartIdValue })
+    try {
+      await subjectUnderTest.addItems([BigCommerceCartRepository.createLineItem(112, 10)])
+    } catch (err) {
+      assert.strictEqual(err.message, 'Request returned error code: 422 and body: {"status":422,"title":"A product with the id of 112 does not have sufficient stock","type":"https://developer.bigcommerce.com/api#api-status-codes"}')
+    }
   })
 })
