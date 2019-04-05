@@ -49,24 +49,39 @@ class ShopgateCartExtensionPipeline {
       await this._bigCommerceCartRepository.addItems(itemsToAdd)
     }
     if (itemsToUpdate.length) {
-      try {
-        await this._bigCommerceCartRepository.updateItems(itemsToUpdate, () => { })
-      } catch (err) {
-        if (err.code === 422) {
-          const errorMessageMatch = err.message.match(/({.+})/)
-          let ecartError = new Error('Failed adding products to cart')
-          ecartError.code = 'ECART'
-          ecartError.errors = [{
-            code: 'NOTAVAILABLE',
-            message: errorMessageMatch[1]
-              ? JSON.parse(errorMessageMatch[1]).title
-              : 'This product is not available anymore',
-            translated: false
-          }]
-          throw ecartError
+      await this.updateItems(itemsToUpdate)
+    }
+  }
+
+  /**
+  * @param {[BigCommerceCartLineItemUpdateRequest]} itemsToUpdate
+  * @return {Promise<void>}
+  */
+  async updateItems (itemsToUpdate) {
+    try {
+      await this._bigCommerceCartRepository.updateItems(itemsToUpdate, () => { })
+    } catch (err) {
+      if (err.code === 422) {
+        const errorMessageMatch = err.message.match(/({.+})/)
+        let errorMessage = null
+        if (errorMessageMatch) {
+          try {
+            errorMessage = JSON.parse(errorMessageMatch[1]).title
+          } catch (err) {
+            errorMessage = 'Items in your cart couldn\'t be updated. Please try again later.'
+            this._context.log.error(decorateError(err), 'Unable to process the error from BigC api')
+          }
         }
-        throw err
+        let ecartError = new Error('Failed adding products to cart')
+        ecartError.code = 'ECART'
+        ecartError.errors = [{
+          code: 'NOTAVAILABLE',
+          message: errorMessage,
+          translated: false
+        }]
+        throw ecartError
       }
+      throw err
     }
   }
 
@@ -152,40 +167,27 @@ class ShopgateCartExtensionPipeline {
     const cartId = await this.getCartId()
     let updateSuccess = true
     try {
-      await this._bigCommerceCartRepository.updateItems(
-        cartItems.map((item) => {
-          return BigCommerceCartRepository.createLineItemUpdate(item.cartItemId, item.quantity)
-        }),
-        async (failureEvent) => {
-          this._context.log.error(decorateDebug({
-            reason: failureEvent.reason,
-            cartItemId: failureEvent.item.itemId,
-            quantity: failureEvent.item.quantity
-          }), 'Failed updating product')
+      await this.updateItems(cartItems.map((item) => {
+        return BigCommerceCartRepository.createLineItemUpdate(item.cartItemId, item.quantity)
+      }),
+      async (failureEvent) => {
+        this._context.log.error(decorateDebug({
+          reason: failureEvent.reason,
+          cartItemId: failureEvent.item.itemId,
+          quantity: failureEvent.item.quantity
+        }), 'Failed updating product')
 
-          await this._messagesRepository.push(cartId, failureEvent.reason, failureEvent.item.itemId)
+        await this._messagesRepository.push(cartId, failureEvent.reason, failureEvent.item.itemId)
 
-          updateSuccess = false
-        }
-      )
+        updateSuccess = false
+      })
     } catch (err) {
-      if (err.code !== 422) {
+      if (err.code === 'ECART') {
+        await this._messagesRepository.push(cartId, err.errors[0].message)
+      } else {
         await this._messagesRepository.push(cartId, 'We were unable to update the cart. Please try again later.')
         throw err
       }
-
-      // in bigc cart api details of the error are hidden inside of error message
-      const errorMessageMatch = err.message.match(/({.+})/)
-      let errorMessage = 'Items in your cart couldn\'t be updated. Please try again later.'
-      if (errorMessageMatch) {
-        try {
-          errorMessage = JSON.parse(errorMessageMatch[1]).title
-        } catch (err) {
-          this._context.log.error(decorateError(err), 'Unable to process the error from BigC api')
-        }
-      }
-
-      await this._messagesRepository.push(cartId, errorMessage)
     }
 
     return updateSuccess
