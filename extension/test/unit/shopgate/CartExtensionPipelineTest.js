@@ -300,4 +300,22 @@ describe('CartExtensionPipeline - unit', () => {
     assert(errorLogSpy.called)
     subjectUnderTest._context.log.error.restore()
   })
+
+  it('should throw a correct error', async () => {
+    const error = Error()
+    error.code = 'ECART'
+    // todo-sg: add bigcommerce message
+    bigCommerceCartRepositoryMock.expects('updateItems').once().throws(error)
+    try {
+      // noinspection JSCheckFunctionSignatures
+      await subjectUnderTest.updateItems([])
+    } catch (e) {
+      assert.strictEqual(e.code, 'ECART')
+      // const lastError = e.errors.pop()
+      // assert.strictEqual(lastError.code, 'NOTAVAILABLE')
+      // assert.strictEqual(lastError.message, 'Items in your cart couldn\'t be updated. Please try again later.')
+      return
+    }
+    throw new Error('Supposed to catch the error, should not have hit this part')
+  })
 })
