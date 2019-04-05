@@ -49,17 +49,18 @@ class ShopgateCartExtensionPipeline {
       await this._bigCommerceCartRepository.addItems(itemsToAdd)
     }
     if (itemsToUpdate.length) {
-      await this.updateItems(itemsToUpdate)
+      await this.updateItems(itemsToUpdate, () => {})
     }
   }
 
   /**
   * @param {[BigCommerceCartLineItemUpdateRequest]} itemsToUpdate
+  * @param {bigCommerceUpdateFailureNotifier} updateFailureNotifier
   * @return {Promise<void>}
   */
-  async updateItems (itemsToUpdate) {
+  async updateItems (itemsToUpdate, updateFailureNotifier) {
     try {
-      await this._bigCommerceCartRepository.updateItems(itemsToUpdate, () => { })
+      await this._bigCommerceCartRepository.updateItems(itemsToUpdate, updateFailureNotifier)
     } catch (err) {
       if (err.code === 422) {
         const errorMessageMatch = err.message.match(/({.+})/)
