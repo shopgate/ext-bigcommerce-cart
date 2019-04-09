@@ -21,6 +21,6 @@ module.exports = async (context, input) => {
     version: 'v1',
     method: 'PUT',
     path: `shops/${context.meta.appId.replace('shop_', '')}/carts/${input.cartId}`,
-    body: {userAgent: data}
+    body: { userAgent: data }
   }
 }
