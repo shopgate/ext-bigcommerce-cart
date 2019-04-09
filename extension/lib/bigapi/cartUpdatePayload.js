@@ -8,13 +8,19 @@
  * @returns {Promise<CartUpdatePayloadResponse>}
  */
 module.exports = async (context, input) => {
-  const { web: userAgent } = await context.device.getInfo()
+  const { web: userAgent, app, deviceType } = await context.device.getInfo()
+
+  const data = JSON.stringify({
+    userAgent,
+    app,
+    deviceType
+  })
 
   return {
     service: 'bigcommerce-cart',
     version: 'v1',
     method: 'PUT',
     path: `shops/${context.meta.appId.replace('shop_', '')}/carts/${input.cartId}`,
-    body: { userAgent }
+    body: {userAgent: data}
   }
 }
