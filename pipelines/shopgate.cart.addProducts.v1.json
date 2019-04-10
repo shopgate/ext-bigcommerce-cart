@@ -7,7 +7,7 @@
       {"key": "products", "id": "1020"}
     ],
     "output": [
-      {"key": "messages", "id": "1030", "optional": true}
+      {"key": "messages", "id": "1040", "optional": true}
     ],
     "steps": [
       {
@@ -18,8 +18,17 @@
           {"key": "products", "id": "1020"}
         ],
         "output": [
-          {"key": "messages", "id": "1030", "optional": true}
+          {"key": "cartId", "id": "1030"},
+          {"key": "messages", "id": "1040", "optional": true}
         ]
+      },
+      {
+        "type": "pipeline",
+        "id": "bigapi.bigcommerce.sendCart.v1",
+        "input": [
+          {"key": "cartId", "id": "1030"}
+        ],
+        "output": []
       }
     ]
   }
