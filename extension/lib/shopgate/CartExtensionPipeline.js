@@ -49,16 +49,18 @@ class ShopgateCartExtensionPipeline {
       await this._bigCommerceCartRepository.addItems(itemsToAdd)
     }
     if (itemsToUpdate.length) {
-      await this.updateItems(itemsToUpdate, () => {})
+      await this.updateItems(itemsToUpdate, () => {}, true)
     }
   }
 
   /**
   * @param {[BigCommerceCartLineItemUpdateRequest]} itemsToUpdate
   * @param {bigCommerceUpdateFailureNotifier} updateFailureNotifier
+  * @param {boolean} handleError
   * @return {Promise<void>}
   */
-  async updateItems (itemsToUpdate, updateFailureNotifier) {
+  async updateItems (itemsToUpdate, updateFailureNotifier, handleError) {
+    const cartId = await this.getCartId()
     try {
       await this._bigCommerceCartRepository.updateItems(itemsToUpdate, updateFailureNotifier)
     } catch (err) {
@@ -80,9 +82,12 @@ class ShopgateCartExtensionPipeline {
           message: errorMessage,
           translated: false
         }]
-        throw ecartError
+
+        await this._messagesRepository.push(cartId, errorMessage)
+        if (handleError) throw ecartError
       }
-      throw err
+      await this._messagesRepository.push(cartId, 'We were unable to update the cart. Please try again later.')
+      if (handleError) throw err
     }
   }
 
@@ -167,29 +172,21 @@ class ShopgateCartExtensionPipeline {
   async updateProducts (cartItems) {
     const cartId = await this.getCartId()
     let updateSuccess = true
-    try {
-      await this.updateItems(cartItems.map((item) => {
-        return BigCommerceCartRepository.createLineItemUpdate(item.cartItemId, item.quantity)
-      }),
-      async (failureEvent) => {
-        this._context.log.error(decorateDebug({
-          reason: failureEvent.reason,
-          cartItemId: failureEvent.item.itemId,
-          quantity: failureEvent.item.quantity
-        }), 'Failed updating product')
 
-        await this._messagesRepository.push(cartId, failureEvent.reason, failureEvent.item.itemId)
+    await this.updateItems(cartItems.map((item) => {
+      return BigCommerceCartRepository.createLineItemUpdate(item.cartItemId, item.quantity)
+    }),
+    async (failureEvent) => {
+      this._context.log.error(decorateDebug({
+        reason: failureEvent.reason,
+        cartItemId: failureEvent.item.itemId,
+        quantity: failureEvent.item.quantity
+      }), 'Failed updating product')
 
-        updateSuccess = false
-      })
-    } catch (err) {
-      if (err.code === 'ECART') {
-        await this._messagesRepository.push(cartId, err.errors[0].message)
-      } else {
-        await this._messagesRepository.push(cartId, 'We were unable to update the cart. Please try again later.')
-        throw err
-      }
-    }
+      await this._messagesRepository.push(cartId, failureEvent.reason, failureEvent.item.itemId)
+
+      updateSuccess = false
+    }, false)
 
     return updateSuccess
   }
