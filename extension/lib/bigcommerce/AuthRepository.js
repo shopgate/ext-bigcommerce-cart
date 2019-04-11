@@ -1,5 +1,6 @@
 const jwt = require('jwt-simple')
 const crypto = require('crypto')
+const BigCommerceFactory = require('../bigcommerce/Factory')
 
 /**
  * @property {string} _clientId
@@ -21,14 +22,13 @@ class BigCommerceAuthRepository {
   /**
    * @param {string} customerId
    * @param {string} redirectLink
+   * @param {context} context
    */
-  preAuthToken (customerId, redirectLink) {
+  async preAuthToken (customerId, redirectLink, context) {
+    const { time } = await getBIGCServerTime(context)
     const payload = {
       iss: this._clientId,
-      // Danger! BigCommerce checks iat also if it's in the future. If servers are not entirely in sync, token would be invalid.
-      // Time spent finding this out: 6h
-      // Related link: https://github.com/jpadilla/pyjwt/issues/190
-      iat: Math.round((new Date()).getTime() / 1000) - 20,
+      iat: time,
       jti: crypto.randomBytes(32).toString('hex'),
       operation: 'customer_login',
       store_hash: this._storeHash,
@@ -42,6 +42,19 @@ class BigCommerceAuthRepository {
   static create (clientId, storeHash, clientSecret) {
     return new BigCommerceAuthRepository(clientId, storeHash, clientSecret)
   }
+}
+
+/**
+ * @param {context} context
+ * @returns {number}
+ */
+async function getBIGCServerTime (context) {
+  const apiClientV2 = BigCommerceFactory.createV2(
+    context.config.clientId,
+    context.config.accessToken,
+    context.config.storeHash
+  )
+  return apiClientV2.get('/time')
 }
 
 module.exports = BigCommerceAuthRepository
