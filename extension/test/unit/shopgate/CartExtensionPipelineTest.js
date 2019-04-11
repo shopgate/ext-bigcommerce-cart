@@ -308,7 +308,7 @@ describe('CartExtensionPipeline - unit', () => {
       bigCommerceCartRepositoryMock.expects('updateItems').once().throws(error)
       try {
         // noinspection JSCheckFunctionSignatures
-        await subjectUnderTest.updateItems([])
+        await subjectUnderTest.updateItems([], () => {}, true)
       } catch (e) {
         assert.strictEqual(e.code, 'ECART')
         const lastError = e.errors.pop()
@@ -325,7 +325,7 @@ describe('CartExtensionPipeline - unit', () => {
       bigCommerceCartRepositoryMock.expects('updateItems').once().throws(error)
       try {
         // noinspection JSCheckFunctionSignatures
-        await subjectUnderTest.updateItems([])
+        await subjectUnderTest.updateItems([], () => {}, true)
       } catch (e) {
         assert.strictEqual(e.code, 'ECART')
         const lastError = e.errors.pop()
