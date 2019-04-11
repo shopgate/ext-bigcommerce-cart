@@ -66,12 +66,11 @@ class ShopgateCartExtensionPipeline {
     } catch (err) {
       if (err.code === 422) {
         const errorMessageMatch = err.message.match(/({.+})/)
-        let errorMessage = null
+        let errorMessage = 'Items in your cart couldn\'t be updated. Please try again later.'
         if (errorMessageMatch) {
           try {
             errorMessage = JSON.parse(errorMessageMatch[1]).title
           } catch (err) {
-            errorMessage = 'Items in your cart couldn\'t be updated. Please try again later.'
             this._context.log.error(decorateError(err), 'Unable to process the error from BigC api')
           }
         }
@@ -85,8 +84,9 @@ class ShopgateCartExtensionPipeline {
 
         await this._messagesRepository.push(cartId, errorMessage)
         if (handleError) throw ecartError
+      } else {
+        await this._messagesRepository.push(cartId, 'We were unable to update the cart. Please try again later.')
       }
-      await this._messagesRepository.push(cartId, 'We were unable to update the cart. Please try again later.')
       if (handleError) throw err
     }
   }
