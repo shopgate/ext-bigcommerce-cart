@@ -12,13 +12,14 @@ describe('BigCommerceAuthRepository - unit', () => {
   it('should return jwt token containing the correct information', () => {
     const customerId = '1'
     const redirectLink = 'https://my-shop.com/cart.php?id=123'
-    const token = testAuthRepository.preAuthToken(customerId, redirectLink)
-    const decodedToken = jwt.decode(token, clientSecret)
+    testAuthRepository.preAuthToken(customerId, redirectLink, {}).then(token => {
+      const decodedToken = jwt.decode(token, clientSecret)
 
-    assert.strict.equal(decodedToken.iss, clientId)
-    assert.strict.equal(decodedToken.operation, 'customer_login')
-    assert.strict.equal(decodedToken.store_hash, storeHash)
-    assert.strict.equal(decodedToken.customer_id, customerId)
-    assert.strict.equal(decodedToken.redirect_to, redirectLink)
+      assert.strict.equal(decodedToken.iss, clientId)
+      assert.strict.equal(decodedToken.operation, 'customer_login')
+      assert.strict.equal(decodedToken.store_hash, storeHash)
+      assert.strict.equal(decodedToken.customer_id, customerId)
+      assert.strict.equal(decodedToken.redirect_to, redirectLink)
+    })
   })
 })
