@@ -49,7 +49,45 @@ class ShopgateCartExtensionPipeline {
       await this._bigCommerceCartRepository.addItems(itemsToAdd)
     }
     if (itemsToUpdate.length) {
-      await this._bigCommerceCartRepository.updateItems(itemsToUpdate, () => {})
+      await this.updateItems(itemsToUpdate, () => {}, true)
+    }
+  }
+
+  /**
+  * @param {[BigCommerceCartLineItemUpdateRequest]} itemsToUpdate
+  * @param {bigCommerceUpdateFailureNotifier} updateFailureNotifier
+  * @param {boolean} handleError
+  * @return {Promise<void>}
+  */
+  async updateItems (itemsToUpdate, updateFailureNotifier, handleError) {
+    const cartId = await this.getCartId()
+    try {
+      await this._bigCommerceCartRepository.updateItems(itemsToUpdate, updateFailureNotifier)
+    } catch (err) {
+      if (err.code === 422) {
+        const errorMessageMatch = err.message.match(/({.+})/)
+        let errorMessage = 'Items in your cart couldn\'t be updated. Please try again later.'
+        if (errorMessageMatch) {
+          try {
+            errorMessage = JSON.parse(errorMessageMatch[1]).title
+          } catch (err) {
+            this._context.log.error(decorateError(err), 'Unable to process the error from BigC api')
+          }
+        }
+        let ecartError = new Error('Failed adding products to cart')
+        ecartError.code = 'ECART'
+        ecartError.errors = [{
+          code: 'NOTAVAILABLE',
+          message: errorMessage,
+          translated: false
+        }]
+
+        await this._messagesRepository.push(cartId, errorMessage)
+        if (handleError) throw ecartError
+      } else {
+        await this._messagesRepository.push(cartId, 'We were unable to update the cart. Please try again later.')
+      }
+      if (handleError) throw err
     }
   }
 
@@ -133,44 +171,22 @@ class ShopgateCartExtensionPipeline {
    */
   async updateProducts (cartItems) {
     const cartId = await this.getCartId()
-
     let updateSuccess = true
-    try {
-      await this._bigCommerceCartRepository.updateItems(
-        cartItems.map((item) => {
-          return BigCommerceCartRepository.createLineItemUpdate(item.cartItemId, item.quantity)
-        }),
-        async (failureEvent) => {
-          this._context.log.error(decorateDebug({
-            reason: failureEvent.reason,
-            cartItemId: failureEvent.item.itemId,
-            quantity: failureEvent.item.quantity
-          }), 'Failed updating product')
 
-          await this._messagesRepository.push(cartId, failureEvent.reason, failureEvent.item.itemId)
+    await this.updateItems(cartItems.map((item) => {
+      return BigCommerceCartRepository.createLineItemUpdate(item.cartItemId, item.quantity)
+    }),
+    async (failureEvent) => {
+      this._context.log.error(decorateDebug({
+        reason: failureEvent.reason,
+        cartItemId: failureEvent.item.itemId,
+        quantity: failureEvent.item.quantity
+      }), 'Failed updating product')
 
-          updateSuccess = false
-        }
-      )
-    } catch (err) {
-      if (err.code !== 422) {
-        await this._messagesRepository.push(cartId, 'We were unable to update the cart. Please try again later.')
-        throw err
-      }
+      await this._messagesRepository.push(cartId, failureEvent.reason, failureEvent.item.itemId)
 
-      // in bigc cart api details of the error are hidden inside of error message
-      const errorMessageMatch = err.message.match(/({.+})/)
-      let errorMessage = 'Items in your cart couldn\'t be updated. Please try again later.'
-      if (errorMessageMatch) {
-        try {
-          errorMessage = JSON.parse(errorMessageMatch[1]).title
-        } catch (err) {
-          this._context.log.error(decorateError(err), 'Unable to process the error from BigC api')
-        }
-      }
-
-      await this._messagesRepository.push(cartId, errorMessage)
-    }
+      updateSuccess = false
+    }, false)
 
     return updateSuccess
   }

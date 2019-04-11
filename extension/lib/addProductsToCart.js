@@ -1,8 +1,6 @@
 'use strict'
 
 const ShopgateCartPipeline = require('./shopgate/CartExtensionPipeline')
-const { decorateError } = require('./shopgate/logDecorator')
-const ShopgateCartMessage = require('./shopgate/cart/Message')
 
 /**
  * @param {PipelineContext} context
@@ -24,21 +22,7 @@ module.exports = async (context, input) => {
    */
 
   const shopgateCartPipeline = ShopgateCartPipeline.create(context)
-  try {
-    await shopgateCartPipeline.addProducts(input.products).catch((err) => {
-      if (err.code === 422) {
-        const message = new ShopgateCartMessage('error', 'This product is not available anymore', 422)
-        return {
-          cartId: '',
-          messages: [message.toJson()]
-        }
-      }
-      return {}
-    })
-  } catch (error) {
-    context.log.error(decorateError(error), 'Failed adding products to cart')
-    throw new Error()
-  }
+  await shopgateCartPipeline.addProducts(input.products)
 
   return { cartId: await shopgateCartPipeline.getCartId() }
 }
