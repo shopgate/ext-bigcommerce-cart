@@ -3,7 +3,10 @@
 All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
+
 ## [Unreleased]
+
+## [2.1.0] - 2019-04-12
 ### Added
 - saves the cart id and userAgent to BigAPI service on all cart modification calls
 ### Fixed
@@ -106,7 +109,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 - functionality to add simple products to the cart
 - functionality to return BigCommerce checkout url
 
-[Unreleased]: https://github.com/shopgate/cloud-ext-bigcommerce-cart/compare/v2.0.0...HEAD
+[Unreleased]: https://github.com/shopgate/cloud-ext-bigcommerce-cart/compare/v2.1.0...HEAD
+[2.1.0]: https://github.com/shopgate/cloud-ext-bigcommerce-cart/compare/v2.0.0...v2.1.0
 [2.0.0]: https://github.com/shopgate/cloud-ext-bigcommerce-cart/compare/v1.5.2...v2.0.0
 [1.5.2]: https://github.com/shopgate/cloud-ext-bigcommerce-cart/compare/v1.5.1...v1.5.2
 [1.5.1]: https://github.com/shopgate/cloud-ext-bigcommerce-cart/compare/v1.5.0...v1.5.1
