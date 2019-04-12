@@ -25,7 +25,7 @@ class BigCommerceAuthRepository {
    * @param {context} context
    */
   async preAuthToken (customerId, redirectLink, context) {
-    const { time } = await getBIGCServerTime(context)
+    const { time } = await this.getBIGCServerTime(context)
     const payload = {
       iss: this._clientId,
       iat: time,
@@ -39,22 +39,22 @@ class BigCommerceAuthRepository {
     return jwt.encode(payload, this._clientSecret, 'HS256', {})
   }
 
+  /**
+  * @param {context} context
+  * @returns {number}
+  */
+  async getBIGCServerTime (context) {
+    const apiClientV2 = BigCommerceFactory.createV2(
+      context.config.clientId,
+      context.config.accessToken,
+      context.config.storeHash
+    )
+    return apiClientV2.get('/time')
+  }
+
   static create (clientId, storeHash, clientSecret) {
     return new BigCommerceAuthRepository(clientId, storeHash, clientSecret)
   }
-}
-
-/**
- * @param {context} context
- * @returns {number}
- */
-async function getBIGCServerTime (context) {
-  const apiClientV2 = BigCommerceFactory.createV2(
-    context.config.clientId,
-    context.config.accessToken,
-    context.config.storeHash
-  )
-  return apiClientV2.get('/time')
 }
 
 module.exports = BigCommerceAuthRepository
