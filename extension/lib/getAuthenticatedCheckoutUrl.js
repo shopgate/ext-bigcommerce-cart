@@ -19,7 +19,7 @@ module.exports = async (context, input) => {
       context.config.storeHash,
       context.config.clientSecret)
     const cartUrl = new URL(input.url)
-    const token = authRepository.preAuthToken(context.meta.userId, input.url)
+    const token = await authRepository.preAuthToken(context.meta.userId, input.url, context)
     const loginUrl = `${cartUrl.protocol}//${cartUrl.host}/login/token/${token}`
     return { url: loginUrl }
   } catch (error) {

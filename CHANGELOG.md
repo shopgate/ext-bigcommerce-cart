@@ -8,6 +8,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 - saves the cart id and userAgent to BigAPI service on all cart modification calls
 ### Fixed
 - show the right error message if product is not available
+- timestamp issue on generate token for checkout
 
 ## [2.0.0] - 2019-02-21
 ### Added
