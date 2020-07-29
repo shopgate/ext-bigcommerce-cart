@@ -6,13 +6,16 @@ const { decorateError } = require('./shopgate/logDecorator')
 /**
  * @param {PipelineContext} context
  * @param {DeleteProductsInput} input
- * @returns {Promise<void>}
+ * @returns {Promise<{cartId: string}>}
  */
 module.exports = async (context, input) => {
+  const shopgateCartPipeline = ShopgateCartPipeline.create(context)
   try {
-    await ShopgateCartPipeline.create(context).deleteProductFromCart(input.cartItemIds)
+    await shopgateCartPipeline.deleteProductFromCart(input.cartItemIds)
   } catch (error) {
-    context.log.error(decorateError(error), 'Failed deleting from cart')
+    context.log.error(decorateError(error), 'Failed deleting products from cart')
     throw new Error()
   }
+
+  return { cartId: await shopgateCartPipeline.getCartId() }
 }

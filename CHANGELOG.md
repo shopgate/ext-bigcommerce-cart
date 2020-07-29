@@ -4,23 +4,27 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
+### Added
+- saves the cart id and userAgent to BigAPI service on all cart modification calls
+### Fixed
+- show the right error message if product is not available
 
 ## [2.0.1] - 2020-07-24
 ## Fixed
 - customerId of NaN for not logged in user
 
 ## [2.0.0] - 2019-02-21
-## Added
+### Added
 - showing sku and product options in the cart
 - logging for all API calls
-## Changed
+### Changed
 - migrated frontend to PWA6
-## Fixed
+### Fixed
 - issue when adding variant products to the cart
 - aligned handling of get cart response to the information available
 
 ## [1.5.2] - 2019-01-04
-## Fixed
+### Fixed
 - providing feedback when add to cart fails and ensuring unknown errors are sent out.
 
 ## [1.5.1] - 2018-10-29
@@ -30,6 +34,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 - breaking the login process when cart merge fails.
 
 ## [1.5.0] - 2018-08-10
+### Added
 - dispatch goBack action after checkout url is fetched.
 
 ## [1.4.3] - 2018-07-26

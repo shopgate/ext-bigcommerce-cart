@@ -2,6 +2,7 @@
 
 const ShopgateCartPipeline = require('./shopgate/CartExtensionPipeline')
 const { decorateError } = require('./shopgate/logDecorator')
+const ShopgateCartMessage = require('./shopgate/cart/Message')
 
 /**
  * @param {PipelineContext} context
@@ -22,12 +23,22 @@ module.exports = async (context, input) => {
    * But that lead to the first add-to-cart call on an empty cart not working.
    */
 
-  let shopgateCartPipeline = ShopgateCartPipeline.create(context)
+  const shopgateCartPipeline = ShopgateCartPipeline.create(context)
   try {
-    await shopgateCartPipeline.addProducts(input.products)
+    await shopgateCartPipeline.addProducts(input.products).catch((err) => {
+      if (err.code === 422) {
+        const message = new ShopgateCartMessage('error', 'This product is not available anymore', 422)
+        return {
+          cartId: '',
+          messages: [message.toJson()]
+        }
+      }
+      return {}
+    })
   } catch (error) {
     context.log.error(decorateError(error), 'Failed adding products to cart')
     throw new Error()
   }
-  return {}
+
+  return { cartId: await shopgateCartPipeline.getCartId() }
 }
