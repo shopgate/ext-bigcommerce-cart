@@ -9,6 +9,10 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 ### Fixed
 - show the right error message if product is not available
 
+## [2.0.1] - 2020-07-24
+## Fixed
+- customerId of NaN for not logged in user
+
 ## [2.0.0] - 2019-02-21
 ### Added
 - showing sku and product options in the cart
@@ -76,7 +80,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 ## [0.2.0] - 2018-05-08
 ### Added
 - new pipeline "bigcommerce.checkout.getUrl" which can get the url for the BigCommerce checkout
-- authorisation with user credentials for pipeline shopgate.checkout.getUrl 
+- authorisation with user credentials for pipeline shopgate.checkout.getUrl
 - Travis integration
 
 ## [0.1.5] - 2018-04-16
