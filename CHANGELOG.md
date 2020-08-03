@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## [Unreleased]
 
+## [2.1.1] - 2020-07-24
+### Fixed
+- make sure customerId is 0 for not logged in users instead of NaN
+
 ## [2.1.0] - 2019-04-12
 ### Added
 - saves the cart id and userAgent to BigAPI service on all cart modification calls
@@ -80,7 +84,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 ## [0.2.0] - 2018-05-08
 ### Added
 - new pipeline "bigcommerce.checkout.getUrl" which can get the url for the BigCommerce checkout
-- authorisation with user credentials for pipeline shopgate.checkout.getUrl 
+- authorisation with user credentials for pipeline shopgate.checkout.getUrl
 - Travis integration
 
 ## [0.1.5] - 2018-04-16

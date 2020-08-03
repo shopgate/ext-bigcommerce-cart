@@ -269,7 +269,7 @@ const create = (context, storage) => {
     ),
     /** @type BigCommerceStorage */
     new ShopgateExtensionStorage(storage),
-    parseInt(context.meta.userId)
+    parseInt(context.meta.userId || 0)
   )
 
   return new ShopgateCartExtensionPipeline(
