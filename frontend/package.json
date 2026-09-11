@@ -1,6 +1,6 @@
 {
   "name": "@shopgate/bigcommerce-cart",
-  "version": "2.0.0",
+  "version": "2.1.2",
   "description": "Shopgate Cloud BigCommerce Cart",
   "scripts": {
     "lint": "eslint --ignore-path ../.gitignore --ext .js --ext .jsx .",
@@ -49,12 +49,5 @@
     "react-redux": "^5.0.5",
     "redux-mock-store": "^1.5.3",
     "reselect": "^3.0.1"
-  },
-  "peerDependencies": {
-    "@shopgate/pwa-common": "^6.1.0",
-    "@shopgate/pwa-common-commerce": "^6.1.0",
-    "@shopgate/pwa-core": "^6.1.0",
-    "@shopgate/pwa-ui-shared": "^6.1.0",
-    "@shopgate/tracking-core": "^6.1.0"
   }
 }
