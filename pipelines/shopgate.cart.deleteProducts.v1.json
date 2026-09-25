@@ -3,10 +3,7 @@
   "pipeline": {
     "id": "shopgate.cart.deleteProducts.v1",
     "input": [
-       {
-        "id": "1020",
-        "key": "cartItemIds"
-      }
+       {"id": "1020", "key": "cartItemIds"}
     ],
     "steps": [
       {
@@ -14,28 +11,22 @@
         "path": "@shopgate/bigcommerce-cart/lib/deleteProductsFromCart.js",
         "type": "extension",
         "input": [
-          {
-            "id": "1020",
-            "key": "cartItemIds",
-            "optional": true
-          }
+          {"id": "1020", "key": "cartItemIds", "optional": true}
         ],
         "output": [
-          {
-            "id": "1030",
-            "key": "messages",
-            "optional": true
-          }
+          {"id": "1030", "key": "cartId"}
         ]
-      }
-    ],
-    "output": [
+      },
       {
-        "id": "1030",
-        "key": "messages",
-        "optional": true
+        "type": "pipeline",
+        "id": "bigapi.bigcommerce.sendCart.v1",
+        "input": [
+          {"key": "cartId", "id": "1030"}
+        ],
+        "output": []
       }
     ],
+    "output": [],
     "public": true
   }
 }

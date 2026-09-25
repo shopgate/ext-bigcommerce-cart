@@ -52,14 +52,14 @@ class ShopgateCartItem {
   }
 
   /**
-    @return {ShopgateCartMessage[]}
+    @return {Object[]}
    */
   get messages () {
     return this._messages
   }
 
   /**
-   * @param {ShopgateCartMessage} message
+   * @param {Object} message
    */
   addMessage (message) {
     this.messages.push(message)

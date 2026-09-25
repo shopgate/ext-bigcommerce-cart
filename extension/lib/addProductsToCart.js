@@ -1,7 +1,6 @@
 'use strict'
 
 const ShopgateCartPipeline = require('./shopgate/CartExtensionPipeline')
-const { decorateError } = require('./shopgate/logDecorator')
 
 /**
  * @param {PipelineContext} context
@@ -22,12 +21,8 @@ module.exports = async (context, input) => {
    * But that lead to the first add-to-cart call on an empty cart not working.
    */
 
-  let shopgateCartPipeline = ShopgateCartPipeline.create(context)
-  try {
-    await shopgateCartPipeline.addProducts(input.products)
-  } catch (error) {
-    context.log.error(decorateError(error), 'Failed adding products to cart')
-    throw new Error()
-  }
-  return {}
+  const shopgateCartPipeline = ShopgateCartPipeline.create(context)
+  await shopgateCartPipeline.addProducts(input.products)
+
+  return { cartId: await shopgateCartPipeline.getCartId() }
 }

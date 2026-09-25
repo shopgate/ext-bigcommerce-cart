@@ -3,10 +3,7 @@
   "pipeline": {
     "id": "shopgate.cart.updateProducts.v1",
     "input": [
-      {
-        "id": "1020",
-        "key": "cartItems"
-      }
+      {"id": "1020", "key": "cartItems"}
     ],
     "steps": [
       {
@@ -14,27 +11,22 @@
         "path": "@shopgate/bigcommerce-cart/lib/updateProductsInCart.js",
         "type": "extension",
         "input": [
-          {
-            "id": "1020",
-            "key": "cartItems"
-          }
+          {"id": "1020", "key": "cartItems"}
         ],
         "output": [
-          {
-            "id": "1030",
-            "key": "messages",
-            "optional": true
-          }
+          {"id": "1030", "key": "cartId"}
         ]
-      }
-    ],
-    "output": [
+      },
       {
-        "id": "1030",
-        "key": "messages",
-        "optional": true
+        "type": "pipeline",
+        "id": "bigapi.bigcommerce.sendCart.v1",
+        "input": [
+          {"key": "cartId", "id": "1030"}
+        ],
+        "output": []
       }
     ],
-    "public": true
+    "public": true,
+    "output": []
   }
 }

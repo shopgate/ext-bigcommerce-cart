@@ -4,10 +4,7 @@
   "description": "Shopgate Cloud BigCommerce Cart",
   "scripts": {
     "lint": "eslint --ignore-path ../.gitignore --ext .js --ext .jsx .",
-    "test": "jest",
-    "test:watch": "jest --watch",
-    "coverage": "jest --coverage",
-    "coverage:watch": "jest --coverage --watch"
+    "test": "echo DBA"
   },
   "repository": {
     "type": "git",

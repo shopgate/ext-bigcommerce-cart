@@ -1,6 +1,11 @@
 /**
- *  @typedef {Object} UpdateProductsInput
- *  @property {ShopgateUpdateProduct[]} CartItem
+ * @typedef {Object} UpdateProductsInput
+ * @property {ShopgateUpdateProduct[]} cartItems
+ */
+
+/**
+ * @typedef {Object} UpdateProductsResponse
+ * @property {string} cartId
  */
 
 /**
@@ -14,4 +19,4 @@
  * @property {string} code
  * @property {string} message
  * @property {string} type
-  */
+ */

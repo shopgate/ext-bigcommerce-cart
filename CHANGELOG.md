@@ -3,20 +3,32 @@
 All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
+
 ## [Unreleased]
 
+## [2.1.1] - 2020-07-24
+### Fixed
+- make sure customerId is 0 for not logged in users instead of NaN
+
+## [2.1.0] - 2019-04-12
+### Added
+- saves the cart id and userAgent to BigAPI service on all cart modification calls
+### Fixed
+- show the right error message if product is not available
+- timestamp issue on generate token for checkout
+
 ## [2.0.0] - 2019-02-21
-## Added
+### Added
 - showing sku and product options in the cart
 - logging for all API calls
-## Changed
+### Changed
 - migrated frontend to PWA6
-## Fixed
+### Fixed
 - issue when adding variant products to the cart
 - aligned handling of get cart response to the information available
 
 ## [1.5.2] - 2019-01-04
-## Fixed
+### Fixed
 - providing feedback when add to cart fails and ensuring unknown errors are sent out.
 
 ## [1.5.1] - 2018-10-29
@@ -26,6 +38,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 - breaking the login process when cart merge fails.
 
 ## [1.5.0] - 2018-08-10
+### Added
 - dispatch goBack action after checkout url is fetched.
 
 ## [1.4.3] - 2018-07-26
@@ -71,7 +84,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 ## [0.2.0] - 2018-05-08
 ### Added
 - new pipeline "bigcommerce.checkout.getUrl" which can get the url for the BigCommerce checkout
-- authorisation with user credentials for pipeline shopgate.checkout.getUrl 
+- authorisation with user credentials for pipeline shopgate.checkout.getUrl
 - Travis integration
 
 ## [0.1.5] - 2018-04-16
@@ -100,7 +113,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 - functionality to add simple products to the cart
 - functionality to return BigCommerce checkout url
 
-[Unreleased]: https://github.com/shopgate/cloud-ext-bigcommerce-cart/compare/v2.0.0...HEAD
+[Unreleased]: https://github.com/shopgate/cloud-ext-bigcommerce-cart/compare/v2.1.0...HEAD
+[2.1.0]: https://github.com/shopgate/cloud-ext-bigcommerce-cart/compare/v2.0.0...v2.1.0
 [2.0.0]: https://github.com/shopgate/cloud-ext-bigcommerce-cart/compare/v1.5.2...v2.0.0
 [1.5.2]: https://github.com/shopgate/cloud-ext-bigcommerce-cart/compare/v1.5.1...v1.5.2
 [1.5.1]: https://github.com/shopgate/cloud-ext-bigcommerce-cart/compare/v1.5.0...v1.5.1

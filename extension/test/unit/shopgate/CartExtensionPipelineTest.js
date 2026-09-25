@@ -274,30 +274,66 @@ describe('CartExtensionPipeline - unit', () => {
     return subjectUnderTest.getCheckoutUrl().should.eventually.equal(expectedUrl)
   })
 
-  it('should return true when update product runs without error', async () => {
-    bigCommerceCartRepositoryMock.expects('updateItems').once().withArgs([BigCommerceCartRepository.createLineItemUpdate('1', 1)])
-    const errorLogSpy = sandbox.spy(subjectUnderTest._context.log, 'error')
+  describe('UpdateItems', () => {
+    it('should return true when update product runs without error', async () => {
+      bigCommerceCartRepositoryMock.expects('updateItems').once().withArgs([BigCommerceCartRepository.createLineItemUpdate('1', 1)])
+      const errorLogSpy = sandbox.spy(subjectUnderTest._context.log, 'error')
 
-    await subjectUnderTest.updateProducts([{ cartItemId: '1', quantity: 1 }]).should.eventually.equal(true)
-    assert(errorLogSpy.notCalled)
-    subjectUnderTest._context.log.error.restore()
-  })
-
-  it('should return false when update product encounters a non-breaking error', async () => {
-    bigCommerceCartRepositoryMock.expects('updateItems').once().withArgs([BigCommerceCartRepository.createLineItemUpdate('1', 1)]).callsFake(async (items, notify) => {
-      await notify({
-        reason: 'reason test message',
-        item: {
-          itemId: '1',
-          quantity: 1
-        }
-      })
+      await subjectUnderTest.updateProducts([{ cartItemId: '1', quantity: 1 }]).should.eventually.equal(true)
+      assert(errorLogSpy.notCalled)
+      subjectUnderTest._context.log.error.restore()
     })
 
-    const errorLogSpy = sinon.spy(subjectUnderTest._context.log, 'error')
+    it('should return false when update product encounters a non-breaking error', async () => {
+      bigCommerceCartRepositoryMock.expects('updateItems').once().withArgs([BigCommerceCartRepository.createLineItemUpdate('1', 1)]).callsFake(async (items, notify) => {
+        await notify({
+          reason: 'reason test message',
+          item: {
+            itemId: '1',
+            quantity: 1
+          }
+        })
+      })
 
-    await subjectUnderTest.updateProducts([{ cartItemId: '1', quantity: 1 }]).should.eventually.equal(false)
-    assert(errorLogSpy.called)
-    subjectUnderTest._context.log.error.restore()
+      const errorLogSpy = sinon.spy(subjectUnderTest._context.log, 'error')
+
+      await subjectUnderTest.updateProducts([{ cartItemId: '1', quantity: 1 }]).should.eventually.equal(false)
+      assert(errorLogSpy.called)
+      subjectUnderTest._context.log.error.restore()
+    })
+
+    it('should throw a correct error & extract bigcommerce message', async () => {
+      const error = Error('Request returned error code: 422 and body: {"status":422,"title":"A product with the id of 112 does not have sufficient stock"}')
+      error.code = 422
+      bigCommerceCartRepositoryMock.expects('updateItems').once().throws(error)
+      try {
+        // noinspection JSCheckFunctionSignatures
+        await subjectUnderTest.updateItems([], () => {}, true)
+      } catch (e) {
+        assert.strictEqual(e.code, 'ECART')
+        const lastError = e.errors.pop()
+        assert.strictEqual(lastError.code, 'NOTAVAILABLE')
+        assert.strictEqual(lastError.message, 'A product with the id of 112 does not have sufficient stock')
+        return
+      }
+      throw new Error('Supposed to catch the error, should not have hit this')
+    })
+
+    it('should throw a correct error & provide a default error if bad json is provided', async () => {
+      const error = Error('Request returned error code: 422 and body: {NOT-JSON}')
+      error.code = 422
+      bigCommerceCartRepositoryMock.expects('updateItems').once().throws(error)
+      try {
+        // noinspection JSCheckFunctionSignatures
+        await subjectUnderTest.updateItems([], () => {}, true)
+      } catch (e) {
+        assert.strictEqual(e.code, 'ECART')
+        const lastError = e.errors.pop()
+        assert.strictEqual(lastError.code, 'NOTAVAILABLE')
+        assert.strictEqual(lastError.message, 'Items in your cart couldn\'t be updated. Please try again later.')
+        return
+      }
+      throw new Error('Supposed to catch the error, should not have hit this')
+    })
   })
 })

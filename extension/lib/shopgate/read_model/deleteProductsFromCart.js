@@ -1,5 +1,5 @@
 
 /**
  * @typedef {Object} DeleteProductsInput
- * @property {string[]} CartItemIds
+ * @property {string[]} cartItemIds
  */

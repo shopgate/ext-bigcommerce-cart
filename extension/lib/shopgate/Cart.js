@@ -71,7 +71,7 @@ class ShopgateCart {
   }
 
   /**
-   * @return {ShopgateCartMessage[]}
+   * @return {Array}
    */
   get messages () {
     return this._messages
