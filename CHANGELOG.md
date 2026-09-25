@@ -6,6 +6,13 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## [Unreleased]
 
+## [2.1.3] - 2026-09-25
+### Changed
+- internal peer dependency clean up
+
+## 2.1.2 - 2026-09-11
+*** retracted ***
+
 ## [2.1.1] - 2020-07-24
 ### Fixed
 - make sure customerId is 0 for not logged in users instead of NaN
@@ -114,6 +121,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 - functionality to return BigCommerce checkout url
 
 [Unreleased]: https://github.com/shopgate/cloud-ext-bigcommerce-cart/compare/v2.1.0...HEAD
+[2.1.1]: https://github.com/shopgate/cloud-ext-bigcommerce-cart/compare/v2.1.0...v2.1.1
 [2.1.0]: https://github.com/shopgate/cloud-ext-bigcommerce-cart/compare/v2.0.0...v2.1.0
 [2.0.0]: https://github.com/shopgate/cloud-ext-bigcommerce-cart/compare/v1.5.2...v2.0.0
 [1.5.2]: https://github.com/shopgate/cloud-ext-bigcommerce-cart/compare/v1.5.1...v1.5.2
